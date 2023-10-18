@@ -1,0 +1,30 @@
+# Introuction to Xgon
+Welcome to the Xgon documentation.
+Xgon is a decentralized Ethereum Layer 2 network that offers a secure and user-friendly blockchain experience to all users, using advanced cryptographic zero-knowledge proofs to provide validity and near-instant finality to off-chain transaction computations.
+The concept of zkEVM can be broken down into two parts:
+- **zk (zero-knowledge**): Zero-knowledge proof technology can prove the validity of a batch of transactions through succinct proofs, ensuring computational trustworthiness and enabling scalability.
+- **EVM (Ethereum Virtual Machine)**: This is the smart contract execution environment within the Ethereum ecosystem. It empowers Ethereum to execute smart contracts and function as a worldwide computing network, distinguishing it from Bitcoin, which primarily operates as a digital currency and is often likened to a basic calculator. Additionally, EVM gives rise to the [different types of zkEVMs](https://vitalik.ca/general/2022/08/04/zkevm.html "different types of zkEVMs"), each implementing zero-knowledge proof technology to enhance Ethereum's capabilities.
+
+## Guide to read this documentation
+This documentation is structured into 3 main categories. You shall find the content you need based on these 3 main tabs: 
+1. **Getting started**: general concept and user guide to interact on Xgon
+2. **Developer**: developer's guide to build on Xgon
+3. **Technology**: Xgon and its architecture
+
+## Benefits of Xgon
+Xgon is built on zkEVM validium, which offers scalability and flexibility in data availability (DA).
+- **Lower fees**: Xgon does not consume expensive gas (i.e., DA to store transaction data off-chain).
+- **ZKP-powered scalability**: Xgon is not bounded by the amount of transaction data that can be published to Ethereum with ZK-validity proofs.
+- **Ethereum security**: Xgon natively inherits the security of Ethereum, securing user funds from malicious operators.
+- **Unified liquidity**: Xgon ensures fluid asset transfers across different CDK-developed chains within Polygon 2.0's L2 ecosystem, building a vibrant, efficient, and interconnected digital economy.
+- **Near-instant finality**: Xgon utilizes cryptographic security to ensure the integrity of transactions, achieving near-instant finality and robust security.
+- **Empowered by OKX**: Xgon provides seamless OKX product integrations, an all-in-one Web3 gateway, and access to 50M users and $25B+ assets in the OKX ecosystem.
+- **Portal to Web3**: Enter the world of Web3 via OKX Wallet, built with compact infrastructure modules to create innovative DApps.
+
+## OKB token
+OKB is the cryptocurrency that powers the Xgon ecosystem. You can trade OKB like any other cryptocurrency, and can also use OKB in a wide range of applications and use cases. OKB is an ERC-20 token on the Ethereum network and can be bridged to Xgon at a 1:1 ratio. It is also the native token of Xgon.
+
+## How to buy OKB token
+In order to interact with the Xgon network, you will need to have some OKB tokens in your wallet to pay for fees on Xgon.
+- OKB testnet token can be received through [testnet faucet](https://www.okx.com/xgon/faucet "testnet faucet") for usage on testnet
+- Buy OKB from OKX, and transfer via Xgon to your wallets
