@@ -49,9 +49,9 @@ module.exports = [
           title: 'Smart Contract',
           icon: 'xgon-smart-contract',
           children: [
-          '/developer/smart-contract/deploy-using-truffle',
-          '/developer/smart-contract/deploy-using-hardhat',
-          '/developer/smart-contract/deploy-using-foundry',
+          '/developer/smart-contract/deploy-with-truffle',
+          '/developer/smart-contract/deploy-with-hardhat',
+          '/developer/smart-contract/deploy-with-foundry',
           '/developer/smart-contract/verify-contracts'
         ],
         },
