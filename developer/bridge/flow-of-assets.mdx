@@ -2,7 +2,7 @@
 The Xgon bridge is a decentralized bridge that enables users to securely transfer assets between L1 and L2. Here's how it works:
 1. To bridge an asset from L1 to L2, the user must lock the asset in L1. The **L2 bridge smart contract** will then mint a wrapped token in L2, representing an equivalent value of the asset. After the minting process is finished, the user or recipient can claim the asset in L2.
 2. In the opposite operation, after burning the wrapped token in L2, the **L1 bridge smart contract** unlocks the original asset in L1.
-![Bridge Asset L1 <> L2](./img/bridge-asset-l1-l2.png)
+![Bridge Asset L1 across L2](./img/bridge-asset-l1-l2.png)
 Asset transferring is enabled by three smart contracts: 
 - The bridge smart contract (`ZkEVMBridge.sol`)
 - The global exit root manager (`ZkEVMGlobalExitRoot.sol`)
