@@ -2,7 +2,7 @@
 The Xgon bridge is a decentralized bridge that enables users to securely transfer assets between L1 and L2. Here's how it works:
 1. To bridge an asset from L1 to L2, the user must lock the asset in L1. The **L2 bridge smart contract** will then mint a wrapped token in L2, representing an equivalent value of the asset. After the minting process is finished, the user or recipient can claim the asset in L2.
 2. In the opposite operation, after burning the wrapped token in L2, the **L1 bridge smart contract** unlocks the original asset in L1.
-![Bridge Asset L1 <> L2](./img/Bridge Asset L1 <> L2.png)
+![Bridge Asset L1 <> L2](./img/bridge-asset-l1-l2.png)
 Asset transferring is enabled by three smart contracts: 
 - The bridge smart contract (`ZkEVMBridge.sol`)
 - The global exit root manager (`ZkEVMGlobalExitRoot.sol`)
@@ -21,7 +21,7 @@ Please refer to the document below for more detailed information:
 6. The bridge smart contract obtains the L2 Global Exit Root Manager smart contract's global exit root and validates the user's Merkle proof of inclusion. If the Merkle proof is valid, the bridging process succeeds; otherwise, the transaction fails.
 
 ### Asset flow from L2 → L1
-![Sending Message Across L1 and L2](./img/{Sending Message Across L1 and L2}.png)
+![Sending Message Across L1 and L2](./img/sending-message-across-l1-l2.png)
 1. The user calls the Bridge function of the zkEVM bridge smart contract (`ZkEVMBridge.sol`) on Layer 2. If the bridge request is valid, the bridge smart contract appends an exit leaf to the L2 exit tree and computes the new L2 exit tree root.
 2. The L2 Global Exit Root Manager (`ZkEVMGlobalExitRootL2.sol`) is called to append the new L2 exit tree root to the global exit tree and compute the global exit root:
 <Tip title="Note" >
