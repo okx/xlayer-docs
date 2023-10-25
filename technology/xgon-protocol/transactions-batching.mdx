@@ -18,8 +18,8 @@ function sequenceBatches(
         bytes calldata signaturesAndAddrs
 )
 ```
-- **Rollup**: `BatchData.transactions` data is set using the data from [transactions](/#Transactions), while the `signaturesAndAddrs` field is empty.
-- **Validium**: The hash calculated based on the [transactions](/#Transactions) is set as `BatchData.transactionsHash`. [Transactions](/#Transactions) data is signed using the DAC private key from `DataCommittee.sol`, and the resulting signatures are set in the `signaturesAndAddrs` field.
+- **Rollup**: `BatchData.transactions` data is set using the data from [transactions](#Transactions), while the `signaturesAndAddrs` field is empty.
+- **Validium**: The hash calculated based on the [transactions](#Transactions) is set as `BatchData.transactionsHash`. [Transactions](#Transactions) data is signed using the DAC private key from `DataCommittee.sol`, and the resulting signatures are set in the `signaturesAndAddrs` field.
 
 ## Batch data parameters
 ### Transactions
