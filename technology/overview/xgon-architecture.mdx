@@ -6,7 +6,7 @@ The major components of Xgon are:
 - Consensus: Xgon PoE contract `ZkEVM.sol`
 - Sequencer: Trusted
 - Gas token: OKB
-![Xgon architecture](./img/Xgon architecture.png)
+![Xgon Architecture](./img/Xgon Architecture.png)
 
 ## Xgon Validium
 Xgon is built with Polygon CDK, an advanced open-source framework designed for the rapid deployment of zk-powered layer 2 (L2) blockchains on [Ethereum](https://ethereum.org/en/ "Ethereum"). 
@@ -26,7 +26,7 @@ The verifier smart contract assesses the validity of the proof. If it is found t
 To perform these procedures, Xgon involves two types of participants: **sequencers** and **aggregators**.
 **Sequencer**: it is responsible for proposing transaction batches to the network, essentially grouping transaction requests and adding them to the `ZkEVVM.sol`.
 **Aggregator**: it is responsible for reviewing the transaction batches' validity and providing the necessary proofs of validity. Any permissionless aggregator can submit these proofs to demonstrate the accuracy of the state transition computation.
-![Consensus contract flow](./img/Consensus contract flow.png)
+![Consensus Contract Flow](./img/Consensus Contract Flow.png)
 
 ## Data Availability
 Xgon operates in validium mode, where it integrates a secure data availability layer managed by a DAC. Below are the functionalities of DAC:
@@ -42,14 +42,14 @@ The DAC primarily provides:
 
 ## zkNode
 zkNode is a client used to sync with the state of Xgon. Trusted sequencer and trusted aggregator are responsible for managing the L2 state and its finality on L1. The following zkNode architecture shows the flow of state updates.  
-![zkNode architecture](./img/zkNode architecture.png)
+![zkNode Architecture](./img/zkNode Architecture.png)
 <Tip title="Note">For more information on zkNode, you can visit [Polygon zkNode](https://wiki.polygon.technology/docs/zkevm/zknode/zknode-overview/ "Polygon zkNode").</Tip>
 
 ## zkProver
 As an Ethereum scaling solution, Xgon simulates the Ethereum Virtual Machine to provide users with the same Ethereum experience while inheriting the security of the Ethereum mainnet.
 Xgon employs a zero-knowledge prover component called zkProver to generate validity proofs for zkRollup. The zkProver is expected to leverage accelerators such as GPU, FPGA, and ASIC to reduce proof time and cost significantly.
 The general operational process is as follows: zkProver receives a batch of many transactions from nodes and generates a concise zero-knowledge proof using state-of-the-art zk tools and technology. This not only substantially reduces the time for final transaction confirmation but also significantly lowers users' Gas consumption costs. The specific interaction flow can be referred to in the following diagram:
-![zkProver control flow](./img/zkProver control flow.png)
+![zkProver Control Flow](./img/zkProver Control Flow.png)
 1. zkNode sends the content of the Merkle tree to the database for storage.
 2. Then, zk nodes send a batch of many transactions to the zkProver component.
 3. zkProver accesses the database and retrieves the necessary information to generate verifiable proofs for the transactions sent by the nodes. This information includes Merkle roots, the keys and hashes of relevant siblings, and more.
