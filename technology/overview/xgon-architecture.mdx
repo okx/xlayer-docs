@@ -6,7 +6,7 @@ The major components of Xgon are:
 - Consensus: Xgon PoE contract `ZkEVM.sol`
 - Sequencer: Trusted
 - Gas token: OKB
-![Xgon Architecture](./img/Xgon Architecture.png)
+![Xgon Architecture](./img/xgon-architecture.png)
 
 ## Xgon Validium
 Xgon is built with Polygon CDK, an advanced open-source framework designed for the rapid deployment of zk-powered layer 2 (L2) blockchains on [Ethereum](https://ethereum.org/en/ "Ethereum"). 
@@ -18,7 +18,7 @@ Similar to zero-knowledge rollups (ZK-rollups), Xgon confirms off-chain transact
 zkValidiums differ from rollups and sidechains because they only share the proof of validity, which confirms the results of the transactions with Ethereum, not the actual transaction data of the executed transactions.
 Here is how it operates: a verifier smart contract is deployed on Ethereum, and validium submits proof of validity to this contract. These proofs are zero knowledge in nature and contain transaction outcomes but not the specific transaction data.
 The verifier smart contract assesses the validity of the proof. If it is found to be invalid, any batch submitted by the validium is rejected and not stored on Ethereum.
-![zkValidium vs. zkRollup](./img/zkValidium vs. zkRollup.png)
+![zkValidium vs. zkRollup](./img/zkvalidium-vs-zkrollup.png)
 
 ## Consensus contract
 `ZkEVVM.sol` is the underlying protocol that guarantees the correctness of state changes through the use of validity proof. To confirm that specific predefined rules have been adhered to for permitting state transitions, the Consensus contract (`ZkEVM.sol`, deployed on Ethereum layer 1) comes into play.
@@ -26,7 +26,7 @@ The verifier smart contract assesses the validity of the proof. If it is found t
 To perform these procedures, Xgon involves two types of participants: **sequencers** and **aggregators**.
 **Sequencer**: it is responsible for proposing transaction batches to the network, essentially grouping transaction requests and adding them to the `ZkEVVM.sol`.
 **Aggregator**: it is responsible for reviewing the transaction batches' validity and providing the necessary proofs of validity. Any permissionless aggregator can submit these proofs to demonstrate the accuracy of the state transition computation.
-![Consensus Contract Flow](./img/Consensus Contract Flow.png)
+![Consensus Contract Flow](./img/consensus-contract-flow.png)
 
 ## Data Availability
 Xgon operates in validium mode, where it integrates a secure data availability layer managed by a DAC. Below are the functionalities of DAC:
@@ -42,14 +42,14 @@ The DAC primarily provides:
 
 ## zkNode
 zkNode is a client used to sync with the state of Xgon. Trusted sequencer and trusted aggregator are responsible for managing the L2 state and its finality on L1. The following zkNode architecture shows the flow of state updates.  
-![zkNode Architecture](./img/zkNode Architecture.png)
+![zkNode Architecture](./img/zknode-architecture.png)
 <Tip title="Note">For more information on zkNode, you can visit [Polygon zkNode](https://wiki.polygon.technology/docs/zkevm/zknode/zknode-overview/ "Polygon zkNode").</Tip>
 
 ## zkProver
 As an Ethereum scaling solution, Xgon simulates the Ethereum Virtual Machine to provide users with the same Ethereum experience while inheriting the security of the Ethereum mainnet.
 Xgon employs a zero-knowledge prover component called zkProver to generate validity proofs for zkRollup. The zkProver is expected to leverage accelerators such as GPU, FPGA, and ASIC to reduce proof time and cost significantly.
 The general operational process is as follows: zkProver receives a batch of many transactions from nodes and generates a concise zero-knowledge proof using state-of-the-art zk tools and technology. This not only substantially reduces the time for final transaction confirmation but also significantly lowers users' Gas consumption costs. The specific interaction flow can be referred to in the following diagram:
-![zkProver Control Flow](./img/zkProver Control Flow.png)
+![zkProver Control Flow](./img/zkprover-control-flow.png)
 1. zkNode sends the content of the Merkle tree to the database for storage.
 2. Then, zk nodes send a batch of many transactions to the zkProver component.
 3. zkProver accesses the database and retrieves the necessary information to generate verifiable proofs for the transactions sent by the nodes. This information includes Merkle roots, the keys and hashes of relevant siblings, and more.

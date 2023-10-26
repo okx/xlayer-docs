@@ -11,7 +11,7 @@ function sequenceBatches (
 ) public ifNotEmergencyState onlyTrustedSequencer
 ```
 The figure below shows how a sequence of batches is organized:
-![Sequence of Batches](./img/Sequence of Batches.png)
+![Sequence of Batches](./img/sequence-of-batches.png)
 
 ## Max & min batch size bounds
 With the [rollup](https://ethereum.org/en/developers/docs/data-availability/ "rollup") mode, the contract has the following two public constants:
@@ -46,8 +46,8 @@ Where:
 - `globalExitRoot` is the root of the bridge's global exit Merkle tree
 - `timestamp` is the batch timestamp
 - `seqAddress` is the address of the batch sequencer
-![Batch hashes](./img/Batch hashes.png)
-As shown in the diagram above, each accumulated input hash ensures the integrity of the current batch's data (i.e., `transactions`, `timestamp`, and `globalExitRoot`, as well as the order in which they were sequenced.
+![Batch hashes](./img/batch-hashes.png)
+As shown in the diagram above, each accumulated input hash ensures the integrity of the current batch's data (i.e., `transactions`, `timestamp`, and `globalExitRoot`, as well as the order in which they were sequenced.)
 <Tip title="Note">Any change in the batch chain that causes all future accumulated input hashes to be incorrect, would indicate a lack of integrity in the resulting L2 state.</Tip>
 The batch sequence is added to the `sequencedBatches` mapping using the following `SequencedBatchData` struct only after the validity of all batches in a sequence has been verified and the accumulated hash of each batch has been computed.
 ```

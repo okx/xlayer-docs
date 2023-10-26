@@ -3,7 +3,7 @@ The process of validating a specific transaction within the batch typically invo
 1. **Trusted state**: This state is given by the trusted sequencer almost instantaneously. The state is updated on L2, but has not yet reached L1.
 2. **Virtual state**: Batches have been sequenced and data is on L1. At this point, transactions and data can not be modified as the state is final, yet they are not yet proven and are available on L1 for anyone to prove.
 3. **Verified state**: Zk-proof has been posted on L1, and the smart contract verifies the virtual state, allowing for the withdrawal of funds.
-![L2 State Stages](./img/L2 State Stages.png)
+![L2 State Stages](./img/l2-state-stages.png)
 
 ## Data flow in Xgon
 Transactions on the Xgon network have a typical flow starting from the users' interactions with their wallet on Xgon, to how the transactions are batched, sequenced, and aggregated on Ethereum L1:
@@ -13,7 +13,7 @@ Transactions on the Xgon network have a typical flow starting from the users' in
 4. Batches are sequenced and sent to Ethereum L1.
 5. Consolidated finality is achieved on Ethereum L1 with the power of zk-proofs.
 
-![Transactions and Data Flow](./img/Transactions and Data Flow.png)
+![Transactions and Data Flow](./img/transactions-and-data-flow.png)
 
 ### 1. Submitting transactions
 As a user, you submit transactions by signing transactions and sending them through the JSON-RPC interface.
