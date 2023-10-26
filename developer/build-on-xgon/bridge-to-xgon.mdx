@@ -1,0 +1,100 @@
+# Bridge to Xgon
+### Deposit OKB and ERC20 tokens from L1
+The ZkEVM bridge contract allows ETH and ERC20 token bridging from L1 to L2 using the bridgeAsset function. Notice that ERC20 tokens will have a different address on L2. You can use the precalculatedWrapperAddress function to query the new address in ZkEVMBridgeContract.sol contract
+#### bridgeAsset
+Deposit and add a new leaf to the Merkle tree:
+```
+  function bridgeAsset(
+    uint32 destinationNetwork,
+    address destinationAddress,
+    uint256 amount,
+    address token,
+    bool forceUpdateGlobalExitRoot,
+    bytes permitData
+  ) public
+```
+##### Parameters
+|Name|Type|Description|
+|:----|:----|:----|
+|`destinationNetwork`|uint32|Network destination|
+|`destinationAddress`|address|Address destination|
+|`amount`|uint256|Amount of tokens|
+|`token`|address|Token address, 0 address is reserved for ETH|
+|`forceUpdateGlobalExitRoot`|bool|Indicates if the new global exit root is updated or not|
+|`permitData`|bytes|Raw data of the call `permit` of the token|
+
+#### precalculatedWrapperAddress
+This returns the precalculated address of a wrapper using the token information.
+Note: Updating the metadata of a token is not supported.
+Since the metadata has relevance in the address deployed, this function will not return a valid wrapped address if the metadata provided is not the original one.
+```
+function precalculatedWrapperAddress(
+    uint32 originNetwork,
+    address originTokenAddress,
+    string name,
+    string symbol,
+    uint8 decimals
+  ) external returns (address)
+```
+##### Parameters
+|Name|Type|Description|
+|:----|:----|:----|
+|`originNetwork`|uint32|Origin network|
+|`originTokenAddress`|address|Origin token address, 0 address is reserved for ETH|
+|`name`|string|Name of the token|
+|`symbol`|string|Symbol of the token|
+|`decimals`|uint8|Decimals of the token|
+
+### Withdrawing OKB and ERC-20 tokens from L2
+You can use the `claimAsset` method to retrieve assets on L2. Calling this method on L2 incurs no Gas fees, so the official bridge service will be provided to automatically invoke the `claimAsset` method for you.
+#### claimAsset
+```
+ function claimAsset(
+    bytes32[32] smtProof,
+    uint32 index,
+    bytes32 mainnetExitRoot,
+    bytes32 rollupExitRoot,
+    uint32 originNetwork,
+    address originTokenAddress,
+    uint32 destinationNetwork,
+    address destinationAddress,
+    uint256 amount,
+    bytes metadata
+  ) external
+```
+##### Parameters
+|Name|Type|Description|
+|:----|:----|:----|
+|`smtProof`|bytes32[32]|Smt proof|
+|`index`|uint32|Index of the leaf|
+|`mainnetExitRoot`|bytes32|Mainnet exit root|
+|`rollupExitRoot`|bytes32|Rollup exit root|
+|`originNetwork`|uint32|Origin network|
+|`originTokenAddress`|address|Origin token address, 0 address is reserved for ETH|
+|`destinationNetwork`|uint32|Network destination|
+|`destinationAddress`|address|Address destination|
+|`amount`|uint256`|Amount of tokens|
+|`metadata`|bytes|Abi encoded metadata if any, empty otherwise|
+
+## Bridge to Ethereum
+### Creating an ERC-20 token with custom logic on Xgon (L2)
+ERC-20 is the technical standard for fungible tokens created using the Ethereum blockchain. A fungible token is interchangeable with another token — whereas the well-known non-fungible tokens (NFTs) are not interchangeable.
+You can read more information about ERC-20 [here](https://ethereum.org/en/developers/docs/standards/tokens/erc-20/ "here").
+Deploy a simple ERC-20 contract with any of the tools like [Truffle](/developer/smart-contract/deploy-with-truffle "Truffle"), [Hardhat](/developer/smart-contract/deploy-with-hardhat "Hardhat"), or [Foundry](/developer/smart-contract/deploy-with-foundry "Foundry"). This contract is implemented based on the open-source library, which can be found at [OpenZeppelin](https://www.openzeppelin.com/contracts# "OpenZeppelin").
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.9;
+
+import "@openzeppelin/contracts@4.9.3/token/ERC20/ERC20.sol";
+
+contract MyToken is ERC20 {
+    constructor() ERC20("MyToken", "MTK") {}
+}
+```
+
+### Depositing OKB and ERC-20 tokens from L2
+The same bridge contract is used on both L1 and L2, so the interface definition is identical.
+
+### Depositing OKB and ERC-20 tokens from L2
+The same bridge contract is used on both L1 and L2, so the interface definition is identical.
+Note: Claiming assets on Ethereum will consume gas fees and is not free.
