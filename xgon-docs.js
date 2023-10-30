@@ -86,7 +86,7 @@ module.exports = [
               title: 'Transactions',
               path: '/technology/xgon-protocol/transactions',
               children: [
-                '/technology/xgon-protocol/transactions-&-data-flow',
+                '/technology/xgon-protocol/transactions-n-data-flow',
                 '/technology/xgon-protocol/transactions-batching',
                 '/technology/xgon-protocol/batch-sequencing',
                 '/technology/xgon-protocol/batch-aggregation',
