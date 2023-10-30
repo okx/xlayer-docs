@@ -22,6 +22,7 @@ This contract has a main function:
 - updateExitRoot
 This separation of logic between the zkEVM bridge SC and the Global Exit Root Manager SC has been strategically implemented to enhance interoperability, which uses the function `updateExitRoot`.
 This means that the zkEVM bridge SC, in conjunction with the Global Exit Root Manager SC, can be installed on any network to achieve the same results.
+
 <Tip title="Note">There are two Global Exit Root manager SCs: one deployed in L1, while the other is deployed in L2.
 Their Solidity code files are; ZkEVMGlobalExitRoot.sol, and ZkEVMGlobalExitRootL2.sol, respectively.</Tip>
 

@@ -1,5 +1,6 @@
 # Incentive mechanism
 In Xagon, actors are rewarded for executing their jobs correctly and helping the protocol achieve finality.
+
 <Tip title="Note">Unless stated otherwise, the incentive mechanism discussed here applies when the sequencer and aggregator roles are decentralized, meaning there are no trusted sequencers or aggregators involved.</Tip>
 
 ## L2 transaction fees and sequencing fees
@@ -8,4 +9,5 @@ The **sequencer** plays a crucial role in the network and receives transaction f
 To motivate the **aggregator** for each batch it sequences, the **sequencer** is required to lock a specific number of OKB tokens in the L1 `ZkEVM.sol` contract. The number of tokens locked per batch is determined by the variable `batchFee`. The final aggregator reward is distributed from `ZkEVM.sol` in the form of L1 OKB tokens.
 The diagram below illustrates the different fees and rewards earned by participants within the protocol.
 ![Fees and Rewards](./img/fees-and-rewards.png)
+
 <Tip title="Note">Xgon uses the same incentive mechanism — or detailed rewarding formula for sequencers and aggregators, as Polygon zkEVM does. You can visit [Polygon zkEVM incentive mechanism](https://wiki.polygon.technology/docs/zkevm/protocol/incentive-mechanism/ "Polygon zkEVM incentive mechanism") to learn more.</Tip>

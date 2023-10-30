@@ -24,14 +24,12 @@ Please refer to the document below for more detailed information:
 ![Sending Message Across L1 and L2](./img/sending-message-across-l1-l2.png)
 1. The user calls the Bridge function of the zkEVM bridge smart contract (`ZkEVMBridge.sol`) on Layer 2. If the bridge request is valid, the bridge smart contract appends an exit leaf to the L2 exit tree and computes the new L2 exit tree root.
 2. The L2 Global Exit Root Manager (`ZkEVMGlobalExitRootL2.sol`) is called to append the new L2 exit tree root to the global exit tree and compute the global exit root:
-<Tip title="Note" >
-For the sake of simplicity, the intermediate step is not depicted in the figure below. That step is: The user's bridging transaction gets included in one of the batches selected and sequenced by the sequencer.
-</Tip>
+<Tip title="Note">For the sake of simplicity, the intermediate step is not depicted in the figure below. That step is: The user's bridging transaction gets included in one of the batches selected and sequenced by the sequencer.</Tip>
 3. The aggregator generates a zk-proof attesting to the computational integrity in the execution of sequenced batches (where one of these batches includes the user's bridging transaction).
 4. For verification purposes, the aggregator sends the zk-proof together with all relevant batch information that leads to the new L2 exit tree root (computed in step 2 above), to the consensus contract (`ZkEVM.sol`).
 5. The consensus contract utilizes the `verifyBatches` function to verify validity of the received zk-proof. If valid, the consensus contract sends the new L2 Exit Tree Root to the Global Exit Root Manager smart contract (`ZkEVMGlobalExitRoot.sol`) in order to update the Global Exit Tree.
 6. In order to complete the bridging process on the L1 network, the user calls the `Claim` function of the bridge smart contract, and provides Merkle proof of the fact that the correct exit leaf was included in the computation of Global Exit Root.
 7. The bridge smart contract retrieves the global exit root from the L1 Global Exit Root Manager smart contract and verifies validity of the Merkle proof. If the Merkle proof is valid, the bridge smart contract successfully completes the bridging process. Otherwise, the transaction is reverted.
 
-<Tip title="Note" >The architecture shown in the diagram below is simplified, emphasizing the connection between different bridge elements. 
+<Tip title="Note">The architecture shown in the diagram below is simplified, emphasizing the connection between different bridge elements. 
 It doesn't include the interaction between the consensus contract and the sequencer, which is discussed in more detail in earlier subsections of this documentation, particularly in the [consensus contract](URL 待补充) section.</Tip>

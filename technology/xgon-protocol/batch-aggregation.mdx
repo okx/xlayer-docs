@@ -1,7 +1,9 @@
 # Batch aggregation
 ## Aggregation summary
 Upon reaching the layer 1 (L1) network, after all sequenced batches have been processed, the final step involves creating a zero-knowledge (zk) proof to validate the transactions' legitimacy. Aggregator nodes collect the sequenced batches and deliver them to the zkProver, which employs the fflonk protocol to produce a conclusive SNARK (Succinct Non-interactive Argument of Knowledge) proof. Subsequently, the aggregator receives a zk-proof that is compact enough to be stored on Ethereum's L1.
+
 <Tip title="Note">SNARK, which stands for Succinct Non-interactive Arguments of Knowledge, serves as the underlying verification schema for Zero-Knowledge proofs. Its primary distinguishing features include its conciseness and rapid verification capabilities.</Tip>
+
 ![Consolidated state on L1](./img/consolidated-state-on-l1.png)
 Ultimately, the batches of transactions are consolidated into a final state, thereby inheriting Ethereum's security model. This is achieved by posting and proving all transaction data back on Ethereum's L1.
 ![Off-chain execution of batches](./img/off-chain-execution-of-batches.png)
