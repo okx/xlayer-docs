@@ -2,7 +2,7 @@
 Xgon supports JSON-RPC methods that are compatible with Ethereum, and zkEVM RPC methods for zkEVM.
 
 ## Mainnet (chain-ID: 0xxx, xxx in decimals)
-https://xxxx.Xgonhain.org/ (coming soon)
+https://xxxx.xgonhain.org/ (coming soon)
 ## Testnet (chain-ID: 0xxx, xxx in decimals)
 https://xxx.Xgonhain.org/ (coming soon)
 
@@ -86,15 +86,15 @@ You can use the following RPC methods to execute specific zkEVM functionalities:
 |zkevm_verifiedBatchNumber|Returns the latest verified batch number|
 |zkevm_batchNumberByBlockNumber|Returns the batch number connected to the block|
 
-#### zkevm_batchNumber
+### zkevm_batchNumber
 Returns the latest batch number
-##### Parameters
+**Parameters**
 - None
 
-##### Returns
+**Returns**
 - String - the hex representation of latest batch number
 
-##### Example
+**Example**
 ```
 // Request
 curl -X POST --data '{
@@ -107,16 +107,16 @@ curl -X POST --data '{
 // Response
 {"jsonrpc":"2.0","id":1,"result":"0x82"}
 ```
-#### zkevm_batchNumberByBlockNumber
+### zkevm_batchNumberByBlockNumber
 Returns the batch number of the batch connected to the block
-##### Parameters
+**Parameters**
 - An array of strings
 - String - the hex representation of the block's height
 
-##### Returns
+**Returns**
 - String - the hex representation of latest batch number
 
-##### Example
+**Example**
 ```
 // Request
 curl -X POST --data '{
@@ -129,15 +129,15 @@ curl -X POST --data '{
 // Response
 {"jsonrpc":"2.0","id":1,"result":"0x4"}
 ```
-#### zkevm_consolidatedBlockNumber
+### zkevm_consolidatedBlockNumber
 Returns the latest block number that is connected to the latest batch verified
-##### Parameters
+**Parameters**
 - None
 
-##### Returns
+**Returns**
 - String - the hex representation of latest block number
 
-##### Example
+**Example**
 ```
 // Request
 curl -X POST --data '{
@@ -150,9 +150,9 @@ curl -X POST --data '{
 // Response
 {"jsonrpc":"2.0","id":1,"result":"0x84"}
 ```
-#### zkevm_getBatchByNumber
+### zkevm_getBatchByNumber
 Gets a batch for a given number
-##### Parameters
+**Parameters**
 - An array of strings
 - String - the batch number (in hex) or batch tag
 
@@ -161,7 +161,7 @@ The optional batch height descriptions are:
 - `latest` - This is the most recent batch in the canonical chain observed by the client. This batch may be re-orged out of the canonical chain even under healthy/normal conditions.
 - `earliest` - This is the lowest-numbered batch the client has available. Intuitively, you can think of this as the first batch created.
 
-##### Returns
+**Returns**
 - number: string - the hex representation of given batch number
 - coinbase: string - the Coinbase address
 - stateRoot: string - the state root
@@ -175,7 +175,7 @@ The optional batch height descriptions are:
 - verifyBatchTxHash: string - the verify batch transaction hash
 - transactions: array[String] - the transactions
 
-##### Example
+**Example**
 ```
 // Request
 curl -X POST --data '{
@@ -188,13 +188,13 @@ curl -X POST --data '{
 // Response
 {"jsonrpc":"2.0","id":1,"result":{"number":"0x2","coinbase":"0xcec3f45ca495d89a37ff680c087df91741aa9ef6","stateRoot":"0xe683502473ee45ab47f55ea254bb8637f5324250e758e391476b15388f818617","globalExitRoot":"0xe95ee03593d34c4ff03c2e5369cf6eaef4e3e19fc66ab1c93d512fcccbc33f41","mainnetExitRoot":"0x2c352238d75ce63aa81d466c6d17aa41bc12dce33c954a10d6752f6863e42511","rollupExitRoot":"0x0000000000000000000000000000000000000000000000000000000000000000","localExitRoot":"0x0000000000000000000000000000000000000000000000000000000000000000","accInputHash":"0xb36f9860fd62baa2ecbf52ed337a0e9686bce2441909c80f541b98c88601c84c","timestamp":"0x64f5d7a1","sendSequencesTxHash":"0x77f311f450e7d1075b4c5e51e2ac727c74082eed7494d5e7d74fa40f4ff6b071","verifyBatchTxHash":"0x519da5b4a2f6ce344f749e5e553588b61b661280a9d8dfd0cc6b03cab74cb0da","transactions":["0x5e33e1eb2064e3bad97b3734b2aa25882ecd88f9f91da81d1526dbbc90a531b8"]}}
 ```
-#### zkevm_isBlockConsolidated
+### zkevm_isBlockConsolidated
 Returns 'true' if the provided block number is already connected to a batch that was already verified, otherwise false
-##### Parameters
+**Parameters**
 - String - hash of block
 - Boolean - if `true` it returns the full transaction objects, if `false`, only the hashes of the transactions; defaults to `false`
 
-##### Example
+**Example**
 ```
 // Request
 curl -X POST --data '{
@@ -207,16 +207,16 @@ curl -X POST --data '{
 // Response
 {"jsonrpc":"2.0","id":1,"result":true}
 ```
-#### zkevm_isBlockVirtualized
+### zkevm_isBlockVirtualized
 Returns 'true' if the provided block number is already connected to a batch that was already virtualized, otherwise 'false'
-##### Parameters
+**Parameters**
 - An array of strings
 - String - the hex representation of the block's height
 
-##### Returns
+**Returns**
 - Boolean - result of virtualized
 
-##### Example
+**Example**
 ```
 // Request
 curl -X POST --data '{
@@ -229,15 +229,15 @@ curl -X POST --data '{
 // Response
 {"jsonrpc":"2.0","id":1,"result":true}
 ```
-#### zkevm_verifiedBatchNumber
+### zkevm_verifiedBatchNumber
 Returns the latest verified batch number
-##### Parameters
+**Parameters**
 - None
 
-##### Returns
+**Returns**
 - Boolean - the latest verified batch number
 
-##### Example
+**Example**
 ```
 // Request
 curl -X POST --data '{
@@ -250,15 +250,15 @@ curl -X POST --data '{
 // Response
 {"jsonrpc":"2.0","id":1,"result":"0x81"}
 ```
-#### zkevm_virtualBatchNumber
+### zkevm_virtualBatchNumber
 Returns the latest virtual batch number
-##### Parameters
+**Parameters**
 - None
 
-##### Returns
+**Returns**
 - Boolean - the latest virtual batch number
 
-##### Example
+**Example**
 ```
 // Request
 curl -X POST --data '{

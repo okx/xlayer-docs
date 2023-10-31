@@ -5,8 +5,11 @@ Upon reaching the layer 1 (L1) network, after all sequenced batches have been pr
 <Tip title="Note">SNARK, which stands for Succinct Non-interactive Arguments of Knowledge, serves as the underlying verification schema for Zero-Knowledge proofs. Its primary distinguishing features include its conciseness and rapid verification capabilities.</Tip>
 
 ![Consolidated state on L1](./img/consolidated-state-on-l1.png)
+
 Ultimately, the batches of transactions are consolidated into a final state, thereby inheriting Ethereum's security model. This is achieved by posting and proving all transaction data back on Ethereum's L1.
+
 ![Off-chain execution of batches](./img/off-chain-execution-of-batches.png)
+
 As depicted in the above diagram, the off-chain execution of batches implies a transition to a new layer 2 (L2) state, resulting in a change to a new L2 state root. An aggregator generates computational integrity (CI) proof of this execution, and its on-chain verification ensures the validity of the resulting L2 state root.
 
 ## Aggregating batches

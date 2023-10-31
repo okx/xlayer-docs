@@ -6,8 +6,11 @@ In Xagon, actors are rewarded for executing their jobs correctly and helping the
 ## L2 transaction fees and sequencing fees
 The native token used in Xgon is `Bridged Ether`, which originates from the Ethereum ERC-20 OKB. This is the token used to pay Xgon transaction fees. It can be bridged at a 1:1 exchange rate from Ethereum to Xgon and vice versa.
 The **sequencer** plays a crucial role in the network and receives transaction fees paid by users on Xgon when they submit transactions. These fees are paid in `Bridged Ether`. The exact fee amount depends on the Gas price set by users, indicating how much they are willing to pay for transaction execution.
+
 To motivate the **aggregator** for each batch it sequences, the **sequencer** is required to lock a specific number of OKB tokens in the L1 `ZkEVM.sol` contract. The number of tokens locked per batch is determined by the variable `batchFee`. The final aggregator reward is distributed from `ZkEVM.sol` in the form of L1 OKB tokens.
+
 The diagram below illustrates the different fees and rewards earned by participants within the protocol.
+
 ![Fees and Rewards](./img/fees-and-rewards.png)
 
 <Tip title="Note">Xgon uses the same incentive mechanism — or detailed rewarding formula for sequencers and aggregators, as Polygon zkEVM does. You can visit [Polygon zkEVM incentive mechanism](https://wiki.polygon.technology/docs/zkevm/protocol/incentive-mechanism/ "Polygon zkEVM incentive mechanism") to learn more.</Tip>

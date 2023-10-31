@@ -18,19 +18,21 @@ With these functions, we can bridge assets from one network to another, as well 
 
 ## Global exit root manager contract
 The Global Exit Root Manager SC, implemented as `ZkEVMGlobalExitRoot.sol`, serves as the overseer of the Global Exit Tree Root. Its primary responsibilities include updating the Global Exit Tree Root and serving as a storage hub for the historical data of the Global Exit Tree. 
+
 This contract has a main function:
-- updateExitRoot
+- `updateExitRoot`
 This separation of logic between the zkEVM bridge SC and the Global Exit Root Manager SC has been strategically implemented to enhance interoperability, which uses the function `updateExitRoot`.
+
 This means that the zkEVM bridge SC, in conjunction with the Global Exit Root Manager SC, can be installed on any network to achieve the same results.
 
-<Tip title="Note">There are two Global Exit Root manager SCs: one deployed in L1, while the other is deployed in L2.
-Their Solidity code files are; ZkEVMGlobalExitRoot.sol, and ZkEVMGlobalExitRootL2.sol, respectively.</Tip>
+<Tip title="Note">There are two Global Exit Root manager SCs: one deployed in L1, while the other is deployed in L2. Their Solidity code files are; ZkEVMGlobalExitRoot.sol, and ZkEVMGlobalExitRootL2.sol, respectively.</Tip>
 
 ## Consensus contract
 The `ZkEVM.sol` smart contract is the consensus algorithm used in Xgon. It is located in L1 for batch verification purposes.
 The consensus smart contract (ZkEVM.sol) has two main functions:
-- sequenceBatches
-- verifyBatchesTrustedAggregator
+- `sequenceBatches`
+- `verifyBatchesTrustedAggregator`
+
 With these functions, L2 tx data can be rolled up and verified. 
 1. Transactions are grouped into batches by `sequenceBatches` function.
 2. A request is made to an aggregator to prove the validity of these sequenced batches by `verifyBatchesTrustedAggregator`. This proof is zk-proof and is verified using the `Verifier.sol` contract.
@@ -38,6 +40,7 @@ With these functions, L2 tx data can be rolled up and verified.
 
 ## Smart contract interactions
 The following diagram illustrates the interactions among the three bridge-related smart contracts when assets are bridged. It describes the overall process of transferring assets from L1 to L2 and from L2 to L1 through contracts.
+
 ![Smart contract interactions](./img/smart-contract-interactions.png)
 
 ### L1 → L2 transfer
@@ -61,7 +64,9 @@ The focus in this subsection is on the bridge-related smart contracts used in L2
 3. The L2 Global Exit Root Manager has storage slots to store the Global Exit Root and the L2 Exit Tree Root. In order to correctly ensure validity of the synchronization between the Global Exit Tree and L2 Exit Tree, these storage slots are directly accessible to the low-level ZK-proof-generating circuit.
 
 Here is the step-by-step process:
+
 ![L2 interactions with ZK-circuit](./img/l2-interactions-with-zk-circuit.png)
+
 1. When a batch of transactions is processed, the zkEVM bridge SC `ZkEVMBridge.sol` appends an exit leaf with the batch information to the L2 Exit Tree and updates the L2 Exit Tree Root.
 2. The bridge SC communicates the L2 Exit Tree Root to the L2 Global Exit Root Manager. The L2 Global Exit Root Manager, however, does not update the Global Exit Tree at this stage.
 3. For proof and verification, the circuit for generating zk-proofs obtains the L2 exit tree root from the L2 Global Exit Root Manager.

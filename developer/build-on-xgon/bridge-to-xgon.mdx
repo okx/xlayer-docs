@@ -1,7 +1,7 @@
 # Bridge to Xgon
-### Deposit OKB and ERC20 tokens from L1
+## Deposit OKB and ERC20 tokens from L1
 The ZkEVM bridge contract allows ETH and ERC20 token bridging from L1 to L2 using the bridgeAsset function. Notice that ERC20 tokens will have a different address on L2. You can use the precalculatedWrapperAddress function to query the new address in ZkEVMBridgeContract.sol contract
-#### bridgeAsset
+### bridgeAsset
 Deposit and add a new leaf to the Merkle tree:
 ```
   function bridgeAsset(
@@ -13,7 +13,7 @@ Deposit and add a new leaf to the Merkle tree:
     bytes permitData
   ) public
 ```
-##### Parameters
+**Parameters**
 |Name|Type|Description|
 |:----|:----|:----|
 |`destinationNetwork`|uint32|Network destination|
@@ -23,7 +23,7 @@ Deposit and add a new leaf to the Merkle tree:
 |`forceUpdateGlobalExitRoot`|bool|Indicates if the new global exit root is updated or not|
 |`permitData`|bytes|Raw data of the call `permit` of the token|
 
-#### precalculatedWrapperAddress
+### precalculatedWrapperAddress
 This returns the precalculated address of a wrapper using the token information.
 Note: Updating the metadata of a token is not supported.
 Since the metadata has relevance in the address deployed, this function will not return a valid wrapped address if the metadata provided is not the original one.
@@ -36,7 +36,7 @@ function precalculatedWrapperAddress(
     uint8 decimals
   ) external returns (address)
 ```
-##### Parameters
+**Parameters**
 |Name|Type|Description|
 |:----|:----|:----|
 |`originNetwork`|uint32|Origin network|
@@ -45,9 +45,9 @@ function precalculatedWrapperAddress(
 |`symbol`|string|Symbol of the token|
 |`decimals`|uint8|Decimals of the token|
 
-### Withdrawing OKB and ERC-20 tokens from L2
+## Withdrawing OKB and ERC-20 tokens from L2
 You can use the `claimAsset` method to retrieve assets on L2. Calling this method on L2 incurs no Gas fees, so the official bridge service will be provided to automatically invoke the `claimAsset` method for you.
-#### claimAsset
+### claimAsset
 ```
  function claimAsset(
     bytes32[32] smtProof,
@@ -62,7 +62,7 @@ You can use the `claimAsset` method to retrieve assets on L2. Calling this metho
     bytes metadata
   ) external
 ```
-##### Parameters
+**Parameters**
 |Name|Type|Description|
 |:----|:----|:----|
 |`smtProof`|bytes32[32]|Smt proof|
@@ -76,8 +76,8 @@ You can use the `claimAsset` method to retrieve assets on L2. Calling this metho
 |`amount`|uint256`|Amount of tokens|
 |`metadata`|bytes|Abi encoded metadata if any, empty otherwise|
 
-## Bridge to Ethereum
-### Creating an ERC-20 token with custom logic on Xgon (L2)
+# Bridge to Ethereum
+## Creating an ERC-20 token with custom logic on Xgon (L2)
 ERC-20 is the technical standard for fungible tokens created using the Ethereum blockchain. A fungible token is interchangeable with another token — whereas the well-known non-fungible tokens (NFTs) are not interchangeable.
 You can read more information about ERC-20 [here](https://ethereum.org/en/developers/docs/standards/tokens/erc-20/ "here").
 Deploy a simple ERC-20 contract with any of the tools like [Truffle](/developer/smart-contract/deploy-with-truffle "Truffle"), [Hardhat](/developer/smart-contract/deploy-with-hardhat "Hardhat"), or [Foundry](/developer/smart-contract/deploy-with-foundry "Foundry"). This contract is implemented based on the open-source library, which can be found at [OpenZeppelin](https://www.openzeppelin.com/contracts# "OpenZeppelin").
@@ -92,9 +92,10 @@ contract MyToken is ERC20 {
 }
 ```
 
-### Depositing OKB and ERC-20 tokens from L2
+## Depositing OKB and ERC-20 tokens from L2
 The same bridge contract is used on both L1 and L2, so the interface definition is identical.
 
-### Depositing OKB and ERC-20 tokens from L2
+## Depositing OKB and ERC-20 tokens from L2
 The same bridge contract is used on both L1 and L2, so the interface definition is identical.
-Note: Claiming assets on Ethereum will consume gas fees and is not free.
+
+<Tip title="Note">Claiming assets on Ethereum will consume gas fees and is not free.</Tip>
