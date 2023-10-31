@@ -12,7 +12,7 @@ module.exports = [
       children: [
         {
           title: 'Welcome',
-          icon: 'xgon-welcome',
+          icon: 'okds-finance-bank',
           children: [
             '/getting-started/welcome/welcome-to-xgon',
             '/getting-started/welcome/introduction',
