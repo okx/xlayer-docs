@@ -1,4 +1,4 @@
-# Batch sequecing
+# Batch sequencing
 Once we have batches of transactions, they are ready to be sequenced. The sequencer will call the L1 `ZkEVM.sol` contract's `sequencedBatches` function and provide it with multiple batches of transactions. It is basically a storage structure that holds the queue of sequences defining the virtual state.
 ```javascript
 // SequenceBatchNum --> SequencedBatchData
