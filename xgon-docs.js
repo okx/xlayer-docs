@@ -10,11 +10,17 @@ module.exports = [
       title: 'Getting Started',
       basePath: ['/getting-started'],
       children: [
-        '/getting-started/welcome-to-xgon',
-        '/getting-started/introduction',
+        {
+          title: 'Welcome',
+          icon: 'xgon-welcome',
+          children: [
+            '/getting-started/welcome/welcome-to-xgon',
+            '/getting-started/welcome/introduction',
+        ],
+        },
         {
           title: 'User Guide',
-          icon: 'xgon-user-guide',
+          icon: 'okds-guide',
           children: [
             '/getting-started/user-guide/set-up-wallets',
             '/getting-started/user-guide/network-information',
@@ -37,7 +43,7 @@ module.exports = [
       children: [
         {
           title: 'Build on Xgon',
-          icon: 'xgon-build-on-xgon',
+          icon: 'okx-defi-okbc-resources',
           children: [
             '/developer/build-on-xgon/quickstart',
             '/developer/build-on-xgon/zkevm-contracts',
@@ -47,7 +53,7 @@ module.exports = [
         },
         {
           title: 'Smart Contract',
-          icon: 'xgon-smart-contract',
+          icon: 'okds-records',
           children: [
           '/developer/smart-contract/deploy-with-truffle',
           '/developer/smart-contract/deploy-with-hardhat',
@@ -57,7 +63,7 @@ module.exports = [
         },
         {
           title: 'Bridge',
-          icon: 'xgon-bridge',
+          icon: 'okx-defi-okc-bridge',
           children: [
             '/developer/bridge/overview',
             '/developer/bridge/asset-transfer',
@@ -72,14 +78,14 @@ module.exports = [
       children: [
         {
           title: 'Overview',
-          icon: 'xgon-overview',
+          icon: 'okds-option',
           children: [
             '/technology/overview/xgon-architecture',
           ],
         },
         {
           title: 'Xgon Protocol',
-          icon: 'xgon-protocol',
+          icon: 'okds-report-centre',
           children: [
             '/technology/xgon-protocol/state-management',
             {
