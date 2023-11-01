@@ -3,7 +3,7 @@
 The ZkEVM bridge contract allows ETH and ERC20 token bridging from L1 to L2 using the bridgeAsset function. Notice that ERC20 tokens will have a different address on L2. You can use the precalculatedWrapperAddress function to query the new address in ZkEVMBridgeContract.sol contract
 ### bridgeAsset
 Deposit and add a new leaf to the Merkle tree:
-```
+```solidity
   function bridgeAsset(
     uint32 destinationNetwork,
     address destinationAddress,
@@ -27,7 +27,7 @@ Deposit and add a new leaf to the Merkle tree:
 This returns the precalculated address of a wrapper using the token information.
 Note: Updating the metadata of a token is not supported.
 Since the metadata has relevance in the address deployed, this function will not return a valid wrapped address if the metadata provided is not the original one.
-```
+```solidity
 function precalculatedWrapperAddress(
     uint32 originNetwork,
     address originTokenAddress,
@@ -46,9 +46,10 @@ function precalculatedWrapperAddress(
 |`decimals`|uint8|Decimals of the token|
 
 ## Withdrawing OKB and ERC-20 tokens from L2
-You can use the `claimAsset` method to retrieve assets on L2. Calling this method on L2 incurs no Gas fees, so the official bridge service will be provided to automatically invoke the `claimAsset` method for you.
+You can use the `claimAsset` method to retrieve assets on L2. Calling this method on L2 incurs no Gas fees, so the official bridge service will be provided to automatically invoke the `claimAsset` method for you.\
+
 ### claimAsset
-```
+```solidity
  function claimAsset(
     bytes32[32] smtProof,
     uint32 index,
@@ -81,7 +82,7 @@ You can use the `claimAsset` method to retrieve assets on L2. Calling this metho
 ERC-20 is the technical standard for fungible tokens created using the Ethereum blockchain. A fungible token is interchangeable with another token — whereas the well-known non-fungible tokens (NFTs) are not interchangeable.
 You can read more information about ERC-20 [here](https://ethereum.org/en/developers/docs/standards/tokens/erc-20/ "here").
 Deploy a simple ERC-20 contract with any of the tools like [Truffle](/developer/smart-contract/deploy-with-truffle "Truffle"), [Hardhat](/developer/smart-contract/deploy-with-hardhat "Hardhat"), or [Foundry](/developer/smart-contract/deploy-with-foundry "Foundry"). This contract is implemented based on the open-source library, which can be found at [OpenZeppelin](https://www.openzeppelin.com/contracts# "OpenZeppelin").
-```
+```go
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 

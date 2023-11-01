@@ -12,7 +12,7 @@ Before you begin using RPC endpoints on Xgon, it's important to read the relevan
 
 ## Starting HTTP JSON-RPC
 To start the HTTP JSON-RPC, curl method is recommended:
-```
+```shell
 # mainnet
 curl -X POST --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' -H "Content-Type: application/json" https://xxxx.Xgonhain.org/
 # testnet
@@ -95,7 +95,7 @@ Returns the latest batch number
 - String - the hex representation of latest batch number
 
 **Example**
-```
+```shell
 // Request
 curl -X POST --data '{
     "jsonrpc": "2.0",
@@ -103,10 +103,16 @@ curl -X POST --data '{
     "params": [],
     "id": 1
 }' -H "Content-Type: application/json" http://127.0.0.1:8545
-
-// Response
-{"jsonrpc":"2.0","id":1,"result":"0x82"}
 ```
+```json
+// Response
+{
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": "0x82"
+}
+```
+
 ### zkevm_batchNumberByBlockNumber
 Returns the batch number of the batch connected to the block
 **Parameters**
@@ -117,7 +123,7 @@ Returns the batch number of the batch connected to the block
 - String - the hex representation of latest batch number
 
 **Example**
-```
+```shell
 // Request
 curl -X POST --data '{
     "jsonrpc": "2.0",
@@ -125,10 +131,12 @@ curl -X POST --data '{
     "params": ["0x2"],
     "id": 1
 }' -H "Content-Type: application/json" http://127.0.0.1:8545
-
+```
+```json
 // Response
 {"jsonrpc":"2.0","id":1,"result":"0x4"}
 ```
+
 ### zkevm_consolidatedBlockNumber
 Returns the latest block number that is connected to the latest batch verified
 **Parameters**
@@ -138,7 +146,7 @@ Returns the latest block number that is connected to the latest batch verified
 - String - the hex representation of latest block number
 
 **Example**
-```
+```shell
 // Request
 curl -X POST --data '{
     "jsonrpc": "2.0",
@@ -146,10 +154,12 @@ curl -X POST --data '{
     "params": [],
     "id": 1
 }' -H "Content-Type: application/json" http://127.0.0.1:8545
-
+```
+```json
 // Response
 {"jsonrpc":"2.0","id":1,"result":"0x84"}
 ```
+
 ### zkevm_getBatchByNumber
 Gets a batch for a given number
 **Parameters**
@@ -176,7 +186,7 @@ The optional batch height descriptions are:
 - transactions: array[String] - the transactions
 
 **Example**
-```
+```shell
 // Request
 curl -X POST --data '{
     "jsonrpc": "2.0",
@@ -184,10 +194,12 @@ curl -X POST --data '{
     "params": ["0x2"],
     "id": 1
 }' -H "Content-Type: application/json" http://127.0.0.1:8545
-
+```
+```json
 // Response
 {"jsonrpc":"2.0","id":1,"result":{"number":"0x2","coinbase":"0xcec3f45ca495d89a37ff680c087df91741aa9ef6","stateRoot":"0xe683502473ee45ab47f55ea254bb8637f5324250e758e391476b15388f818617","globalExitRoot":"0xe95ee03593d34c4ff03c2e5369cf6eaef4e3e19fc66ab1c93d512fcccbc33f41","mainnetExitRoot":"0x2c352238d75ce63aa81d466c6d17aa41bc12dce33c954a10d6752f6863e42511","rollupExitRoot":"0x0000000000000000000000000000000000000000000000000000000000000000","localExitRoot":"0x0000000000000000000000000000000000000000000000000000000000000000","accInputHash":"0xb36f9860fd62baa2ecbf52ed337a0e9686bce2441909c80f541b98c88601c84c","timestamp":"0x64f5d7a1","sendSequencesTxHash":"0x77f311f450e7d1075b4c5e51e2ac727c74082eed7494d5e7d74fa40f4ff6b071","verifyBatchTxHash":"0x519da5b4a2f6ce344f749e5e553588b61b661280a9d8dfd0cc6b03cab74cb0da","transactions":["0x5e33e1eb2064e3bad97b3734b2aa25882ecd88f9f91da81d1526dbbc90a531b8"]}}
 ```
+
 ### zkevm_isBlockConsolidated
 Returns 'true' if the provided block number is already connected to a batch that was already verified, otherwise false
 **Parameters**
@@ -195,7 +207,7 @@ Returns 'true' if the provided block number is already connected to a batch that
 - Boolean - if `true` it returns the full transaction objects, if `false`, only the hashes of the transactions; defaults to `false`
 
 **Example**
-```
+```shell
 // Request
 curl -X POST --data '{
     "jsonrpc": "2.0",
@@ -203,10 +215,12 @@ curl -X POST --data '{
     "params": ["0x1"],
     "id": 1
 }' -H "Content-Type: application/json" http://127.0.0.1:8545
-
+```
+```json
 // Response
 {"jsonrpc":"2.0","id":1,"result":true}
 ```
+
 ### zkevm_isBlockVirtualized
 Returns 'true' if the provided block number is already connected to a batch that was already virtualized, otherwise 'false'
 **Parameters**
@@ -217,7 +231,7 @@ Returns 'true' if the provided block number is already connected to a batch that
 - Boolean - result of virtualized
 
 **Example**
-```
+```shell
 // Request
 curl -X POST --data '{
     "jsonrpc": "2.0",
@@ -225,10 +239,12 @@ curl -X POST --data '{
     "params": [],
     "id": 1
 }' -H "Content-Type: application/json" http://127.0.0.1:8545
-
+```
+```json
 // Response
 {"jsonrpc":"2.0","id":1,"result":true}
 ```
+
 ### zkevm_verifiedBatchNumber
 Returns the latest verified batch number
 **Parameters**
@@ -238,7 +254,7 @@ Returns the latest verified batch number
 - Boolean - the latest verified batch number
 
 **Example**
-```
+```shell
 // Request
 curl -X POST --data '{
     "jsonrpc": "2.0",
@@ -246,10 +262,12 @@ curl -X POST --data '{
     "params": [],
     "id": 1
 }' -H "Content-Type: application/json" http://127.0.0.1:8545
-
+```
+```json
 // Response
 {"jsonrpc":"2.0","id":1,"result":"0x81"}
 ```
+
 ### zkevm_virtualBatchNumber
 Returns the latest virtual batch number
 **Parameters**
@@ -259,7 +277,7 @@ Returns the latest virtual batch number
 - Boolean - the latest virtual batch number
 
 **Example**
-```
+```shell
 // Request
 curl -X POST --data '{
     "jsonrpc": "2.0",
@@ -267,7 +285,8 @@ curl -X POST --data '{
     "params": [],
     "id": 1
 }' -H "Content-Type: application/json" http://127.0.0.1:8545
-
+```
+```json
 // Response
 {"jsonrpc":"2.0","id":1,"result":"0x81"}
 ```

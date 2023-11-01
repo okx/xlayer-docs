@@ -10,7 +10,7 @@ There are a few technical requirements before we start. Please install the follo
 **Recommendations for Windows users**:
 If you're running Truffle on Windows, you may encounter some naming conflicts that could prevent Truffle from executing properly. Please see the section on resolving naming conflicts for solutions.
 Once we have those installed, we only need one command to install Truffle:
-```
+```shell
 npm install -g truffle
 ```
 To verify that Truffle is installed properly, type `truffle version` on a terminal. If you see an error, make sure that your npm modules are added to your path.
@@ -18,12 +18,12 @@ To verify that Truffle is installed properly, type `truffle version` on a termin
 ## Creating a project
 The first step is to create a Truffle project. We'll use **MegaCoin** as an example, which allows you to create a token that can be transferred between accounts:
 - Create a new directory for your Truffle project:
-```
+```shell
 mkdir MegaCoin
 cd MegaCoin
 ```
 - Intialize your project:
-```
+```shell
 truffle init
 ```
 Once this operation is completed, you'll now have a project structure with the following items:
@@ -31,18 +31,21 @@ Once this operation is completed, you'll now have a project structure with the f
 - `migrations/`: Directory for scriptable deployment files
 - `test/`: Directory for test files for testing your application and contracts
 - `truffle-config.js`: Truffle configuration file
+
 ## Creating a contract
 You can write your own smart contract or download the [ERC20 token smart contract template](https://docs.openzeppelin.com/contracts/4.x/erc20 "ERC20 token smart contract template").
+
 ## Compiling a contract
 To compile a Truffle project, change to the root of the directory where the project is located and then type the following into a terminal:
-```
+```shell
 truffle compile
 ```
+
 ### Config Truffle for Xgon
 - Go to truffle-config.js
 - Update the truffle-config with Xgon-network-crendentials
 
-```
+```javascript
 const HDWalletProvider = require('truffle-hdwallet-provider');
 const fs = require('fs');
 const mnemonic = fs.readFileSync(".secret").toString().trim();
@@ -81,11 +84,11 @@ Create a new `.secret` file in the root directory and enter your 12 word mnemoni
 
 ## Deploying your contract
 Run this command in the root of the project directory:
-```
+```shell
 $ truffle migrate --network testnet
 ```
 The contract will be deployed on Xgon Chapel Testnet. It looks like this:
-```
+```shell
 1_initial_migration.js
 ======================
 
