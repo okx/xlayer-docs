@@ -1,7 +1,7 @@
 # Transaction batching
 ## Rollup or Validium Mode
 The trusted sequencer must batch the transactions using the following `BatchData` struct specified in the `ZkEVM.sol` contract:
-```
+```solidity
 struct BatchData {
         bytes transactions;
         bytes32 transactionsHash;
@@ -11,7 +11,7 @@ struct BatchData {
 }
 ```
 The trusted sequencer can choose [Rollup or Validium](https://ethereum.org/en/developers/docs/data-availability/ "Rollup or Validium") mode when invoking the `sequenceBatches` method.
-```
+```solidity
 function sequenceBatches(
         BatchData[] calldata batches,
         address l2Coinbase,

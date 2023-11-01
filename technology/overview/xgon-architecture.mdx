@@ -26,12 +26,12 @@ The verifier smart contract assesses the validity of the proof. If it is found t
 ![zkValidium vs. zkRollup](./img/zkvalidium-vs-zkrollup.png)
 
 ## Consensus contract
-`ZkEVVM.sol` is the underlying protocol that guarantees the correctness of state changes through the use of validity proof. To confirm that specific predefined rules have been adhered to for permitting state transitions, the Consensus contract (`ZkEVM.sol`, deployed on Ethereum layer 1) comes into play.
+`ZkEVM.sol` is the underlying protocol that guarantees the correctness of state changes through the use of validity proof. To confirm that specific predefined rules have been adhered to for permitting state transitions, the Consensus contract (`ZkEVM.sol`, deployed on Ethereum layer 1) comes into play.
 
 `ZkEVM.sol` is responsible for verifying validity proofs to confirm that each transition has been executed correctly, utilizing zk-SNARK circuits for verification. To make this system work, two key processes are involved: **transaction batching** and **transaction validation**.
 To perform these procedures, Xgon involves two types of participants: **sequencers** and **aggregators**.
 
-**Sequencer**: it is responsible for proposing transaction batches to the network, essentially grouping transaction requests and adding them to the `ZkEVVM.sol`.
+**Sequencer**: it is responsible for proposing transaction batches to the network, essentially grouping transaction requests and adding them to the `ZkEVM.sol`.
 
 **Aggregator**: it is responsible for reviewing the transaction batches' validity and providing the necessary proofs of validity. Any permissionless aggregator can submit these proofs to demonstrate the accuracy of the state transition computation.
 

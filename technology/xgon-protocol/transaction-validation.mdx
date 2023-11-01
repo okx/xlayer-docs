@@ -26,7 +26,7 @@ The `snarkHashBytes` array is computed through a smart contract function known a
 The `trustedVerifyBatches` function not only verifies the validity of the zero-knowledge proof but also validates that the value of `inputSnark` corresponds to a pending L2 state transition scheduled for aggregation.
 If the internal call to `_verifyAndRewardBatches` returns `true`, it signifies the successful verification of the sequence of batches. Consequently, the `newStateRoot` argument is added to the `batchNumToStateRoot` mapping. The index of the last batch within the sequence is employed as the key for the entry.
 Finally, an event named `TrustedVerifyBatches` is emitted:
-```
+```solidity
 event TrustedVerifyBatches (
   uint64 indexed numBatch,
   bytes32 stateRoot,

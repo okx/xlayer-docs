@@ -1,11 +1,11 @@
 # Batch sequencing
 Once we have batches of transactions, they are ready to be sequenced. The sequencer will call the L1 `ZkEVM.sol` contract's `sequencedBatches` function and provide it with multiple batches of transactions. It is basically a storage structure that holds the queue of sequences defining the virtual state.
-```javascript
+```solidity
 // SequenceBatchNum --> SequencedBatchData
 mapping(uint64 => SequencedBatchData) public sequencedBatches;
 ```
 In order to get sequenced, batches need to be included in the array of batches. To do this, the trusted sequencer invokes `ZkEVM.sol` contract's `sequencedBatches` and takes an array of batches as an argument. Please see the code snippet below:
-```
+```solidity
 function sequenceBatches ( 
     BatchData[] memory batches
 ) public ifNotEmergencyState onlyTrustedSequencer
@@ -34,7 +34,7 @@ A storage variable named `lastBatchSequenced` is used to count and assign specif
 
 To ensure the integrity of the batch chain, a similar hashing mechanism is employed as seen in blockchains, linking each batch to the one that follows. This includes the previous batch's digest in the calculation of the next batch's digest. Consequently, a batch's digest is essentially an accumulated hash of all the previously sequenced batches, referred to as `oldAccInputHash` for the previous and `newAccInputHash` for the current one.
 An accumulated hash of a specific batch has the following structure:
-```
+```solidity
 keccak256 ( 
     abi.encodePacked (
         bytes32 oldAccInputHash, 
@@ -59,7 +59,7 @@ As shown in the diagram above, each accumulated input hash ensures the integrity
 <Tip title="Note">Any change in the batch chain that causes all future accumulated input hashes to be incorrect, would indicate a lack of integrity in the resulting L2 state.</Tip>
 
 The batch sequence is added to the `sequencedBatches` mapping using the following `SequencedBatchData` struct only after the validity of all batches in a sequence has been verified and the accumulated hash of each batch has been computed.
-```
+```solidity
 struct SequencedBatchData {
     bytes32 accInputHash;
     uint64 sequencedTimestamp;
@@ -84,7 +84,7 @@ These entries also include the accumulated hash of the last batch in the current
 Batch indices provide additional information about the number of batches in the sequence and their positions. The timestamp marks when the sequence occurred.
 The Data Availability of L2 transactions is ensured because the data for each batch can be reconstructed from the calldata of the sequencing transaction, which is not part of the contract storage but is recorded in the L1 state.
 Finally, a `SequenceBatches` event will be emitted:
-```
+```solidity
 event SequenceBatches (uint64 indexed numBatch)
 ```
 Once batches are successfully sequenced on L1, all zkEVM nodes can sync their local L2 state directly from the L1 `ZkEVM.sol` contract, reducing reliance on the trusted sequencer and reaching the L2 virtual state.

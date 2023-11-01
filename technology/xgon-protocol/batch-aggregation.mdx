@@ -14,7 +14,7 @@ As depicted in the above diagram, the off-chain execution of batches implies a t
 
 ## Aggregating batches
 Once the aggregator node possesses the proof, it invokes the `ZkEVM.sol` smart contract's `trustedVerifyBatches` function and provides the received proof. Here's the function's source code:
-```
+```solidity
 function trustedVerifyBatches (
   uint64 pendingStateNum,
   uint64 initNumBatch,
@@ -48,7 +48,7 @@ The executor and the prover are tools used by the aggregator to execute batches 
 3. Generate a zk-proof of computational integrity for execution.
 
 The following code demonstrates how to verify the zk-proof on L1:
-```
+```solidity
 // Get snark bytes
 bytes memory snarkHashBytes = getInputSnarkBytes (
   initNumBatch,
