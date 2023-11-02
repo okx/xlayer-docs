@@ -88,6 +88,7 @@ You can use the following RPC methods to execute specific zkEVM functionalities:
 
 ### zkevm_batchNumber
 Returns the latest batch number
+
 **Parameters**
 - None
 
@@ -115,6 +116,7 @@ curl -X POST --data '{
 
 ### zkevm_batchNumberByBlockNumber
 Returns the batch number of the batch connected to the block
+
 **Parameters**
 - An array of strings
 - String - the hex representation of the block's height
@@ -139,6 +141,7 @@ curl -X POST --data '{
 
 ### zkevm_consolidatedBlockNumber
 Returns the latest block number that is connected to the latest batch verified
+
 **Parameters**
 - None
 
@@ -162,6 +165,7 @@ curl -X POST --data '{
 
 ### zkevm_getBatchByNumber
 Gets a batch for a given number
+
 **Parameters**
 - An array of strings
 - String - the batch number (in hex) or batch tag
@@ -202,6 +206,7 @@ curl -X POST --data '{
 
 ### zkevm_isBlockConsolidated
 Returns 'true' if the provided block number is already connected to a batch that was already verified, otherwise false
+
 **Parameters**
 - String - hash of block
 - Boolean - if `true` it returns the full transaction objects, if `false`, only the hashes of the transactions; defaults to `false`
@@ -223,6 +228,7 @@ curl -X POST --data '{
 
 ### zkevm_isBlockVirtualized
 Returns 'true' if the provided block number is already connected to a batch that was already virtualized, otherwise 'false'
+
 **Parameters**
 - An array of strings
 - String - the hex representation of the block's height
@@ -247,6 +253,7 @@ curl -X POST --data '{
 
 ### zkevm_verifiedBatchNumber
 Returns the latest verified batch number
+
 **Parameters**
 - None
 
@@ -270,6 +277,7 @@ curl -X POST --data '{
 
 ### zkevm_virtualBatchNumber
 Returns the latest virtual batch number
+
 **Parameters**
 - None
 
