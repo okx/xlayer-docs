@@ -38,7 +38,7 @@ module.exports = [
       ],
     },
     {
-      title: 'Developer',
+      title: 'Developers',
       basePath: ['/developer'],
       children: [
         {
