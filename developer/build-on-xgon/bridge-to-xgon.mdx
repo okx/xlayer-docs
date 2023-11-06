@@ -1,6 +1,7 @@
 # Bridge to Xgon
 ## Deposit OKB and ERC20 tokens from L1
-The ZkEVM bridge contract allows ETH and ERC20 token bridging from L1 to L2 using the bridgeAsset function. Notice that ERC20 tokens will have a different address on L2. You can use the precalculatedWrapperAddress function to query the new address in ZkEVMBridgeContract.sol contract
+The ZkEVM bridge contract allows ETH and ERC20 token bridging from L1 to L2 using the bridgeAsset function. Notice that ERC20 tokens will have a different address on L2. You can use the precalculatedWrapperAddress function to query the new address in `[ZkEVMBridgeContract.sol](https://github.com/okx/Xgon-contracts/blob/release/v0.1.0/contracts/PolygonZkEVMBridge.sol "ZkEVMBridgeContract.sol")` contract
+
 ### bridgeAsset
 Deposit and add a new leaf to the Merkle tree:
 ```solidity
@@ -96,7 +97,5 @@ contract MyToken is ERC20 {
 ## Depositing OKB and ERC-20 tokens from L2
 The same bridge contract is used on both L1 and L2, so the interface definition is identical.
 
-## Depositing OKB and ERC-20 tokens from L2
-The same bridge contract is used on both L1 and L2, so the interface definition is identical.
 
 <Tip title="Note">Claiming assets on Ethereum will consume gas fees and is not free.</Tip>
