@@ -14,13 +14,19 @@ The figure below shows how a sequence of batches is organized:
 
 ![Sequence of Batches](./img/sequence-of-batches.png)
 
-## Max & min batch size bounds
-With the [rollup](https://ethereum.org/en/developers/docs/data-availability/ "rollup") mode, the contract has the following two public constants:
+## Contract constraints
+With the [validium](https://ethereum.org/en/developers/docs/data-availability/ "validium") mode, the contract has the following limits:
+- `signaturesAndAddrs` byte array containing the signatures and all the addresses of the committee in ascending order * [signature 0, ..., signature requiredAmountOfSignatures -1, address 0, ... address N]
+- `transactionsHash` is the hash of transactions data, while the `transactions` will be set nil.
+
+With the [rollup](https://ethereum.org/en/developers/docs/data-availability/ "rollup") mode,  the contract has the following two public constants:
+
 - **Max transactions byte length**: determines the maximum number of transactions that can be included in a batch (300,000)
 - **Max verify batches**: limits a sequence to a maximum of 1,000 batches, and the batch array must contain at least one batch
+
 Only the trusted sequencer's Ethereum account can access the `sequencedBatches` mapping. It is also necessary that the contract not be in an emergency state.
 
-**The function call will be reverted if the above conditions are not met**.
+**The function call will be reverted if the above conditions are not met.**
 
 ## Batch validity & L2 state integrity
 The `sequencedBatches` function iterates over every batch of the sequence, checking its validity. A valid batch must meet the following criteria:

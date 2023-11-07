@@ -1,6 +1,21 @@
 # Bridge to Xgon
+You can use [ZkEVM Bridge Contract](https://github.com/okx/Xgon-contracts/blob/release/v0.1.0/contracts/PolygonZkEVMBridge.sol "ZkEVM Bridge Contract") to bridge assets like ETH, OKB, and ERC20 tokens between L1 and L2. However, there are a few points to note:：
+- ETH is the native token of L1 (Ethereum). After bridging to L2 Xgon, it becomes a Wrapped ETH (WETH) ERC20 token.
+- OKB is an ERC20 token of L1 (Ethereum). After bridging to L2 Xgon, it becomes a native token.
+- Other ERC20 tokens, which are bridged to the other side, remain ERC20 tokens. You can calculate the new ERC20 address by using the `precalculatedWrapperAddress` method.
+- There are no restrictions if you are bridging ERC20 tokens from L1 to L2. However, there is a whitelist restriction when bridging assets from L2 to L1. 
+
+<Tip title="Note">If you want to request L2 to L1 token whitelisting, you can join our [Xgon Discord server](https://discord.gg/xgon "Xgon Discord server"), and navigate to `#request-bridge-whitelist` to raise whitelising request.</Tip>
+
+The mapping list for OKB and ETH is as follows:
+|ERC20 Token|Testnet|Mainnet|
+|:----|:----|:----|
+|OKB|0xxx (L1 Ethereum Sepolia)|[0x75231f58b43240c9718dd<br></br>58b4967c5114342a86c](https://etherscan.io/address/0x75231f58b43240c9718dd58b4967c5114342a86c "0x75231f58b43240c9718dd58b4967c5114342a86c") (L1 Ethereum)|
+|WETH|0xxx (L2 Xgon testnet)|Will be available after mainnet launch (L2 Xgon mainnet)|
+
 ## Deposit OKB and ERC20 tokens from L1
-The ZkEVM bridge contract allows ETH and ERC20 token bridging from L1 to L2 using the bridgeAsset function. Notice that ERC20 tokens will have a different address on L2. You can use the precalculatedWrapperAddress function to query the new address in ZkEVMBridgeContract.sol contract
+The ZkEVM bridge contract allows ETH and ERC20 token bridging from L1 to L2 using the bridgeAsset function. Notice that ERC20 tokens will have a different address on L2. You can use the precalculatedWrapperAddress function to query the new address in `[ZkEVMBridgeContract.sol](https://github.com/okx/Xgon-contracts/blob/release/v0.1.0/contracts/PolygonZkEVMBridge.sol "ZkEVMBridgeContract.sol")` contract
+
 ### bridgeAsset
 Deposit and add a new leaf to the Merkle tree:
 ```solidity
@@ -96,7 +111,5 @@ contract MyToken is ERC20 {
 ## Depositing OKB and ERC-20 tokens from L2
 The same bridge contract is used on both L1 and L2, so the interface definition is identical.
 
-## Depositing OKB and ERC-20 tokens from L2
-The same bridge contract is used on both L1 and L2, so the interface definition is identical.
 
 <Tip title="Note">Claiming assets on Ethereum will consume gas fees and is not free.</Tip>
