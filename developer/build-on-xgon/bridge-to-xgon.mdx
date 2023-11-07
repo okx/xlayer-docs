@@ -1,5 +1,5 @@
 # Bridge to XGON
-You can use [ZkEVM Bridge Contract](https://github.com/okx/Xgon-contracts/blob/release/v0.1.0/contracts/PolygonZkEVMBridge.sol "ZkEVM Bridge Contract") to bridge assets like ETH, OKB, and ERC20 tokens between L1 and L2. However, there are a few points to note:：
+You can use [ZkEVM Bridge Contract](https://github.com/okx/xgon-contracts/blob/release/v0.1.0/contracts/PolygonZkEVMBridge.sol "ZkEVM Bridge Contract") to bridge assets like ETH, OKB, and ERC20 tokens between L1 and L2. However, there are a few points to note:：
 - ETH is the native token of L1 (Ethereum). After bridging to L2 XGON, it becomes a Wrapped ETH (WETH) ERC20 token.
 - OKB is an ERC20 token of L1 (Ethereum). After bridging to L2 XGON, it becomes a native token.
 - Other ERC20 tokens, which are bridged to the other side, remain ERC20 tokens. You can calculate the new ERC20 address by using the `precalculatedWrapperAddress` method.
@@ -14,7 +14,7 @@ The mapping list for OKB and ETH is as follows:
 |WETH|0xxx (L2 XGON testnet)|Will be available after mainnet launch (L2 XGON mainnet)|
 
 ## Deposit OKB and ERC20 tokens from L1
-The ZkEVM bridge contract allows ETH and ERC20 token bridging from L1 to L2 using the bridgeAsset function. Notice that ERC20 tokens will have a different address on L2. You can use the precalculatedWrapperAddress function to query the new address in `[ZkEVMBridgeContract.sol](https://github.com/okx/Xgon-contracts/blob/release/v0.1.0/contracts/PolygonZkEVMBridge.sol "ZkEVMBridgeContract.sol")` contract
+The ZkEVM bridge contract allows ETH and ERC20 token bridging from L1 to L2 using the bridgeAsset function. Notice that ERC20 tokens will have a different address on L2. You can use the precalculatedWrapperAddress function to query the new address in `[ZkEVMBridgeContract.sol](https://github.com/okx/xgon-contracts/blob/release/v0.1.0/contracts/PolygonZkEVMBridge.sol "ZkEVMBridgeContract.sol")` contract
 
 ### bridgeAsset
 Deposit and add a new leaf to the Merkle tree:

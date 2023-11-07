@@ -11,7 +11,7 @@ Asset transferring is enabled by three smart contracts:
 - The consensus contract (`ZkEVM.sol`)
 
 Please refer to the previous document for more detailed information: 
-<Card mainTitle="Xgon bridege smart contracts" subTitle='Smart contracts for asset transfer' link="./asset-transfer"/>
+<Card mainTitle="XGON bridege smart contracts" subTitle='Smart contracts for asset transfer' link="./asset-transfer"/>
 
 ## Flow of assets in XGON bridge
 ### Asset flow from L1 → L2
@@ -34,4 +34,4 @@ Please refer to the previous document for more detailed information:
 7. The bridge smart contract retrieves the global exit root from the L1 Global Exit Root Manager smart contract and verifies validity of the Merkle proof. If the Merkle proof is valid, the bridge smart contract successfully completes the bridging process. Otherwise, the transaction is reverted.
 
 <Tip title="Note">The architecture shown in the diagram below is simplified, emphasizing the connection between different bridge elements. 
-It doesn't include the interaction between the consensus contract and the sequencer, which is discussed in more detail in earlier subsections of this documentation, particularly in the [consensus contract](https://github.com/okx/Xgon-contracts/blob/release/v0.1.0/contracts/PolygonZkEVM.sol "consensus contract") section.</Tip>
+It doesn't include the interaction between the consensus contract and the sequencer, which is discussed in more detail in earlier subsections of this documentation, particularly in the [consensus contract](https://github.com/okx/xgon-contracts/blob/release/v0.1.0/contracts/PolygonZkEVM.sol "consensus contract") section.</Tip>
