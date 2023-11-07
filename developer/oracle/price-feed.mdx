@@ -4,11 +4,9 @@ Xgon Oracle price feeds is the quickest way to connect your smart contracts to t
 For example, one use case for data feeds is to enable smart contracts to retrieve the latest pricing data for a crypto asset in a single call.
 
 ## Price feeds API reference
-
 Import this interface to your contract and use it to run functions in the proxy contract. Create the interface object by pointing to the proxy address.
 
 For example, on Xgon testnet you could create the interface object in the constructor of your contract using the following example:
-
 
 ```
 /**
@@ -23,7 +21,7 @@ For example, on Xgon testnet you could create the interface object in the constr
 ### latestRoundData
 Get the latest round data (the most recent data for a given price type and data source):
 
-```
+```solidity
 function latestRoundData(string calldata priceType, address source) external view returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound);
 ```
 
@@ -40,7 +38,7 @@ function latestRoundData(string calldata priceType, address source) external vie
 
 ### get
 Read a single key from an authenticated source:
-```
+```solidity
 function get(string calldata priceType, address source) external view returns (uint256 price, uint256 timestamp);
 ```
 
@@ -55,7 +53,7 @@ function get(string calldata priceType, address source) external view returns (u
 
 ### getOffchain
 Get the price data off-chain:
-```
+```solidity
 function getOffchain(string calldata priceType, address source) external view returns (uint256 price, uint256 timestamp);
 ```
 
@@ -70,7 +68,7 @@ function getOffchain(string calldata priceType, address source) external view re
 ### getCumulativePrice
 
 Read a cumulative price from an authenticated source:
-```
+```solidity
 function getCumulativePrice(string calldata priceType, address source) external view returns (uint256 cumulativePrice,uint32 timestamp);
 ```
 
@@ -85,7 +83,7 @@ function getCumulativePrice(string calldata priceType, address source) external 
 
 ### lastResponseTime
 The timestamp of the last data source response:
-```
+```solidity
 function lastResponseTime(address source) external view returns (uint256);
 ```
 
@@ -96,7 +94,7 @@ function lastResponseTime(address source) external view returns (uint256);
 - `timestamp`: timestamp of last updated
 
 ## Code Example
-```
+```solidity
 pragma solidity ^0.5.17;
 pragma experimental ABIEncoderV2;
 
