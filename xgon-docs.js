@@ -74,17 +74,7 @@ module.exports = [
           title: 'Oracle',
           icon: 'okx-defi-build-oracle',
           children: [
-            '/developer/oracle/price-feed',
-            {
-              title: 'VRF',
-              path: '/developer/oracle/vrf',
-              children: [
-                  '/developer/oracle/subscription-method',
-                  '/developer/oracle/direct-funding-method',
-                  '/developer/oracle/security-considerations',
-                  '/developer/oracle/best-practices',
-              ],
-          },   
+            '/developer/oracle/price-feed', 
           ],
         },
       ],
