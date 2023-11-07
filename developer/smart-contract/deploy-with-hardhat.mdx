@@ -1,5 +1,5 @@
 # Deploying with Hardhat
-In this tutorial, we explain step-by-step how to create, compile and deploy a simple smart contract on the Xgon testnet using Hardhat.
+In this tutorial, we explain step-by-step how to create, compile and deploy a simple smart contract on the XGON testnet using Hardhat.
 
 ## What is Hardhat
 Hardhat is a development environment to compile, deploy, test, and debug your smart contract.
@@ -75,7 +75,7 @@ contract Lock {
 To compile it, simply run `npx hardhat compile`
 
 ## Setting configuration file
-In order to connect to the Xgon network, we need to configure the corresponding network.
+In order to connect to the XGON network, we need to configure the corresponding network.
 To set up your config, you have to export an object from `hardhat.config.js`:
 ```
 module.exports = {
@@ -83,7 +83,7 @@ module.exports = {
   networks: {
     hardhat: {
     },
-    Xgon: {
+    XGON: {
       url: "https://xxxx-todo.okx.com",
       accounts: [privateKey1, privateKey2, ...]
     }
@@ -128,6 +128,6 @@ main().catch((error) => {
 ```
 Now, you can run it using `npx hardhat run`:
 ```
-$ npx hardhat run scripts/deploy.js --network Xgon
+$ npx hardhat run scripts/deploy.js --network XGON
 Lock with 1 ETH deployed to: 0x5FbDB2315678afecb367f032d93F642f64180aa3
 ```

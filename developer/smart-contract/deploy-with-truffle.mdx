@@ -1,5 +1,5 @@
 # Deploying with Truffle
-In this tutorial, we explain step-by-step how to create, compile and deploy a simple smart contract on the Xgon testnet using Truffle.
+In this tutorial, we explain step-by-step how to create, compile and deploy a simple smart contract on the XGON testnet using Truffle.
 ## What is Truffle?
 Truffle is the most popular development tooling for Ethereum programmers.
 ## Setting up the development environment
@@ -41,9 +41,9 @@ To compile a Truffle project, change to the root of the directory where the proj
 truffle compile
 ```
 
-### Config Truffle for Xgon
+### Config Truffle for XGON
 - Go to truffle-config.js
-- Update the truffle-config with Xgon-network-crendentials
+- Update the truffle-config with XGON-network-crendentials
 
 ```javascript
 const HDWalletProvider = require('truffle-hdwallet-provider');
@@ -54,7 +54,7 @@ module.exports = {
   networks: {
     development: {
       host: "127.0.0.1",     // Localhost (default: none)
-      port: 8545,            // Standard Xgon port (default: none)
+      port: 8545,            // Standard XGON port (default: none)
       network_id: "*",       // Any network (default: none)
     },
     testnet: {
@@ -87,7 +87,7 @@ Run this command in the root of the project directory:
 ```shell
 $ truffle migrate --network testnet
 ```
-The contract will be deployed on Xgon Chapel Testnet. It looks like this:
+The contract will be deployed on XGON Chapel Testnet. It looks like this:
 ```shell
 1_initial_migration.js
 ======================

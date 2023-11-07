@@ -2,7 +2,7 @@
  * @Author: KW369 karen wong
  * @Date: 2023-10-16 14:20:40
  * @LastEditTime: 2023-03-23 12:40:21
- * @Description:Xgon doc structure
+ * @Description:XGON doc structure
  */
 
 module.exports = [
@@ -42,7 +42,7 @@ module.exports = [
       basePath: ['/developer'],
       children: [
         {
-          title: 'Build on Xgon',
+          title: 'Build on XGON',
           icon: 'okx-defi-okbc-resources',
           children: [
             '/developer/build-on-xgon/quickstart',
@@ -91,7 +91,7 @@ module.exports = [
           ],
         },
         {
-          title: 'Xgon Protocol',
+          title: 'XGON Protocol',
           icon: 'okds-report-centre',
           children: [
             '/technology/xgon-protocol/state-management',
