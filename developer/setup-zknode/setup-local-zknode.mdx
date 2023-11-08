@@ -2,16 +2,14 @@
 It's crucial that developers can thoroughly test the network for a developing blockchain technology like XGON zkEVM without putting users or themselves at unnecessary risk. Developers should be able to test their smart contracts, experiment with new code, and play around with the network on their local machines.
 XGON zkEVM has a local development environment setup for this reason. This tutorial will help you create a local single-node zkEVM blockchain with no connections to external peers. It only exists on your local machine.
 
-<Tip title="CAUTION">Currently the zkProver does not run on ARM-powered Macs. For Windows users, using WSL/WSL2 is not recommended.
-
-Unfortunately, Apple M1 chips are not supported for now - since some optimizations on the zkProver require specific Intel instructions. This means some non-M1 computers won't work regardless of the OS, for example: AMD.</Tip>
+<Tip title="CAUTION">Currently the zkProver does not run on ARM-powered Macs. For Windows users, using WSL/WSL2 is not recommended. Unfortunately, Apple M1 chips are not supported for now - since some optimizations on the zkProver require specific Intel instructions. This means some non-M1 computers won't work regardless of the OS, for example: AMD.</Tip>
 
 After completing this tutorial, you will have the following components running:
-- zkEVM Node Databases
-- Explorer Databases
-- L1 Network
+- zkEVM node databases
+- Explorer databases
+- L1 network
 - Prover
-- zkEVM Node components
+- zkEVM node components
 - Explorers
 
 ## Prerequisites
@@ -22,7 +20,7 @@ The tutorial for current version of the environment requires `Foundryup`, `go`, 
 - https://docs.docker.com/compose/install/
 
 ### System Requirements
-- zkEVM Node: 16GB RAM with 4-core CPU
+- zkEVM node: 16GB RAM with 4-core CPU
 - Mock zkProver (Default): 16GB RAM with 4-core CPU
 - Full zkProver: 1TB RAM with 128-core CPU
 
