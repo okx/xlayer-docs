@@ -10,8 +10,8 @@ You can use [ZkEVM Bridge Contract](https://github.com/okx/xgon-contracts/blob/r
 The mapping list for OKB and ETH is as follows:
 |ERC20 Token|Testnet|Mainnet|
 |:----|:----|:----|
-|OKB|0xxx (L1 Ethereum Sepolia)|[0x75231f58b43240c9718dd58b4967c5114342a86c](https://etherscan.io/address/0x75231f58b43240c9718dd58b4967c5114342a86c "0x75231f58b43240c9718dd58b4967c5114342a86c") (L1 Ethereum)|
-|WETH|0xxx (L2 XGON testnet)|Will be available after mainnet launch (L2 XGON mainnet)|
+|OKB|[0x3F4B6664338F23d2397c953f2AB4Ce8031663f80](https://sepolia.etherscan.io/address/0x3F4B6664338F23d2397c953f2AB4Ce8031663f80 "0x3F4B6664338F23d2397c953f2AB4Ce8031663f80") (L1 Ethereum Sepolia)|[0x75231f58b43240c9718dd58b4967c5114342a86c](https://etherscan.io/address/0x75231f58b43240c9718dd58b4967c5114342a86c "0x75231f58b43240c9718dd58b4967c5114342a86c") (L1 Ethereum)|
+|WETH|0xBec7859BC3d0603BeC454F7194173E36BF2Aa5C8 (L2 XGON testnet)|Will be available after mainnet launch (L2 XGON mainnet)|
 
 ## Deposit OKB and ERC20 tokens from L1
 The ZkEVM bridge contract allows ETH and ERC20 token bridging from L1 to L2 using the bridgeAsset function. Notice that ERC20 tokens will have a different address on L2. You can use the precalculatedWrapperAddress function to query the new address in `[ZkEVMBridgeContract.sol](https://github.com/okx/xgon-contracts/blob/release/v0.1.0/contracts/PolygonZkEVMBridge.sol "ZkEVMBridgeContract.sol")` contract
