@@ -93,7 +93,7 @@ function lastResponseTime(address source) external view returns (uint256);
 **Returns**
 - `timestamp`: timestamp of last updated
 
-## Code Example
+## Code example
 ```solidity
 pragma solidity ^0.5.17;
 pragma experimental ABIEncoderV2;
@@ -146,7 +146,7 @@ contract Demo {
 | Oracle price feeds | 待补充 |
 | dataSource | 待补充 |
 
-# Available feeds & refresh frequency
+## Available feeds & refresh frequency
 We collect data from trusted data sources (OKX, Coinbase, Kraken, CoinGecko, CoinMarketCap, CryptoCompare, etc.) and publish it to our on-chain Oracle smart contracts through a robust pipeline.
 
 To ensure accurate data is fed to the smart contracts in a timely manner, OKTC Oracle will feed the price to the smart contracts in regards to two parameters: `deviation threshold` and `heartbeat threshold`:

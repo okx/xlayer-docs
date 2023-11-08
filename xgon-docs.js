@@ -77,6 +77,14 @@ module.exports = [
             '/developer/oracle/price-feed', 
           ],
         },
+        {
+          title: 'Setup zkNode',
+          icon: 'okx-defi-okbc-resources',
+          children: [
+            '/developer/setup-zknode/setup-local-zknode',
+            '/developer/setup-zknode/setup-production-zknode', 
+          ],
+        },
       ],
     },
     {
