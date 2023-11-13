@@ -1,6 +1,6 @@
 # Setup local zkNode
-It's crucial that developers can thoroughly test the network for a developing blockchain technology like XGON zkEVM without putting users or themselves at unnecessary risk. Developers should be able to test their smart contracts, experiment with new code, and play around with the network on their local machines.
-XGON zkEVM has a local development environment setup for this reason. This tutorial will help you create a local single-node zkEVM blockchain with no connections to external peers. It only exists on your local machine.
+It's crucial that developers can thoroughly test the network for a developing blockchain technology like X1 zkEVM without putting users or themselves at unnecessary risk. Developers should be able to test their smart contracts, experiment with new code, and play around with the network on their local machines.
+X1 zkEVM has a local development environment setup for this reason. This tutorial will help you create a local single-node zkEVM blockchain with no connections to external peers. It only exists on your local machine.
 
 <Tip title="CAUTION">Currently the zkProver does not run on ARM-powered Macs. For Windows users, using WSL/WSL2 is not recommended. Unfortunately, Apple M1 chips are not supported for now - since some optimizations on the zkProver require specific Intel instructions. This means some non-M1 computers won't work regardless of the OS, for example: AMD.</Tip>
 
@@ -27,19 +27,19 @@ The tutorial for current version of the environment requires `Foundryup`, `go`, 
 If you want to run a full-fledged zkProver on your own, you'll need at least 1TB of RAM. If you are unable to meet the Prover requirements, you can still run the zkNode.
 
 ## Setup zkNode
-Before starting the zkEVM node setup, we need to clone the [official zkNode repository](https://github.com/okx/xgon-node "official zkNode repository") from xgon-node Github.
+Before starting the zkEVM node setup, we need to clone the [official zkNode repository](https://github.com/okx/x1-node "official zkNode repository") from X1-node Github.
 
 ```bash
-git clone -b release/v0.1.0 https://github.com/okx/xgon-node.git
-cd xgon-node
+git clone -b release/v0.1.0 https://github.com/okx/x1-node.git
+cd x1-node
 ```
 
-The `xgon-node` docker image must be built at least once and whenever the code is changed. If you haven't already built the `xgon-node` image, you must run:
+The `x1-node` docker image must be built at least once and whenever the code is changed. If you haven't already built the `x1-node` image, you must run:
 ```bash
 make build-docker
 ```
 
-Certain commands on the `xgon-node` can interact with smart contracts, run specific components, create encryption files, and print debug information.
+Certain commands on the `x1-node` can interact with smart contracts, run specific components, create encryption files, and print debug information.
 To interact with the binary program, we provide `docker-compose` files and a `Makefile` to spin up/down the various services and components, ensuring smooth local deployment and a better command line interface for developers.
 
 <Tip title="Note">All the data is stored inside of each docker container. This means once you remove the container, the data will be lost.</Tip>
@@ -94,11 +94,11 @@ To configure your MetaMask to use your local zkEVM environment, follow these ste
 3. On the left menu, click on **Networks**.
 4. Click on **Add Network** button.
 5. Fill in the L2 network information:
-    - Network name: XGON testnet
-    - New RPC URL: https://testrpc.xgon.io
+    - Network name: X1 testnet
+    - New RPC URL: https://testrpc.x1.tech
     - ChainID: 195
     - Currency symbol: OKB
-    - Block explorer URL: https://oklink.com/cn/xgon-test
+    - Block explorer URL: https://www.oklink.com/x1-test
 6. Click on **Save**.
 7. Click on **Add Network** button.
 8. Fill in the L1 network information:

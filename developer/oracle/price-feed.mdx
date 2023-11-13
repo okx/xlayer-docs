@@ -1,5 +1,5 @@
 # Price feed
-XGON Oracle price feeds is the quickest way to connect your smart contracts to the real-world market prices of crypto assets.
+X1 Oracle price feeds is the quickest way to connect your smart contracts to the real-world market prices of crypto assets.
 
 For example, one use case for data feeds is to enable smart contracts to retrieve the latest pricing data for a crypto asset in a single call.
 
@@ -7,11 +7,11 @@ For example, one use case for data feeds is to enable smart contracts to retriev
 
 Import this interface to your contract and use it to run functions in the proxy contract. Create the interface object by pointing to the proxy address.
 
-For example, on XGON testnet you could create the interface object in the constructor of your contract using the following example:
+For example, on X1 testnet you could create the interface object in the constructor of your contract using the following example:
 
 ```solidity
 /**
- * Network: XGON testnet
+ * Network: X1 testnet
  * Address: 0x64481ebfFe69d688d754e09918e82C89D8Da2507
  */constructor() {
     priceFeed = ExOraclePriceDataInterface(0x64481ebfFe69d688d754e09918e82C89D8Da2507);
@@ -140,7 +140,7 @@ contract Demo {
 ```
 
 
-## XGON testnet Oracle contract address
+## X1 testnet Oracle contract address
 | Name | Address |
 | - | - |
 | Oracle  |0x64481ebfFe69d688d754e09918e82C89D8Da2507 |
@@ -157,7 +157,7 @@ To ensure accurate data is fed to the smart contracts in a timely manner, OKTC O
 | Deviation threshold | The deviation of real-world data beyond a certain interval triggers all the nodes to update. |
 | Heartbeat threshold | If the data values stay within the deviation parameters, it will only trigger an update every x minutes/seconds. |
 
-The list shown below represents XGON testnet Oracle price feeds:
+The list shown below represents X1 testnet Oracle price feeds:
 
 | Pair | Assets |  Decimals | Deviation threshold(%)| Heartbeat threshold(s) |
 | - | - |-|-|-|

@@ -1,13 +1,13 @@
 # RPC endpoints
-XGON supports JSON-RPC methods that are compatible with Ethereum, and zkEVM RPC methods for zkEVM.
+X1 supports JSON-RPC methods that are compatible with Ethereum, and zkEVM RPC methods for zkEVM.
 
 ## Mainnet
 - Will be available after mainnet launch
 ## Testnet (chain-id: 0xC3, 195 in decimals)
-- https://testrpc.xgon.io
+- https://testrpc.x1.tech
 
 ## Prerequisite readings
-Before you begin using RPC endpoints on XGON, it's important to read the relevant articles for guidance:
+Before you begin using RPC endpoints on X1, it's important to read the relevant articles for guidance:
 - [Ethereum JSON-RPC](https://eth.wiki/json-rpc/API "Ethereum JSON-RPC")
 
 ## Starting HTTP JSON-RPC
@@ -16,10 +16,10 @@ To start the HTTP JSON-RPC, curl method is recommended:
 # mainnet
 Will be available after mainnet launch
 # testnet
-curl -X POST --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' -H "Content-Type: application/json" https://testrpc.xgon.io
+curl -X POST --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' -H "Content-Type: application/json" https://testrpc.x1.tech
 ```
 ## JSON-RPC methods
-There are two types of RPC methods on XGON, one is Ethereum compatible RPC, and the other one is zkEVM RPC. Each RPC offers specific functionalities.
+There are two types of RPC methods on X1, one is Ethereum compatible RPC, and the other one is zkEVM RPC. Each RPC offers specific functionalities.
 
 ### 1. Ethereum compatible RPC
 Here you will find the list of all supported JSON RPC endpoints and the differences between them in comparison to the default behavior of an Ethereum node.
