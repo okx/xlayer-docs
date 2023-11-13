@@ -15,7 +15,7 @@ Once your project is ready, you should run `npm install --save-dev hardhat` , in
 
 ## Creating your contract
 To create the sample project, run `npx hardhat` in your project folder:
-```
+```shell
 $ npx hardhat
 888    888                      888 888               888
 888    888                      888 888               888
@@ -36,7 +36,7 @@ $ npx hardhat
 ```
 ## Compiling your contract
 Next, if you take a look at the `contracts/` folder, you will see `Lock.so`l:
-```
+```shell
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
@@ -77,7 +77,7 @@ To compile it, simply run `npx hardhat compile`
 ## Setting configuration file
 In order to connect to the X1 network, we need to configure the corresponding network.
 To set up your config, you have to export an object from `hardhat.config.js`:
-```
+```javascript
 module.exports = {
   defaultNetwork: "hardhat",
   networks: {
@@ -92,7 +92,7 @@ module.exports = {
 ```
 ## Deploying your contract
 Next, to deploy the contract, we will use a Hardhat script. Inside the `scripts/` folder you will find a file with the following code:
-```
+```javascript
 // We require the Hardhat Runtime Environment explicitly here. This is optional
 // but useful for running the script in a standalone fashion through `node <script>`.
 //
@@ -127,7 +127,7 @@ main().catch((error) => {
 });
 ```
 Now, you can run it using `npx hardhat run`:
-```
+```shell
 $ npx hardhat run scripts/deploy.js --network X1
 Lock with 1 ETH deployed to: 0x5FbDB2315678afecb367f032d93F642f64180aa3
 ```
