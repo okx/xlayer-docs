@@ -13,7 +13,7 @@ Ultimately, the batches of transactions are consolidated into a final state, the
 As depicted in the above diagram, the off-chain execution of batches implies a transition to a new layer 2 (L2) state, resulting in a change to a new L2 state root. An aggregator generates computational integrity (CI) proof of this execution, and its on-chain verification ensures the validity of the resulting L2 state root.
 
 ## Aggregating batches
-Once the aggregator node possesses the proof, it invokes the `ZkEVM.sol` smart contract's `trustedVerifyBatches` function and provides the received proof. Here's the function's source code:
+Once the aggregator node possesses the proof, it invokes the `[ZkEVM.sol](https://github.com/okx/x1-contracts/blob/release/v0.1.0/contracts/PolygonZkEVM.sol "ZkEVM.sol")` smart contract's `trustedVerifyBatches` function and provides the received proof. Here's the function's source code:
 ```solidity
 function trustedVerifyBatches (
   uint64 pendingStateNum,
