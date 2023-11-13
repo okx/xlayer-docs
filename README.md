@@ -1,11 +1,11 @@
-# Welcome to XGON
-XGON is a ZK L2 network powered by the OKB token and built using Polygon CDK, that offers 100% EVM compatibility, exceptional performance, low fees, and robust security — achieved with seamless integration. 
+# Welcome to X1
+X1 is a ZK L2 network powered by the OKB token and built using Polygon CDK, that offers 100% EVM compatibility, exceptional performance, low fees, and robust security — achieved with seamless integration. 
 
-XGON aims to connect the OKX and Ethereum communities to allow anyone to take part in a truly global onchian ecosystem.
+X1 aims to connect the OKX and Ethereum communities to allow anyone to take part in a truly global onchian ecosystem.
 
 In this documentations, you will be guided through 3 main sections:
-- **[Getting Started](/getting-started/welcome/welcome-to-xgon "Getting Started")**: introduction and user guide of XGON
-- **[Developer](/developer/build-on-xgon/quickstart "Developer")**: guide to build on XGON and our product(s)
-- **[Technology](/technology/overview/xgon-architecture "Technology")**: the fundamental technology and architecture of XGON
+- **[Getting Started](/getting-started/welcome/welcome-to-x1 "Getting Started")**: introduction and user guide of X1
+- **[Developer](/developer/build-on-x1/quickstart "Developer")**: guide to build on X1 and our product(s)
+- **[Technology](/technology/overview/x1-architecture "Technology")**: the fundamental technology and architecture of X1
 
 

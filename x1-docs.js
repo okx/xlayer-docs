@@ -2,7 +2,7 @@
  * @Author: KW369 karen wong
  * @Date: 2023-10-16 14:20:40
  * @LastEditTime: 2023-03-23 12:40:21
- * @Description:XGON doc structure
+ * @Description:X1 doc structure
  */
 
 module.exports = [
@@ -14,7 +14,7 @@ module.exports = [
           title: 'Welcome',
           icon: 'okds-finance-bank',
           children: [
-            '/getting-started/welcome/welcome-to-xgon',
+            '/getting-started/welcome/welcome-to-x1',
             '/getting-started/welcome/introduction',
         ],
         },
@@ -28,7 +28,7 @@ module.exports = [
                 title: 'Faucet',
                 path: '/getting-started/user-guide/faucet',
                 children: [
-                    '/getting-started/user-guide/bridge-testnet-okb-from-goerli-to-xgon',
+                    '/getting-started/user-guide/bridge-testnet-okb-from-goerli-to-x1',
                     '/getting-started/user-guide/get-testnet-okb-from-faucet',
                 ],
             },            
@@ -42,13 +42,13 @@ module.exports = [
       basePath: ['/developer'],
       children: [
         {
-          title: 'Build on XGON',
+          title: 'Build on X1',
           icon: 'okx-defi-okbc-resources',
           children: [
-            '/developer/build-on-xgon/quickstart',
-            '/developer/build-on-xgon/zkevm-contracts',
-            '/developer/build-on-xgon/bridge-to-xgon',
-            '/developer/build-on-xgon/rpc-endpoints'
+            '/developer/build-on-x1/quickstart',
+            '/developer/build-on-x1/zkevm-contracts',
+            '/developer/build-on-x1/bridge-to-x1',
+            '/developer/build-on-x1/rpc-endpoints'
         ],
         },
         {
@@ -95,26 +95,26 @@ module.exports = [
           title: 'Overview',
           icon: 'okds-option',
           children: [
-            '/technology/overview/xgon-architecture',
+            '/technology/overview/x1-architecture',
           ],
         },
         {
-          title: 'XGON Protocol',
+          title: 'X1 Protocol',
           icon: 'okds-report-centre',
           children: [
-            '/technology/xgon-protocol/state-management',
+            '/technology/x1-protocol/state-management',
             {
               title: 'Transactions',
-              path: '/technology/xgon-protocol/transactions',
+              path: '/technology/x1-protocol/transactions',
               children: [
-                '/technology/xgon-protocol/transactions-n-data-flow',
-                '/technology/xgon-protocol/transactions-batching',
-                '/technology/xgon-protocol/batch-sequencing',
-                '/technology/xgon-protocol/batch-aggregation',
-                '/technology/xgon-protocol/transaction-validation',
+                '/technology/x1-protocol/transactions-n-data-flow',
+                '/technology/x1-protocol/transactions-batching',
+                '/technology/x1-protocol/batch-sequencing',
+                '/technology/x1-protocol/batch-aggregation',
+                '/technology/x1-protocol/transaction-validation',
               ],
             },
-            '/technology/xgon-protocol/incentive-model',
+            '/technology/x1-protocol/incentive-model',
           ],
         },
       ],
