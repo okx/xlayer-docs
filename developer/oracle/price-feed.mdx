@@ -1,0 +1,181 @@
+# Price feed
+X1 Oracle price feeds is the quickest way to connect your smart contracts to the real-world market prices of crypto assets.
+
+For example, one use case for data feeds is to enable smart contracts to retrieve the latest pricing data for a crypto asset in a single call.
+
+## Price feeds API reference
+
+Import this interface to your contract and use it to run functions in the proxy contract. Create the interface object by pointing to the proxy address.
+
+For example, on X1 testnet you could create the interface object in the constructor of your contract using the following example:
+
+```solidity
+/**
+ * Network: X1 testnet
+ * Address: 0x64481ebfFe69d688d754e09918e82C89D8Da2507
+ */constructor() {
+    priceFeed = ExOraclePriceDataInterface(0x64481ebfFe69d688d754e09918e82C89D8Da2507);
+    }
+```
+
+## Functions
+### latestRoundData
+Get the latest round data (the most recent data for a given price type and data source):
+```solidity
+function latestRoundData(string calldata priceType, address source) external view returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound);
+```
+
+**Parameters**
+- `priceType`: The priceType specifies which price to get, i.e., BTC. Please note that upper case letters must be used.
+- `source`: The source specifies which data source you want to get the price from, i.e., the address of OKX.
+
+**Returns**
+- `roundId`: is set to 0
+- `answer`: is the actual value of the priceType
+- `startedAt`: is set to 0
+- `updatedAt`: the timestamp when this answer is submitted to the Oracle
+- `answeredInRound`: is set to 0
+
+### get
+Read a single key from an authenticated source:
+```solidity
+function get(string calldata priceType, address source) external view returns (uint256 price, uint256 timestamp);
+```
+
+**Parameters**
+- `priceType`: The priceType specifies which price to get, i.e., BTC. Please note that upper case letters must be used.
+- `source`: The source specifies which data source you want to get the price from, i.e., the address of OKX.
+
+**Returns**
+- `price`: the value of the priceType
+- `timestamp`: timestamp of last updated
+
+
+### getOffchain
+Get the price data off-chain:
+```solidity
+function getOffchain(string calldata priceType, address source) external view returns (uint256 price, uint256 timestamp);
+```
+
+**Parameters**
+- `priceType`: The priceType specifies which price to get, i.e., BTC. Please note that upper case letters must be used.
+- `source`: The source specifies which data source you want to get the price from, i.e., the address of OKX.
+
+**Returns**
+- `price`: value of the priceType
+- `timestamp`: timestamp of last updated
+
+### getCumulativePrice
+Read a cumulative price from an authenticated source:
+```solidity
+function getCumulativePrice(string calldata priceType, address source) external view returns (uint256 cumulativePrice,uint32 timestamp);
+```
+
+**Parameters**
+- `priceType`: The priceType specifies which price to get, i.e., BTC. Please note that upper case letters must be used.
+- `source`: The source specifies which data source you want to get the price from, i.e., the address of OKX.
+
+**Returns**
+- `cumulativePrice`: cumulative price from an authenticated source
+- `timestamp`: timestamp of last updated
+
+
+### lastResponseTime
+The timestamp of the last data source response:
+```solidity
+function lastResponseTime(address source) external view returns (uint256);
+```
+
+**Parameters**
+- `source`: The source specifies which data source you want to get the price from, i.e., the address of OKX.
+
+**Returns**
+- `timestamp`: timestamp of last updated
+
+## Code example
+```solidity
+pragma solidity ^0.5.17;
+pragma experimental ABIEncoderV2;
+
+interface IExOraclePriceData
+{
+    function latestRoundData(string calldata priceType, address dataSource) external view returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound);
+    function get(string calldata priceType, address source) external view returns (uint256 price, uint256 timestamp);
+    function getOffchain(string calldata priceType, address source) external view returns (uint256 price, uint256 timestamp);
+    function getCumulativePrice(string calldata priceType, address source) external view returns (uint256 cumulativePrice,uint32 timestamp);
+    function lastResponseTime(address source) external view returns (uint256);
+}
+
+contract Demo {
+    address public exOracleAddress;
+    
+     /**
+     * Input an ExOracle contract address
+     */
+    constructor(address oracle) public {
+        exOracleAddress = oracle;
+    }
+    
+    /**
+     * @notice Read a single key from an authenticated source. 
+     * @param priceType The selector for the value to return
+     * @param source The verifiable author of the data
+     */
+    function getLatestPrice(string memory priceType, address source) public view returns (uint256) 
+    {
+        IExOraclePriceData oracle = IExOraclePriceData(exOracleAddress);
+        (uint256  value, uint256 timestamp) = oracle.get(priceType, source);
+        return value;
+    }
+    
+    /**
+    * @notice A specific example to get BTC-USD price
+    */
+    function getBtcPrice() public view returns (uint256) 
+    {
+        address dataSource = 0x6cf2a39d1c85adfb50da183060dc0d46529f3f9c;
+        return getLatestPrice("BTC", dataSource);
+    }
+}
+```
+
+
+## X1 testnet Oracle contract address
+| Name | Address |
+| - | - |
+| Oracle  |0x64481ebfFe69d688d754e09918e82C89D8Da2507|
+| dataSource |0x6cf2a39d1c85adfb50da183060dc0d46529f3f9c|
+
+
+## Available feeds & refresh frequency
+We collect data from trusted data sources (OKX, Coinbase, Kraken, CoinGecko, CoinMarketCap, CryptoCompare, etc.) and publish it to our on-chain Oracle smart contracts through a robust pipeline.
+
+To ensure accurate data is fed to the smart contracts in a timely manner, OKTC Oracle will feed the price to the smart contracts in regards to two parameters: `deviation threshold` and `heartbeat threshold`:
+
+| Parameter | Description |
+| - | - |
+| Deviation threshold | The deviation of real-world data beyond a certain interval triggers all the nodes to update. |
+| Heartbeat threshold | If the data values stay within the deviation parameters, it will only trigger an update every x minutes/seconds. |
+
+The list shown below represents X1 testnet Oracle price feeds:
+
+| Pair | Assets |  Decimals | Deviation threshold(%)| Heartbeat threshold(s) |
+| - | - |-|-|-|
+| BTC/USD | BTC |6|0.1|60|
+| DAI/USD | DAI |6|0.1|120|
+| ETH/USD | ETH |6|0.1|60|
+| LINK/USD | LINK |6|0.2|120|
+| OKB/USD | OKB |6|0.5|120|
+| SUSHI/USD | SUSHI |6|0.5|120|
+| USDC/USD | USDC |6|0.1|120|
+| USDT/USD | USDT |6|0.1|120|
+| UNI/USD | UNI |6|0.2|120|
+
+
+
+
+
+
+
+
+

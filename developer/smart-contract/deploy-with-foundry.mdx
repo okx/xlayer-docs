@@ -1,0 +1,99 @@
+# Deploying with Foundry
+In this tutorial, we explain step-by-step how to create, compile and deploy a simple smart contract on the X1 testnet using Foundry.
+
+## What is Foundry
+[Foundry](https://github.com/foundry-rs/foundry "Foundry") offers a complete set of tools for building and deploying decentralized applications (DApps) on the Ethereum blockchain. Utilizing Foundry, you can write smart contracts using the Solidity programming language, compile, deploy, and interact on the Ethereum blockchain.
+
+## Setting up the development environment
+- [Node.js V18+ LTS and npm](https://nodejs.org/en "Node.js V18+ LTS and npm") (comes with node)
+- [Git](https://git-scm.com/ "Git")
+
+If you have not installed Foundry, go to book.getfoundry and select Installation from the side menu. Follow the instructions to download using Foundryup.
+```shell
+curl -L https://foundry.paradigm.xyz | bash
+```
+If everything goes successful, you can use four CLI in the terminal: forge, cast, anvil, and chisel.
+
+## Creating your contract
+Initialize a project with the following command:
+```shell
+forge init hello_contract
+cd hello_contract
+```
+In the `hello_contract/src` folder,  you can edit the `Counter.sol` file:
+```solidity
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.13;
+
+contract Counter {
+    uint256 public number;
+
+    function setNumber(uint256 newNumber) public {
+        number = newNumber;
+    }
+
+    function increment() public {
+        number++;
+    }
+}
+```
+
+## Compiling your contract
+Next, you can compile the contract with the `forge` command:
+```shell
+forge build
+```
+If all goes accordingly, you will see the details:
+```shell
+[⠔] Compiling...
+[⠢] Compiling 22 files with 0.8.16
+[⠔] Solc 0.8.16 finished in 2.75s
+Compiler run successful!
+```
+
+## Deploying your contract
+You can run the **forge create** command to deploy your contract. Replace the **HTTP_URL** with your actual endpoint, and **PRIVATE_KEY** with your actual private key.
+```bash
+forge create --rpc-url HTTP_URL \
+--private-key PRIVATE_KEY \
+src/Counter.sol: Counter
+```
+If it goes well, you will see the details such as:
+```shell
+[⠆] Compiling...
+No files changed, compilation skipped
+Deployer: 0x9536354AE32852A7E7C4BFe7415b104016d5Fb04
+Deployed to: 0xF0D4950d45CFf612A02f453771CF93418dCaaA0B
+Transaction hash: 0xc09923e09e5f4a72053bcf72ca66e0fdf434ab63380481ab39ae281c63a716a0
+```
+
+## Interacting with your contract
+You can run the **cast** command to interacting your contract.
+Write a call with the **setNumber** function, such as:
+```bash
+cast send CONTRACT_ADDRESS "setNumber(uint256)" 10 --rpc-url HTTP_URL --private-key PRIVATE_KEY
+```
+If all goes accordingly, you will see the details:
+```bash
+blockHash               0xf1ceea989197708be58264f3e7ebeae3ebffc5d6f345d053fd73c932627ea7fb
+blockNumber             9760236
+contractAddress         
+cumulativeGasUsed       2638507
+effectiveGasPrice       3000000070
+gasUsed                 43494
+logs                    []
+logsBloom               0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+root                    
+status                  1
+transactionHash         0xd17510371187101f37e96a6287dea64467eeeddae56207e45807e8626c4b01b4
+transactionIndex        6
+type                    2
+```
+Read a call with the **number** function, such as:
+```bash
+cast call CONTRACT_ADDRESS "number()" --rpc-url HTTP_URL
+```
+If all goes accordingly, you will see the details:
+```bash
+0x000000000000000000000000000000000000000000000000000000000000000a
+```
