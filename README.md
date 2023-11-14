@@ -7,5 +7,3 @@ In this documentations, you will be guided through 3 main sections:
 - **[Getting Started](https://www.okx.com/x1/docs/getting-started/welcome/welcome-to-x1 "Getting Started")**: introduction and user guide of X1
 - **[Developer](https://www.okx.com/x1/docs/developer/build-on-x1/quickstart "Developer")**: guide to build on X1 and our product(s)
 - **[Technology](https://www.okx.com/x1/docs/technology/overview/x1-architecture "Technology")**: the fundamental technology and architecture of X1
-
-
