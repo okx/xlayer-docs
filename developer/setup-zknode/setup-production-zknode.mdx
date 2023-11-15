@@ -32,13 +32,15 @@ Once the L1 RPC component is complete, we can start the zkNode setup. This is th
 Furthermore, this method is purely subjective and feel free to run this software in a different manner. For example, Docker is not required, you could simply use the Go binaries directly.
 Let's start setting up our zkNode:
 
-1. Download the installation scrip
+1. Download the installation script
 ``` bash
 mkdir -p ./x1-node && cd ./x1-node
 
 wget https://static.okex.org/cdn/chain/x1/snapshot/run_x1_testnet.sh && chmod +x run_x1_testnet.sh && ./run_x1_testnet.sh init && cp ./testnet/example.env ./testnet/.env
 ```
-2. The example.env file must be modified according to your configurations. Edit the .env file with your favourite editor (we'll use vim in this guide): ```vim ./testnet/.env.```
+
+2. The example.env file must be modified according to your configurations. Edit the .env file with your favourite editor (we'll use vim in this guide): `vim ./testnet/.env`
+
 ``` bash
 # URL of a JSON RPC for Sepolia
 X1_NODE_ETHERMAN_URL = "http://your.L1node.url"
@@ -49,6 +51,7 @@ X1_NODE_STATEDB_DATA_DIR = "./x1_testnet_data/statedb"
 # PATH WHERE THE POOLDB POSTGRES CONTAINER WILL STORE PERSISTENT DATA
 X1_NODE_POOLDB_DATA_DIR = "/x1_testnet_data/pooldb"
 ```
+
 3. Restore the latest L2 snapshot  locally database for synchronizing  L2 data quickly.
 ``` bash
 ./run_x1_testnet.sh restore 
