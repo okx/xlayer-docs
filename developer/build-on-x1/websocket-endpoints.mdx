@@ -1,0 +1,100 @@
+# Websocket endpoints
+X1 supports Websocket methods that are compatible with Ethereum, and zkEVM RPC methods for zkEVM.
+
+The WebSockets (WSS) communication protocol enables two-way communication between a client and a server over a single TCP connection. The communication protocol maintains a network connection between the two parties, allowing for real-time, low-latency communication. WebSockets allow for ongoing, bidirectional communication unlike HTTP, which is a request-response protocol.
+
+## Mainnet
+- Will be available after mainnet launch
+
+## Testnet (chain-id: 0xC3, 195 in decimals)
+WSS:
+- wss://x1testws.okx.com
+- wss://testws.x1.tech
+
+## Websocket methods
+Subscription methods are available for WebSocket connections only, and allow you to wait for events instead of polling for them. For example, dapps can subscribe to logs and receive notifications when a specific event occurs.
+
+The following subscription methods are available:
+- `eth_subscribe` - Create a subscription to a particular event
+- `eth_unsubscribe` - Cancel an active subscription
+
+It also supports Ethereum compatible and zkEVM RPC methods  with websocket.
+You need to install [ws](https://github.com/hashrocket/ws "ws"), or another websocket client
+
+```shell
+# install wss tools
+go install github.com/hashrocket/ws@latest
+
+# connect to the wss server
+ws wss://x1testws.okx.com
+```
+
+### eth_subscribe
+Subscribe to different Ethereum event types like newHeads, logs, pendingTransactions, and minedTransactions using WebSockets.
+
+**Parameters**
+Specify the subscription event parameters, including the following:
+- `newHeads`: Subscribing to this returns a notification each time a new header is appended to the chain, including chain reorganizations. In chain reorganization, the subscription emits all new headers for the new chain. Therefore, the subscription can emit multiple headers at the same height.
+- `logs`: Returns logs that are included in new imported blocks and match the given filter criteria. In case of a chain reorganization, previously sent logs that are on the old chain are resent with the removed property set to `true`. Logs from transactions that ended up in the new chain are emitted. Therefore, a subscription can emit logs for the same transaction multiple times. This parameter has the following fields:
+  - `address`: *(optional)* Either an address or an array of addresses. Only logs that are created from these addresses are returned.
+  - `topics`: *(optional)* Only logs that match these specified topics are returned.
+- `newPendingTransactions`: not supported
+
+**Returns**
+`subscription ID`: The ID of the newly created subscription on the node.
+
+**Example**
+**Event newHeads**
+```shell
+> {"id": 1, "method": "eth_subscribe", "params": ["newHeads"]}
+```
+```json
+// Response OK
+{"jsonrpc":"","id":1,"result":"0x4698d49adc4f4590a7a685702a7890a1"}
+
+// Response newHeads
+{"jsonrpc":"2.0","method":"eth_subscription","params":{"subscription":"0x4698d49adc4f4590a7a685702a7890a1","result":{"parentHash":"0x8cbb9b4bbd08169f6721ca427b7596d367343beafefd795a739aa7561e402aa6","sha3Uncles":"0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347","miner":"0x5e7b89ab3b2de21f0f35da4920b9d7310ccbe259","stateRoot":"0x82a790655c9731a90388eded2cfcb1dfb9ccd7fedc50a76027ece92b1a1c0a99","transactionsRoot":"0xca77a5c5bbc6ab7cc1a5aca874525d644602c06a8bd78b9a30530cbc311c1204","receiptsRoot":"0x59c28ec1a61258d901bdb099195292ec2ed440e3a8820401c28ec7c77f752791","logsBloom":"0x00000000000000000000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000000000000000000000040000000000008000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000","difficulty":"0x0","totalDifficulty":"0x0","size":"0x356","number":"0xf92e","gasLimit":"0x1c9c380","gasUsed":"0x2c84c","timestamp":"0x65558e95","extraData":"0x","mixHash":"0x0000000000000000000000000000000000000000000000000000000000000000","nonce":"0x0000000000000000","hash":"0x3313d5a4c5580d6db0310cd6a2e1107bb5b4f94cf16232619ac3bd7d9d04a8f0","transactions":["0x762b9a2eb0b13775beabdacd91fb9150dab945f998c93b92bb838a26542d49c5"],"uncles":[]}}}
+```
+**Event logs**
+```shell
+> {"jsonrpc":"2.0","method":"eth_subscribe","params":["logs",{"topics":["0x7bcec107ebaef6075ec44d44bbaceef2832d8ef887883240b63415dd770788e9"]}],"id":0}
+```
+```json
+// Response OK
+{"jsonrpc":"2.0","id":1,"result":"0x9aebda1c07ed47f78053751ebbbd26d5"}
+
+// Response Event Logs
+{"jsonrpc":"2.0","method":"eth_subscription","params":{"subscription":"0x9aebda1c07ed47f78053751ebbbd26d5","result":{"parentHash":"0x2f823eea412f288a4575c66f845b0eebb40fba3313c36197e20af204b6f7d3be","sha3Uncles":"0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347","miner":"0x4e830165ff22f4592f0933f01d2d4ffd0b1fccf8","stateRoot":"0xd579fdae44038a6654d23e18ab12d8447fb2732b49eae323f7586959a844f1b2","transactionsRoot":"0x60fd8387b75b3c2c16cd9a51e466d188a967d3a27ef845844cf56008a50b0ddc","receiptsRoot":"0xa0480d2161fb5802ed71872b85cd6828cf9ea74794dc04307d0009ac80e3ed73","logsBloom":"0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000","difficulty":"0x0","totalDifficulty":"0x0","size":"0x273","number":"0x29502","gasLimit":"0x1c9c380","gasUsed":"0x5208","timestamp":"0x652cdae7","extraData":"0x","mixHash":"0x0000000000000000000000000000000000000000000000000000000000000000","nonce":"0x0000000000000000","hash":"0x9703f514105904358b28a804d2ceda3ee3bc075dae9a23d99f352e0346e3f582","transactions":["0x495faaf906c862af71e6f298880c239415a2f80f7fb103bedb00f57dd0392ab0"],"uncles":[]}}}
+```
+
+### eth_unsubscribe
+Cancel the specified subscription by calling `eth_unsubscribe`. Returns a Boolean value indicating whether the cancellation was successful
+
+**Parameter**
+- `subscription ID`: The ID of the subscription you want to unsubscribe.
+
+**Returns**
+- `unsubscribed flag`: (boolean) True if the subscription is canceled successfully.
+
+**Example**
+```shell
+# subscribe to new block Headers
+> {"id": 1, "method": "eth_unsubscribe", "params":["0xefa20a66c94a4da7ae18294db6261b42"]}
+```
+```json
+// Response
+{"jsonrpc":"","id":1,"result":true}
+```
+
+### Others
+It also supports Ethereum compatible and zkEVM [RPC methods](/developer/build-on-x1/rpc-endpoints "RPC methods") with websocket.
+
+**Example**
+```shell
+# call eth_gasPrice method 
+> {"jsonrpc":"2.0","method":"eth_gasPrice","params":[],"id":73}
+```
+```json
+// Response
+{"jsonrpc":"2.0","id":73,"result":"0x1db0c8c80"}
+```
