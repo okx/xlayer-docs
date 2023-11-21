@@ -79,6 +79,15 @@ module.exports = [
           ],
         },
         {
+          title: 'Subgraph',
+          icon: 'okx-defi-x1-subgraph',
+          children: [
+            '/developer/subgraph/quickstart',
+            '/developer/subgraph/creating-subgraph',
+            '/developer/subgraph/deploying-subgraph'
+          ],
+        },
+        {
           title: 'Setup zkNode',
           icon: 'okx-defi-okbc-resources',
           children: [
