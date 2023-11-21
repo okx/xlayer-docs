@@ -19,13 +19,13 @@ X1 team will help you with the deployment.
 
 ## Querying the Graph
 After deploying the subgraph, it takes some time to synchronize the block height before querying becomes possible:
-- Query URL ：https://www.okx.com/api/v1/x1-testnet/subgraph/name/<Subgraph_name>
-- Query Playground：https://www.okx.com/api/v1/x1-testnet/subgraph/name/<Subgraph_name>/graphql
+- Query URL ：`https://www.okx.com/api/v1/x1-testnet/subgraph/name/{Subgraph_name}`
+- Query Playground：`https://www.okx.com/api/v1/x1-testnet/subgraph/name/{Subgraph_name}/graphql`
 
-Please replace `<Subgraph_name>` in the example with your own Subgraph name.
+Please replace `{Subgraph_name}` in the example with your own Subgraph name.
 
 ## Specification definition of GraphQL language
-```json
+```graphql
 query [operationName]([variableName]: [variableType]) {
   [queryName]([argumentName]: [variableName]) {
     # "{ ... }" express a Selection-Set, we are querying fields from `queryName`.
@@ -48,7 +48,7 @@ Failing to follow the above rules will end with an error from the Graph API.
 ## The anatomy of a GraphQL query
 Unlike REST API, a GraphQL API is built upon a Schema that defines which queries can be performed.
 For example, a query to get a block using the `GetBlocks` query will look as follows:
-```json
+```graphql
 query GetBlocks($id: ID!) {
   blocks(id: $id) {
     id
@@ -78,7 +78,7 @@ It will return the following predictable JSON response (when passing the correct
 - When querying a collection, you can use the `where` parameter to filter different properties.
 
 **Example**
-```json
+```graphql
 query GetBlocks {
   blocks(
     first: 10
@@ -97,7 +97,7 @@ For more features (such as time-travel queries, fulltext search queries), please
 
 ### Combine multiple queries
 Your application may need to query data for multiple entities, and you can send multiple queries in the same GraphQL request as follows:
-```json
+```graphql
 query GetInfo {
   blocks(
     first: 10
