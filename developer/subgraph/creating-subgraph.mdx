@@ -17,7 +17,7 @@ A subgraph extracts data from a blockchain, processes it, and stores it for easy
 The subgraph manifest `subgraph.yaml` defines the smart contracts your subgraph indexes, which events from these contracts to pay attention to, and how to map event data to entities that graph node stores and allows to query. The full specification for subgraph manifests can be found [here](https://github.com/graphprotocol/graph-node/blob/master/docs/subgraph-manifest.md "here").
 
 The following is an example of a `subgraph.yaml`:
-```solidity
+```yaml
 specVersion: 0.0.4
 description: Indexing Block data
 repository: https://github.com/okx-subgraph/x1-subgraph-example
@@ -81,7 +81,7 @@ By default, entities are mutable, meaning that mappings can load existing entiti
 
 ### Example
 The following `Faucet` entities are built around Gravatar objects and are a good example of how to define an entity.
-```solidity
+```typescript
 type Faucet @entity {
     id: ID!
     orderID: String
@@ -92,7 +92,7 @@ type Faucet @entity {
 ```
 ### Optional and required fields
 Entity fields can be defined as required or optional. Required fields are indicated by the `!` in the schema. If a required field is not set in the mapping, you will receive this error when querying the field:
-```solidity
+```plain
 Null value resolved for non-null field 'name'
 ```
 
@@ -106,7 +106,7 @@ Mappings convert your event data into entities defined in your schema. They are 
 For each event handler defined in subgraph.yaml under mapping.event Handlers, an exported function with the same name should be created. Each handler must accept a single parameter named event, whose type corresponds to the name of the event being handled.
 
 In the example subdiagram, the src/mapping.ts contains handlers for the NewGravatar and UpdateGravatar events:
-```solidity
+```typescript
 import { log,ethereum } from '@graphprotocol/graph-ts'
 import { Faucet,Block } from '../types/schema'
 import { SendToken } from '../types/Submit/Faucet'
@@ -137,11 +137,11 @@ We use the [Graph Typescript Library](https://github.com/graphprotocol/graph-ts 
 In order to make it easy and type-safe to work with smart contracts, events and entities, the Graph CLI can generate AssemblyScript types from the subgraph's GraphQL schema and the contract ABIs included in the data sources.
 
 This is done with:
-```solidity
+```shell
 graph codegen [--output-dir <OUTPUT_DIR>] [<MANIFEST>]
 ```
 But in most cases, subgraphs have been pre-configured with `package.json` that allow you to simply run one of the following for the same purpose:
-```solidity
+```shell
 # Yarn
 yarn codegen
 
