@@ -87,7 +87,6 @@ You can use the following RPC methods to execute specific zkEVM functionalities:
 |zkevm_isBlockConsolidated|Returns true if the provided block number is already connected to a batch that was verified, otherwise false|
 |zkevm_virtualBatchNumber|Returns the latest virtual batch number|
 |zkevm_verifiedBatchNumber|Returns the latest verified batch number|
-|zkevm_batchNumberByBlockNumber|Returns the batch number connected to the block|
 
 ### zkevm_batchNumber
 Returns the latest batch number
@@ -208,11 +207,13 @@ curl -X POST --data '{
 ```
 
 ### zkevm_isBlockConsolidated
-Returns 'true' if the provided block number is already connected to a batch that was already verified, otherwise false
+Returns `true` if the provided block number is already connected to a batch that was already verified, otherwise `false`
 
 **Parameters**
-- String - hash of block
-- Boolean - if `true` it returns the full transaction objects, if `false`, only the hashes of the transactions; defaults to `false`
+- String - the hex representation of the block's height
+
+**Returns**
+- Boolean - result of verified
 
 **Example**
 ```shell
@@ -230,10 +231,9 @@ curl -X POST --data '{
 ```
 
 ### zkevm_isBlockVirtualized
-Returns 'true' if the provided block number is already connected to a batch that was already virtualized, otherwise 'false'
+Returns `true` if the provided block number is already connected to a batch that was already virtualized, otherwise `false`
 
 **Parameters**
-- An array of strings
 - String - the hex representation of the block's height
 
 **Returns**
@@ -245,7 +245,7 @@ Returns 'true' if the provided block number is already connected to a batch that
 curl -X POST --data '{
     "jsonrpc": "2.0",
     "method": "zkevm_isBlockVirtualized",
-    "params": [],
+    "params": ["0x12"],
     "id": 1
 }' -H "Content-Type: application/json" https://x1testrpc.okx.com/
 ```
@@ -269,7 +269,7 @@ Returns the latest verified batch number
 curl -X POST --data '{
     "jsonrpc": "2.0",
     "method": "zkevm_verifiedBatchNumber",
-    "params": [],
+    "params": ["0x12"],
     "id": 1
 }' -H "Content-Type: application/json" https://x1testrpc.okx.com/
 ```
