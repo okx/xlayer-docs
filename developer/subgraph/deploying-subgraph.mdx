@@ -6,13 +6,13 @@
 
 ## Deployment steps
 ### 1. Upload Subgraph code to GitHub
-- If the code repository is private, you must add your X1 Github account subgraph@okx.com. (This step is not necessary for public code repositories)
+- **If the code repository is private, you must add your X1 Github account subgraph@okx.com. (This step is not necessary for public code repositories)**
 - Before uploading the subgraph code, please ensure that it has been compiled
 
 ### 2. Deploy the Subgraph on the hosted service
 X1 team will help you with the deployment.
 
-**Deployment suggestions
+**Deployment suggestions**
 - Set startBlock to the block in which the smart contract of the data source was created
 - Avoid excessive use of data sources to prevent resource consumption.
 - Example：https://github.com/okx-subgraph/x1-subgraph-example
@@ -23,6 +23,8 @@ After deploying the subgraph, it takes some time to synchronize the block height
 - Query Playground：`https://www.okx.com/api/v1/x1-testnet/subgraph/name/{Subgraph_name}/graphql`
 
 Please replace `{Subgraph_name}` in the example with your own Subgraph name.
+
+If you want to query block numbers, you can use <LinkNotWithLangPath text='blocks-subgraph' link='https://www.okx.com/api/v1/x1-testnet/index/subgraphs/name/blocks-subgraph/graphql'/>.
 
 ## Specification definition of GraphQL language
 ```graphql
