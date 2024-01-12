@@ -49,7 +49,8 @@ module.exports = [
             '/developer/build-on-x1/zkevm-contracts',
             '/developer/build-on-x1/bridge-to-x1',
             '/developer/build-on-x1/rpc-endpoints',
-            '/developer/build-on-x1/websocket-endpoints'
+            '/developer/build-on-x1/websocket-endpoints',
+            '/developer/build-on-x1/gas-station'
         ],
         },
         {
