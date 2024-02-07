@@ -89,6 +89,13 @@ module.exports = [
           ],
         },
         {
+          title: 'SubQuery',
+          icon: 'okx-defi-x1-subgraph',
+          children: [
+            '/developer/subquery/quickstart',
+          ],
+        },
+        {
           title: 'Setup zkNode',
           icon: 'okx-defi-okbc-resources',
           children: [
