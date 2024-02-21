@@ -1,0 +1,51 @@
+## Usage instructions
+To verify your code on [OKLink](https://www.oklink.com/ "OKLink"), you just need to modify one file (hardhat.config.js), following the same process and commands outlined in [Hardhat](https://hardhat.org/hardhat-runner/docs/guides/verifying "Hardhat")'s official documentation.
+
+## Important notes
+1. If you want to verify your code on Etherscan, you'll need to obtain an API key. However, for X1 verification, you don't need to apply for a separate key, filling it in with any non-empty value is fine.
+2. After you deploy your contract code, make sure to wait at least one minute before verifying it.
+3. Currently, verifying proxy contracts through Hardhat is not supported. If you need to verify proxy contracts, you will need to manually verify them through a browser.
+
+## Example
+1. Start by creating a Hardhat project and using the Lock contract as an example. 
+2. Next, modify the `hardhat.config.js` file in your project directory with the following changes.
+For X1 testnet:
+```solidity
+module.exports = {
+    solidity: "0.8.19",
+    networks: {
+        x1: {
+            url: "https://testrpc.x1.tech",
+            accounts: [process.env.PRIVKEY]
+        }
+    },
+    etherscan: {
+        apiKey: process.env.ETHERSCAN_KEY,
+        customChains: [
+            {
+                network: "x1",
+                chainId: 195,
+                urls: {
+                    apiURL: "https://www.oklink.com/api/explorer/v1/contract/verify/async/api/x1_test",
+                    browserURL: "https://www.oklink.com/x1-test"
+                }
+            }
+        ]
+    }
+};
+```
+Replace `process.env.PRIVKEY` with your own deployment address's private key, and `process.env.ETHERSCAN_KEY` can be filled with any non-empty value (this is not currently being validated).
+
+3. Compile your Hardhat contract code and deploy it with this command:
+```javascript
+hh run scripts/deploy.js --network x1
+```
+![Verify with Hardhat 1](./img/verify-hardhat-1.png)
+
+4. Wait for one to two minutes, and then verify the contract by running the following command and specifying the contract file you want to verify.
+```javascript
+hh verify --contract contracts/Lock.sol:Lock <address> <unlock time> --network x1
+```
+![Verify with Hardhat 2](./img/verify-hardhat-2.png)
+
+5. Check if the contract has been successfully verified by visiting https://www.oklink.com/x1-test/address/0xa6Ae4dc27a7a9fa2D26BC7CeFBd41Db406553fC8#code
