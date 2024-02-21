@@ -57,10 +57,23 @@ module.exports = [
           title: 'Smart Contract',
           icon: 'okds-records',
           children: [
-          '/developer/smart-contract/deploy-with-truffle',
-          '/developer/smart-contract/deploy-with-hardhat',
-          '/developer/smart-contract/deploy-with-foundry',
-          '/developer/smart-contract/verify-contracts'
+            {
+              title: 'Deploying Contract',
+              path: '/developer/smart-contract/deploying-contract.mdx',
+              children: [
+                '/developer/smart-contract/deploy-with-truffle',
+                '/developer/smart-contract/deploy-with-hardhat',
+                '/developer/smart-contract/deploy-with-foundry',
+                ],
+            },
+            {
+              title: 'Verifying Contract',
+              path: '/developer/smart-contract/verifying-contract.mdx',
+              children: [
+                '/developer/smart-contract/manual-verification',
+                'developer/smart-contract/verify-with-hardhat'
+                ],
+            }
         ],
         },
         {
