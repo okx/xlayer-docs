@@ -59,7 +59,7 @@ module.exports = [
           children: [
             {
               title: 'Deploying Contract',
-              path: '/developer/smart-contract/deploying-contract.mdx',
+              path: '/developer/smart-contract/deploying-contract',
               children: [
                 '/developer/smart-contract/deploy-with-truffle',
                 '/developer/smart-contract/deploy-with-hardhat',
@@ -68,10 +68,10 @@ module.exports = [
             },
             {
               title: 'Verifying Contract',
-              path: '/developer/smart-contract/verifying-contract.mdx',
+              path: '/developer/smart-contract/verifying-contract',
               children: [
                 '/developer/smart-contract/manual-verification',
-                'developer/smart-contract/verify-with-hardhat'
+                '/developer/smart-contract/verify-with-hardhat'
                 ],
             }
         ],
