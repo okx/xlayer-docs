@@ -109,38 +109,30 @@ module.exports = [
             '/developer/setup-zknode/setup-production-zknode', 
           ],
         },
-      ],
-    },
-    {
-      title: 'Technology',
-      basePath: ['/technology'],
-      children: [
         {
-          title: 'Overview',
-          icon: 'okds-option',
-          children: [
-            '/technology/overview/x1-architecture',
-          ],
-        },
-        {
-          title: 'X1 Protocol',
-          icon: 'okds-report-centre',
-          children: [
-            '/technology/x1-protocol/state-management',
+          title:'Learn more',
+          icon:'okx-defi-okbc-resources',
+          children:[
+            '/developer/learn-more/x1-architecture',
+            '/developer/learn-more/state-management',
             {
               title: 'Transactions',
-              path: '/technology/x1-protocol/transactions',
+              path: '/developer/learn-more/transactions',
               children: [
-                '/technology/x1-protocol/transactions-n-data-flow',
-                '/technology/x1-protocol/transactions-batching',
-                '/technology/x1-protocol/batch-sequencing',
-                '/technology/x1-protocol/batch-aggregation',
-                '/technology/x1-protocol/transaction-validation',
-              ],
+                '/developer/learn-more/transactions-n-data-flow',
+                '/developer/learn-more/transactions-batching',
+                '/developer/learn-more/batch-sequencing',
+                '/developer/learn-more/batch-aggregation',
+                '/developer/learn-more/transaction-validation',
+                ],
             },
-            '/technology/x1-protocol/incentive-model',
-          ],
-        },
+            '/developer/learn-more/incentive-model'
+
+            
+
+          ]
+
+        }
       ],
     },
   ];
