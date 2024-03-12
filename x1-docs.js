@@ -114,19 +114,19 @@ module.exports = [
           icon:'okx-defi-okbc-resources',
           children:[
             '/developer/learn-more/x1-architecture',
-            '/developer/learn-more/state-management',
+            '/developer/learn-more/x1-protocol/state-management',
             {
               title: 'Transactions',
-              path: '/developer/learn-more/transactions',
+              path: '/developer/learn-more/x1-protocol/transactions',
               children: [
-                '/developer/learn-more/transactions-n-data-flow',
-                '/developer/learn-more/transactions-batching',
-                '/developer/learn-more/batch-sequencing',
-                '/developer/learn-more/batch-aggregation',
-                '/developer/learn-more/transaction-validation',
+                '/developer/learn-more/x1-protocol/transactions-n-data-flow',
+                '/developer/learn-more/x1-protocol/transactions-batching',
+                '/developer/learn-more/x1-protocol/batch-sequencing',
+                '/developer/learn-more/x1-protocol/batch-aggregation',
+                '/developer/learn-more/x1-protocol/transaction-validation',
                 ],
             },
-            '/developer/learn-more/incentive-model'
+            '/developer/learn-more/x1-protocol/incentive-model'
 
             
 
