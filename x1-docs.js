@@ -135,4 +135,30 @@ module.exports = [
         }
       ],
     },
+    {
+      title: 'Academy',
+      basePath: ['/academy'],
+      children: [
+        {
+          title: 'Getting Started',
+          icon: 'okds-finance-bank',
+          children: [
+            '/getting-started/start-learning/', 
+            '/getting-started/erc-20-tokens/',
+        ],
+        },
+        {
+          title: 'Learn Solidity',
+          icon: 'okds-guide',
+          children: [
+            '/learn-solidity/introduction-to-solidity',
+            '/learn-solidity/gas-fees',
+            '/learn-solidity/contract-size-limit',
+            '/learn-solidity/stack-limit',
+            '/learn-solidity/permanence',
+            '/learn-solidity/update-frequency',
+        ],
+        },
+      ],
+    },
   ];
