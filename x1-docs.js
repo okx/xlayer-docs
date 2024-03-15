@@ -140,23 +140,32 @@ module.exports = [
       basePath: ['/academy'],
       children: [
         {
-          title: 'Getting Started',
+          title: 'Learn',
           icon: 'okds-finance-bank',
           children: [
-            '/getting-started/start-learning/', 
-            '/getting-started/erc-20-tokens/',
+            '/academy//getting-started/start-learning', 
+            '/academy/getting-started/erc-20-tokens',
         ],
         },
         {
           title: 'Learn Solidity',
           icon: 'okds-guide',
           children: [
-            '/learn-solidity/introduction-to-solidity',
-            '/learn-solidity/gas-fees',
-            '/learn-solidity/contract-size-limit',
-            '/learn-solidity/stack-limit',
-            '/learn-solidity/permanence',
-            '/learn-solidity/update-frequency',
+            '/academy/learn-solidity/introduction-to-solidity',
+            '/academy/learn-solidity/gas-fees',
+            '/academy/learn-solidity/contract-size-limit',
+            '/academy/learn-solidity/stack-limit',
+            '/academy/learn-solidity/permanence',
+            '/academy/learn-solidity/update-frequency',
+        ],
+        },
+        {
+          title: 'Try Remix',
+          icon: 'okds-guide',
+          children: [
+            '/academy/try-remix/remix-overview',
+            '/academy/try-remix/features',
+            '/academy/try-remix/tutorial-guide'
         ],
         },
       ],
