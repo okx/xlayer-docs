@@ -143,7 +143,7 @@ module.exports = [
           title: 'Learn',
           icon: 'okds-finance-bank',
           children: [
-            '/academy//getting-started/start-learning', 
+            '/academy/getting-started/start-learning', 
             '/academy/getting-started/erc-20-tokens',
         ],
         },
