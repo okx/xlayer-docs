@@ -131,7 +131,7 @@ Every entity has to have an `id` that is unique among all entities of the same t
 - `event.transaction.from.toHex()`
 - `event.transaction.hash.toHex() + "-" + event.logIndex.toString()`
 
-We use the [Graph Typescript Library](https://github.com/graphprotocol/graph-ts "Graph Typescript Library") which contains utilities for interacting with the Graph Node store and conveniences for handling smart contract data and entities. You can use this library in your mappings by importing `@graphprotocol/graph-ts` into `mapping.ts`.
+We use the [Graph Typescript Library](https://github.com/graphprotocol/graph-tooling "Graph Typescript Library") which contains utilities for interacting with the Graph Node store and conveniences for handling smart contract data and entities. You can use this library in your mappings by importing `@graphprotocol/graph-ts` into `mapping.ts`.
 
 ## Code generation
 In order to make it easy and type-safe to work with smart contracts, events and entities, the Graph CLI can generate AssemblyScript types from the subgraph's GraphQL schema and the contract ABIs included in the data sources.
