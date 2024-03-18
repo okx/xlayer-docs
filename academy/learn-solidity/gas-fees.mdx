@@ -12,3 +12,5 @@ The EVM operates on a unique cost model where initializing a variable requires a
 Furthermore, the concept of space complexity takes on a critical role. While in traditional programming, storage is relatively inexpensive, in Solidity, storing and manipulating data in storage incurs substantial gas costs. For instance, it is often more economical to repeatedly calculate a value derived from other data than to calculate it once and save it due to the high gas costs associated with storage operations.
 
 Predictable execution paths are crucial, as each transaction comes with a predetermined gas limit. Failure to accurately estimate and manage gas consumption may result in transaction failures, but users will still be charged for the gas used up until the point of failure. This highlights the importance of careful coding practices to optimize gas efficiency and ensure a cost-effective and reliable user experience in decentralized applications.
+
+![gas fee structure](./img/gas-fee-structure.jpg)
