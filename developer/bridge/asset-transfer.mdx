@@ -1,8 +1,8 @@
 # Asset transfer
 This section describes how asset transfers are enabled by three smart contracts.
-- Bridge smart contract ([ZkEVMBridge.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.1.0/contracts/PolygonZkEVMBridge.sol "ZkEVMBridge.sol"))
-- Global Exit Root Manager ([ZkEVMGlobalExitRoot.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.1.0/contracts/PolygonZkEVMGlobalExitRoot.sol "ZkEVMGlobalExitRoot.sol"))
-- Consensus contract ([ZkEVM.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.1.0/contracts/PolygonZkEVM.sol "ZkEVM.sol"))
+- Bridge smart contract ([ZkEVMBridge.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/PolygonZkEVMBridgeV2.sol "ZkEVMBridge.sol"))
+- Global Exit Root Manager ([ZkEVMGlobalExitRoot.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/PolygonZkEVMGlobalExitRootV2.sol "ZkEVMGlobalExitRoot.sol"))
+- Consensus contract ([ZkEVM.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/consensus/validium/PolygonValidiumEtrog.sol "ZkEVM.sol"))
 
 ## Bridge smart contract
 The zkEVM bridge smart contract (ZkEVMBridge.sol) has two main functions:
@@ -30,11 +30,11 @@ This means that the zkEVM bridge SC, in conjunction with the Global Exit Root Ma
 ## Consensus contract
 The `ZkEVM.sol` smart contract is the consensus algorithm used in X Layer. It is located in L1 for batch verification purposes.
 The consensus smart contract (ZkEVM.sol) has two main functions:
-- `sequenceBatches`
+- `sequenceBatchesValidium`
 - `verifyBatchesTrustedAggregator`
 
 With these functions, L2 tx data can be rolled up and verified. 
-1. Transactions are grouped into batches by `sequenceBatches` function.
+1. Transactions are grouped into batches by `sequenceBatchesValidium` function.
 2. A request is made to an aggregator to prove the validity of these sequenced batches by `verifyBatchesTrustedAggregator`. This proof is zk-proof and is verified using the `Verifier.sol` contract.
 3. Following the verification of the zk-proof, the consensus contract sends the zkEVM Exit Tree Root to the Global Exit Root Manager SC `ZkEVMGlobalExitRoot.sol` to update the Global Exit Root.
 
@@ -52,7 +52,7 @@ The transfer from L1 to zkEVM is completed with the `Claim` method of the bridge
 
 ### L2 → L1 transfer
 Now the reverse process, while focusing only at the L1 smart contracts.
-1. The consensus contract uses the `SequenceBatches` function to sequence batches, which includes, among other transactions, asset transfer information.
+1. The consensus contract uses the `sequenceBatchesValidium` function to sequence batches, which includes, among other transactions, asset transfer information.
 2. A special smart contract called `Verify.sol` calls the `VerifyBatches` function and takes batch info as input. As part of the consensus process, but not shown in the above figure, the aggregator produces a validity proof for the sequenced batches. And this proof is automatically verified in this step.
 3. The zkEVM Exit Tree gets updated only after a successful verification of sequenced batches (again, for the sake of simplicity, this is not reflected in the above figure). The consensus contract (`ZkEVM.sol`) sends the updated zkEVM Exit Root to the Global Exit Root Manager, which subsequently updates the Global Exit Root.
 4. The zkEVM bridge SC (`ZkEVMBridge.sol`) then retrieves the updated Global Exit Root and uses the `Claim` function to complete the transfer.

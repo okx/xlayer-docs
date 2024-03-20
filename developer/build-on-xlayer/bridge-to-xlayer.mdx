@@ -1,5 +1,5 @@
 # Bridge to X Layer
-You can use [ZkEVM Bridge Contract](https://github.com/okx/xlayer-contracts/blob/release/v0.1.0/contracts/PolygonZkEVMBridge.sol "ZkEVM Bridge Contract") to bridge assets like ETH, OKB, and ERC-20 tokens between L1 and L2. However, there are a few points to note:：
+You can use [ZkEVM Bridge Contract](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/PolygonZkEVMBridgeV2.sol "ZkEVM Bridge Contract") to bridge assets like ETH, OKB, and ERC-20 tokens between L1 and L2. However, there are a few points to note:：
 - ETH is the native token of L1 (Ethereum). After bridging to L2 X Layer, it becomes a Wrapped ETH (WETH) ERC-20 token.
 - OKB is an ERC-20 token of L1 (Ethereum). After bridging to L2 X Layer, it becomes a native token.
 - Other ERC-20 tokens, which are bridged to the other side, remain ERC-20 tokens. You can calculate the new ERC-20 address by using the `precalculatedWrapperAddress` method.
@@ -14,7 +14,7 @@ The mapping list for OKB and ETH is as follows:
 |WETH|[0xBec7859BC3d0603BeC454F7194173E36BF2Aa5C8](https://www.okx.com/explorer/xlayer-test/address/0xBec7859BC3d0603BeC454F7194173E36BF2Aa5C8 "0xBec7859BC3d0603BeC454F7194173E36BF2Aa5C8") (L2 X Layer testnet)|Will be available after mainnet launch (L2 X Layer mainnet)|
 
 ## Deposit OKB and ERC-20 tokens from L1
-The ZkEVM bridge contract allows ETH and ERC-20 token bridging from L1 to L2 using the bridgeAsset function. Notice that ERC-20 tokens will have a different address on L2. You can use the precalculatedWrapperAddress function to query the new address in [ZkEVMBridgeContract.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.1.0/contracts/PolygonZkEVMBridge.sol "ZkEVMBridgeContract.sol") contract
+The ZkEVM bridge contract allows ETH and ERC-20 token bridging from L1 to L2 using the bridgeAsset function. Notice that ERC-20 tokens will have a different address on L2. You can use the precalculatedWrapperAddress function to query the new address in [ZkEVMBridgeContract.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/PolygonZkEVMBridgeV2.sol "ZkEVMBridgeContract.sol") contract
 
 ### bridgeAsset
 Deposit and add a new leaf to the Merkle tree:
@@ -66,8 +66,9 @@ You can use the `claimAsset` method to retrieve assets on L2. Calling this metho
 ### claimAsset
 ```solidity
  function claimAsset(
-    bytes32[32] smtProof,
-    uint32 index,
+    bytes32[_DEPOSIT_CONTRACT_TREE_DEPTH] calldata smtProofLocalExitRoot,
+    bytes32[_DEPOSIT_CONTRACT_TREE_DEPTH] calldata smtProofRollupExitRoot,
+    uint256 globalIndex,
     bytes32 mainnetExitRoot,
     bytes32 rollupExitRoot,
     uint32 originNetwork,
@@ -75,14 +76,15 @@ You can use the `claimAsset` method to retrieve assets on L2. Calling this metho
     uint32 destinationNetwork,
     address destinationAddress,
     uint256 amount,
-    bytes metadata
+    bytes calldata metadata
   ) external
 ```
 **Parameters**
 |Name|Type|Description|
 |:----|:----|:----|
-|`smtProof`|bytes32[32]|Smt proof|
-|`index`|uint32|Index of the leaf|
+|`smtProofLocalExitRoot`|bytes32[32]| Smt proof to proof the leaf against the network exit root|
+|`smtProofRollupExitRoot`|bytes32[32]| Smt proof to proof the rollupLocalExitRoot against the rollups exit root |
+|`globalIndex`|uint32|Index of the leaf|
 |`mainnetExitRoot`|bytes32|Mainnet exit root|
 |`rollupExitRoot`|bytes32|Rollup exit root|
 |`originNetwork`|uint32|Origin network|
