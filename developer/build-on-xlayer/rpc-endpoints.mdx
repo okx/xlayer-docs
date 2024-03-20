@@ -1,16 +1,21 @@
 # RPC endpoints
-X1 supports JSON-RPC methods that are compatible with Ethereum, and zkEVM RPC methods for zkEVM.
+X Layer supports JSON-RPC methods that are compatible with Ethereum, and zkEVM RPC methods for zkEVM.
 
 ## Mainnet
-- Will be available after mainnet launch
+RPC:
+- ChainID: 196
+- https://rpc.xlayer.tech
+- https://xlayerrpc.okx.com
+
 
 ## Testnet (chain-id: 0xC3, 195 in decimals)
 RPC:
-- https://testrpc.x1.tech
-- https://x1testrpc.okx.com/
+- ChainID: 195
+- https://testrpc.xlayer.tech
+- ›https://xlayertestrpc.okx.com
 
 ## Prerequisite readings
-Before you begin using RPC endpoints on X1, it's important to read the relevant articles for guidance:
+Before you begin using RPC endpoints on X Layer, it's important to read the relevant articles for guidance:
 - [Ethereum JSON-RPC](https://eth.wiki/json-rpc/API "Ethereum JSON-RPC")
 
 ## Starting HTTP JSON-RPC
@@ -19,10 +24,10 @@ To start the HTTP JSON-RPC, curl method is recommended:
 # mainnet
 Will be available after mainnet launch
 # testnet
-curl -X POST --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' -H "Content-Type: application/json" https://testrpc.x1.tech
+curl -X POST --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' -H "Content-Type: application/json" https://testrpc.xlayer.tech
 ```
 ## JSON-RPC methods
-There are two types of RPC methods on X1, one is Ethereum compatible RPC, and the other one is zkEVM RPC. Each RPC offers specific functionalities.
+There are two types of RPC methods on X Layer, one is Ethereum compatible RPC, and the other one is zkEVM RPC. Each RPC offers specific functionalities.
 
 ### 1. Ethereum compatible RPC
 Here you will find the list of all supported JSON RPC endpoints and the differences between them in comparison to the default behavior of an Ethereum node.
@@ -105,7 +110,7 @@ curl -X POST --data '{
     "method": "zkevm_batchNumber",
     "params": [],
     "id": 1
-}' -H "Content-Type: application/json" https://x1testrpc.okx.com/
+}' -H "Content-Type: application/json" https://xlayertestrpc.okx.com/
 ```
 ```json
 // Response
@@ -134,7 +139,7 @@ curl -X POST --data '{
     "method": "zkevm_batchNumberByBlockNumber",
     "params": ["0x2"],
     "id": 1
-}' -H "Content-Type: application/json" https://x1testrpc.okx.com/
+}' -H "Content-Type: application/json" https://xlayertestrpc.okx.com/
 ```
 ```json
 // Response
@@ -158,7 +163,7 @@ curl -X POST --data '{
     "method": "zkevm_consolidatedBlockNumber",
     "params": [],
     "id": 1
-}' -H "Content-Type: application/json" https://x1testrpc.okx.com/
+}' -H "Content-Type: application/json" https://xlayertestrpc.okx.com/
 ```
 ```json
 // Response
@@ -199,7 +204,7 @@ curl -X POST --data '{
     "method": "zkevm_getBatchByNumber",
     "params": ["0x2"],
     "id": 1
-}' -H "Content-Type: application/json" https://x1testrpc.okx.com/
+}' -H "Content-Type: application/json" https://xlayertestrpc.okx.com/
 ```
 ```json
 // Response
@@ -223,7 +228,7 @@ curl -X POST --data '{
     "method": "zkevm_isBlockConsolidated",
     "params": ["0x1"],
     "id": 1
-}' -H "Content-Type: application/json" https://x1testrpc.okx.com/
+}' -H "Content-Type: application/json" https://xlayertestrpc.okx.com/
 ```
 ```json
 // Response
@@ -247,7 +252,7 @@ curl -X POST --data '{
     "method": "zkevm_isBlockVirtualized",
     "params": ["0x12"],
     "id": 1
-}' -H "Content-Type: application/json" https://x1testrpc.okx.com/
+}' -H "Content-Type: application/json" https://xlayertestrpc.okx.com/
 ```
 ```json
 // Response
@@ -271,7 +276,7 @@ curl -X POST --data '{
     "method": "zkevm_verifiedBatchNumber",
     "params": [],
     "id": 1
-}' -H "Content-Type: application/json" https://x1testrpc.okx.com/
+}' -H "Content-Type: application/json" https://xlayertestrpc.okx.com/
 ```
 ```json
 // Response
@@ -295,7 +300,7 @@ curl -X POST --data '{
     "method": "zkevm_virtualBatchNumber",
     "params": [],
     "id": 1
-}' -H "Content-Type: application/json" https://x1testrpc.okx.com/
+}' -H "Content-Type: application/json" https://xlayertestrpc.okx.com/
 ```
 ```json
 // Response

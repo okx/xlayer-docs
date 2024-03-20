@@ -2,7 +2,7 @@
  * @Author: KW369 karen wong
  * @Date: 2023-10-16 14:20:40
  * @LastEditTime: 2023-03-23 12:40:21
- * @Description:X1 doc structure
+ * @Description: X Layer doc structure
  */
 
 module.exports = [
@@ -14,7 +14,7 @@ module.exports = [
           title: 'Welcome',
           icon: 'okds-finance-bank',
           children: [
-            '/getting-started/welcome/welcome-to-x1',
+            '/getting-started/welcome/welcome-to-xlayer',
             '/getting-started/welcome/introduction',
         ],
         },
@@ -28,7 +28,7 @@ module.exports = [
                 title: 'Faucet',
                 path: '/getting-started/user-guide/faucet',
                 children: [
-                    '/getting-started/user-guide/bridge-testnet-okb-from-goerli-to-x1',
+                    '/getting-started/user-guide/bridge-testnet-okb-from-goerli-to-xlayer',
                     '/getting-started/user-guide/get-testnet-okb-from-faucet',
                 ],
             },            
@@ -42,15 +42,15 @@ module.exports = [
       basePath: ['/developer'],
       children: [
         {
-          title: 'Build on X1',
+          title: 'Build on X Layer',
           icon: 'okx-defi-okbc-resources',
           children: [
-            '/developer/build-on-x1/quickstart',
-            '/developer/build-on-x1/zkevm-contracts',
-            '/developer/build-on-x1/bridge-to-x1',
-            '/developer/build-on-x1/rpc-endpoints',
-            '/developer/build-on-x1/websocket-endpoints',
-            '/developer/build-on-x1/gas-station'
+            '/developer/build-on-xlayer/quickstart',
+            '/developer/build-on-xlayer/zkevm-contracts',
+            '/developer/build-on-xlayer/bridge-to-xlayer',
+            '/developer/build-on-xlayer/rpc-endpoints',
+            '/developer/build-on-xlayer/websocket-endpoints',
+            '/developer/build-on-xlayer/gas-station'
         ],
         },
         {
@@ -94,7 +94,7 @@ module.exports = [
         },
         {
           title: 'Subgraph',
-          icon: 'okx-defi-x1-subgraph',
+          icon: 'okx-defi-xlayer-subgraph',
           children: [
             '/developer/subgraph/quickstart',
             '/developer/subgraph/creating-subgraph',
@@ -113,20 +113,20 @@ module.exports = [
           title:'Learn more',
           icon:'okx-defi-okbc-resources',
           children:[
-            '/developer/learn-more/x1-architecture',
-            '/developer/learn-more/x1-protocol/state-management',
+            '/developer/learn-more/xlayer-architecture',
+            '/developer/learn-more/xlayer-protocol/state-management',
             {
               title: 'Transactions',
-              path: '/developer/learn-more/x1-protocol/transactions',
+              path: '/developer/learn-more/xlayer-protocol/transactions',
               children: [
-                '/developer/learn-more/x1-protocol/transactions-n-data-flow',
-                '/developer/learn-more/x1-protocol/transactions-batching',
-                '/developer/learn-more/x1-protocol/batch-sequencing',
-                '/developer/learn-more/x1-protocol/batch-aggregation',
-                '/developer/learn-more/x1-protocol/transaction-validation',
+                '/developer/learn-more/xlayer-protocol/transactions-n-data-flow',
+                '/developer/learn-more/xlayer-protocol/transactions-batching',
+                '/developer/learn-more/xlayer-protocol/batch-sequencing',
+                '/developer/learn-more/xlayer-protocol/batch-aggregation',
+                '/developer/learn-more/xlayer-protocol/transaction-validation',
                 ],
             },
-            '/developer/learn-more/x1-protocol/incentive-model'
+            '/developer/learn-more/xlayer-protocol/incentive-model'
 
             
 

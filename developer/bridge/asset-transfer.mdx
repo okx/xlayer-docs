@@ -1,8 +1,8 @@
 # Asset transfer
 This section describes how asset transfers are enabled by three smart contracts.
-- Bridge smart contract ([ZkEVMBridge.sol](https://github.com/okx/x1-contracts/blob/release/v0.1.0/contracts/PolygonZkEVMBridge.sol "ZkEVMBridge.sol"))
-- Global Exit Root Manager ([ZkEVMGlobalExitRoot.sol](https://github.com/okx/x1-contracts/blob/release/v0.1.0/contracts/PolygonZkEVMGlobalExitRoot.sol "ZkEVMGlobalExitRoot.sol"))
-- Consensus contract ([ZkEVM.sol](https://github.com/okx/x1-contracts/blob/release/v0.1.0/contracts/PolygonZkEVM.sol "ZkEVM.sol"))
+- Bridge smart contract ([ZkEVMBridge.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.1.0/contracts/PolygonZkEVMBridge.sol "ZkEVMBridge.sol"))
+- Global Exit Root Manager ([ZkEVMGlobalExitRoot.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.1.0/contracts/PolygonZkEVMGlobalExitRoot.sol "ZkEVMGlobalExitRoot.sol"))
+- Consensus contract ([ZkEVM.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.1.0/contracts/PolygonZkEVM.sol "ZkEVM.sol"))
 
 ## Bridge smart contract
 The zkEVM bridge smart contract (ZkEVMBridge.sol) has two main functions:
@@ -28,7 +28,7 @@ This means that the zkEVM bridge SC, in conjunction with the Global Exit Root Ma
 <Tip title="Note">There are two Global Exit Root manager SCs: one deployed in L1, while the other is deployed in L2. Their Solidity code files are; ZkEVMGlobalExitRoot.sol, and ZkEVMGlobalExitRootL2.sol, respectively.</Tip>
 
 ## Consensus contract
-The `ZkEVM.sol` smart contract is the consensus algorithm used in X1. It is located in L1 for batch verification purposes.
+The `ZkEVM.sol` smart contract is the consensus algorithm used in X Layer. It is located in L1 for batch verification purposes.
 The consensus smart contract (ZkEVM.sol) has two main functions:
 - `sequenceBatches`
 - `verifyBatchesTrustedAggregator`

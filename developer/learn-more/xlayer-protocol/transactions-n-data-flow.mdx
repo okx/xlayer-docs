@@ -6,9 +6,9 @@ The process of validating a specific transaction within the batch typically invo
 
 ![L2 State Stages](./img/l2-state-stages.png)
 
-## Data flow in X1
-Transactions on the X1 network have a typical flow starting from the users' interactions with their wallet on X1, to how the transactions are batched, sequenced, and aggregated on Ethereum L1:
-1. Transactions are submitted to X1.
+## Data flow in X Layer
+Transactions on the X Layer network have a typical flow starting from the users' interactions with their wallet on X Layer, to how the transactions are batched, sequenced, and aggregated on Ethereum L1:
+1. Transactions are submitted to X Layer.
 2. Transactions are executed almost instantly.
 3. Transactions are batched together using data encryption methods.
 4. Batches are sequenced and sent to Ethereum L1.
@@ -27,8 +27,8 @@ The sequencer will do a few of the following checks to see if the transaction sh
 3. If the transaction is not a duplicate
 4. If the transaction does not involve a "double-spend", which means the sender's funds have not already been used in another transaction
 
-Once the transaction is considered valid, the sequencer will update the X1 state. Users will experience transactions going through almost instantly.
-From here onwards, the user remains engaged in the X1 L2 state. Everything that follows involves sharing transaction data back to Ethereum L1, but this step is only important for users who wish to transfer their funds from X1 L2 back to Ethereum L1.
+Once the transaction is considered valid, the sequencer will update the X Layer state. Users will experience transactions going through almost instantly.
+From here onwards, the user remains engaged in the X Layer L2 state. Everything that follows involves sharing transaction data back to Ethereum L1, but this step is only important for users who wish to transfer their funds from X Layer L2 back to Ethereum L1.
 
 ### 3. Batching transactions
 The sequencer combines multiple transactions into a single batch and sends them to the `ZkEVM.sol` smart contract. This contract is stored on Ethereum mainnet and also has a separate version on the Ethereum Sepolia testnet.
@@ -48,9 +48,9 @@ The `ZkEVM.sol` smart contract sends the batch it just received to an aggregator
     - If the validity proof is valid, accept it
     - If it is not valid, reject it
 
-### 6. Reading events on X1
-Finally, DApps read information from X1 through the synchronizer.
+### 6. Reading events on X Layer
+Finally, DApps read information from X Layer through the synchronizer.
 It reads events from the Ethereum smart contract(s), storing knowledge of both the zk-validity proofs from the aggregator, and the batches submitted from the sequencer.
-This way, DApps can easily get a view of the state of X1 via JSON-RPC.
+This way, DApps can easily get a view of the state of X Layer via JSON-RPC.
 
 <Tip title="Note">To find answers to more transaction-related questions, you can visit [Polygon's zkEVM protocol FAQ](https://wiki.polygon.technology/docs/zkevm/faq/zkevm-protocol-faq/ "Polygon's zkEVM protocol FAQ") for more info.</Tip>

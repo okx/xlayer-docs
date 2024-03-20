@@ -1,5 +1,5 @@
 # Websocket endpoints
-X1 supports Websocket methods that are compatible with Ethereum, and zkEVM RPC methods for zkEVM.
+X Layer supports Websocket methods that are compatible with Ethereum, and zkEVM RPC methods for zkEVM.
 
 The WebSockets (WSS) communication protocol enables two-way communication between a client and a server over a single TCP connection. The communication protocol maintains a network connection between the two parties, allowing for real-time, low-latency communication. WebSockets allow for ongoing, bidirectional communication unlike HTTP, which is a request-response protocol.
 
@@ -8,8 +8,8 @@ The WebSockets (WSS) communication protocol enables two-way communication betwee
 
 ## Testnet (chain-id: 0xC3, 195 in decimals)
 WSS:
-- wss://x1testws.okx.com
-- wss://testws.x1.tech
+- wss://xlayertestws.okx.com
+- wss://testws.xlayer.tech
 
 ## Websocket methods
 Subscription methods are available for WebSocket connections only, and allow you to wait for events instead of polling for them. For example, dapps can subscribe to logs and receive notifications when a specific event occurs.
@@ -26,7 +26,7 @@ You need to install [ws](https://github.com/hashrocket/ws "ws"), or another webs
 go install github.com/hashrocket/ws@latest
 
 # connect to the wss server
-ws wss://x1testws.okx.com
+ws wss://xlayertestws.okx.com
 ```
 
 ### eth_subscribe
@@ -87,7 +87,7 @@ Cancel the specified subscription by calling `eth_unsubscribe`. Returns a Boolea
 ```
 
 ### Others
-It also supports Ethereum compatible and zkEVM [RPC methods](/developer/build-on-x1/rpc-endpoints "RPC methods") with websocket.
+It also supports Ethereum compatible and zkEVM [RPC methods](/developer/build-on-xlayer/rpc-endpoints "RPC methods") with websocket.
 
 **Example**
 ```shell
