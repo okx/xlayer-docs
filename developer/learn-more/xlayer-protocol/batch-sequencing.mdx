@@ -1,5 +1,5 @@
 # Batch sequencing
-Once we have batches of transactions, they are ready to be sequenced. The sequencer will call the L1 [ZkEVM.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.1.0/contracts/PolygonZkEVM.sol "ZkEVM.sol") contract's `sequencedBatches` function and provide it with multiple batches of transactions. It is basically a storage structure that holds the queue of sequences defining the virtual state.
+Once we have batches of transactions, they are ready to be sequenced. The sequencer will call the L1 [ZkEVM.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/consensus/validium/PolygonValidiumEtrog.sol "ZkEVM.sol") contract's `sequencedBatches` function and provide it with multiple batches of transactions. It is basically a storage structure that holds the queue of sequences defining the virtual state.
 ```solidity
 // SequenceBatchNum --> SequencedBatchData
 mapping(uint64 => SequencedBatchData) public sequencedBatches;
@@ -30,7 +30,7 @@ Only the trusted sequencer's Ethereum account can access the `sequencedBatches` 
 
 ## Batch validity & L2 state integrity
 The `sequencedBatches` function iterates over every batch of the sequence, checking its validity. A valid batch must meet the following criteria:
-- It must include a `globalExitRoot` value that is present in the **GlobalExitRootMap** of the bridge's L1 [ZkEVMGlobalExitRoot.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.1.0/contracts/PolygonZkEVMGlobalExitRoot.sol "ZkEVMGlobalExitRoot.sol") contract. A batch is valid only if it includes a valid `globalExitRoot`.
+- It must include a `globalExitRoot` value that is present in the **GlobalExitRootMap** of the bridge's L1 [ZkEVMGlobalExitRoot.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/PolygonZkEVMGlobalExitRootV2.sol "ZkEVMGlobalExitRoot.sol") contract. A batch is valid only if it includes a valid `globalExitRoot`.
 - The length of the transaction's byte array must be less than the value of **MAX_TRANSACTIONS_BYTE_LENGTH** constant.
 - The timestamp of the batch must be greater or equal to that of the last batch sequenced, but less than or equal to the timestamp of the block where the sequencing L1 transaction is executed. All batches must be ordered by time.
 
