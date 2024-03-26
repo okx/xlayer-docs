@@ -7,7 +7,7 @@
 
 module.exports = [
     {
-      title: 'Getting Started',
+      title: 'Getting started',
       basePath: ['/getting-started'],
       children: [
         {
