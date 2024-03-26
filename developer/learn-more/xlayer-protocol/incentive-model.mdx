@@ -1,0 +1,16 @@
+# Incentive mechanism
+In X Layer, actors are rewarded for executing their jobs correctly and helping the protocol achieve finality.
+
+<Tip title="Note">Unless stated otherwise, the incentive mechanism discussed here applies when the sequencer and aggregator roles are decentralized, meaning there are no trusted sequencers or aggregators involved.</Tip>
+
+## L2 transaction fees and sequencing fees
+The native token used in X Layer is `Bridged OKB`, which originates from the Ethereum ERC-20 OKB. This is the token used to pay X Layer transaction fees. It can be bridged at a 1:1 exchange rate from Ethereum to X Layer and vice versa.
+The **sequencer** plays a crucial role in the network and receives transaction fees paid by users on X Layer when they submit transactions. These fees are paid in `Bridged OKB`. The exact fee amount depends on the Gas price set by users, indicating how much they are willing to pay for transaction execution.
+
+To motivate the **aggregator** for each batch it sequences, the **sequencer** is required to lock a specific number of OKB tokens in the L1 `ZkEVM.sol` contract. The number of tokens locked per batch is determined by the variable `batchFee`. The final aggregator reward is distributed from `[ZkEVM.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/consensus/validium/PolygonValidiumEtrog.sol "ZkEVM.sol")` in the form of L1 OKB tokens.
+
+The diagram below illustrates the different fees and rewards earned by participants within the protocol.
+
+![Fees and Rewards](./img/fees-and-rewards.jpg)
+
+<Tip title="Note">X Layer uses the same incentive mechanism — or detailed rewarding formula for sequencers and aggregators, as Polygon zkEVM does. You can visit [Polygon zkEVM incentive mechanism](https://wiki.polygon.technology/docs/zkevm/protocol/incentive-mechanism/ "Polygon zkEVM incentive mechanism") to learn more.</Tip>

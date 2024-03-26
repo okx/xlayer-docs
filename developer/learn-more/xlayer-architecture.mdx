@@ -1,0 +1,100 @@
+# X Layer architecture
+The major components of X Layer are:
+- **Virtual Machine**: zkEVM
+- **Mode**: Validium
+- **Data Availability**: Data Availability Committee (DAC)
+- **Consensus**: X Layer PoE contract （[ZkEVM.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/consensus/validium/PolygonValidiumEtrog.sol "ZkEVM.sol")）
+- **Sequencer**: Trusted
+- **Gas token**: OKB
+
+![X Layer Architecture](./img/xlayer-architecture.png)
+
+## X Layer Validium
+X Layer is built with Polygon CDK, an advanced open-source framework designed for the rapid deployment of zk-powered layer 2 (L2) blockchains on [Ethereum](https://ethereum.org/en/ "Ethereum"). 
+
+X Layer adopts the validium mode, and implements a dedicated committee of sequencers, to maintain seamless interoperability with all other Polygon chains, delivering a high performance L2 scaling solution.
+
+Since transaction data is not stored on the Ethereum mainnet, it is both executed and stored off-chain, which can lead to a massive enhancement in scalability. In the premise of ensuring security, Validium can reduce L1 gas storage costs, hence reducing transaction costs for users on L2, with a prominent enhancement in user privacy and user experience.
+
+Similar to zero-knowledge rollups (ZK-rollups), X Layer confirms off-chain transactions on the Ethereum network. This approach prevents incorrect state changes and boosts the security of the X Layer network.
+
+## zkValidium vs. zkRollups
+zkValidiums differ from rollups and sidechains because they only share the proof of validity, which confirms the results of the transactions with Ethereum, not the actual transaction data of the executed transactions.
+Here is how it operates: a verifier smart contract is deployed on Ethereum, and validium submits proof of validity to this contract. These proofs are zero knowledge in nature and contain transaction outcomes but not the specific transaction data.
+
+The verifier smart contract assesses the validity of the proof. If it is found to be invalid, any batch submitted by the validium is rejected and not stored on Ethereum.
+
+![zkValidium vs. zkRollup](./img/zkvalidium-vs-zkrollup.png)
+
+## Consensus contract
+`ZkEVM.sol` is the underlying protocol that guarantees the correctness of state changes through the use of validity proof. To confirm that specific predefined rules have been adhered to for permitting state transitions, the Consensus contract (`ZkEVM.sol`, deployed on Ethereum layer 1) comes into play.
+
+`ZkEVM.sol` is responsible for verifying validity proofs to confirm that each transition has been executed correctly, utilizing zk-SNARK circuits for verification. To make this system work, two key processes are involved: **transaction batching** and **transaction validation**.
+To perform these procedures, X Layer involves two types of participants: **sequencers** and **aggregators**.
+
+**Sequencer**: it is responsible for proposing transaction batches to the network, essentially grouping transaction requests and adding them to the `ZkEVM.sol`.
+
+**Aggregator**: it is responsible for reviewing the transaction batches' validity and providing the necessary proofs of validity. Any permissionless aggregator can submit these proofs to demonstrate the accuracy of the state transition computation.
+
+![Consensus Contract Flow](./img/consensus-contract-flow.png)
+
+## Data Availability
+X Layer operates in validium mode, where it integrates a secure data availability layer managed by a DAC. Below are the functionalities of DAC:
+- Verifies the availability of data associated with specific blockchain blocks
+- Ensures data robustness and computational efficiency of X Layer
+
+### Advantages of the DAC provided by Polygon CDK
+The DAC primarily provides:
+- Lower transaction fees: less computations leads to lower fees
+- State privacy: maintaining a secure state change record to ensure data integrity
+
+<Tip title="Note">Check out [Ethereum Foundation's Data Availibilty](https://ethereum.org/en/developers/docs/data-availability/ "Ethereum Foundation's Data Availibilty") and [Polygon CDK's Data Availability](https://ethereum.org/en/developers/docs/data-availability/ "Polygon CDK's Data Availability") for more info on DAC.</Tip>
+
+## zkNode
+zkNode is a client used to sync with the state of X Layer. Trusted sequencer and trusted aggregator are responsible for managing the L2 state and its finality on L1. The following zkNode architecture shows the flow of state updates.
+
+![zkNode Architecture](./img/zknode-architecture.png)
+
+<Tip title="Note">For more information on zkNode, you can visit [Polygon zkNode](https://wiki.polygon.technology/docs/zkevm/zknode/zknode-overview/ "Polygon zkNode").</Tip>
+
+## zkProver
+As an Ethereum scaling solution, X Layer simulates the Ethereum Virtual Machine to provide users with the same Ethereum experience while inheriting the security of the Ethereum mainnet.
+
+X Layer employs a zero-knowledge prover component called zkProver to generate validity proofs for zkRollup. The zkProver is expected to leverage accelerators such as GPU, FPGA, and ASIC to reduce proof time and cost significantly.
+
+The general operational process is as follows: zkProver receives a batch of many transactions from nodes and generates a concise zero-knowledge proof using state-of-the-art zk tools and technology. This not only substantially reduces the time for final transaction confirmation but also significantly lowers users' Gas consumption costs. The specific interaction flow can be referred to in the following diagram:
+
+![zkProver Control Flow](./img/zkprover-control-flow.png)
+1. zkNode sends the content of the Merkle tree to the database for storage.
+2. Then, zk nodes send a batch of many transactions to the zkProver component.
+3. zkProver accesses the database and retrieves the necessary information to generate verifiable proofs for the transactions sent by the nodes. This information includes Merkle roots, the keys and hashes of relevant siblings, and more.
+4. Finally, zkProver generates proofs for the transactions and sends them back to the zk node.
+
+<Tip title="Note">For more information on how zkProver creates verifiable transaction proofs, you can visit [Polygon zkProver Overview](https://wiki.polygon.technology/docs/zkevm/zkProver/overview/ "Polygon zkProver Overview").</Tip>
+
+## Tokenomics
+There are two main actors on X Layer that earn OKB as reward and pay OKB token as Gas fee for transactions at the same time.
+### Sequencers
+- Each sequencer is required to pay a fee in OKB tokens to have the privilege of creating and suggesting batches.
+- When a sequencer successfully proposes valid batches containing valid transactions, they are rewarded with the fees paid by transaction requestors or network users.
+
+### Aggregators
+- Aggregators validate transactions proposed and batched by sequencers.
+- Aggregators need to run on X Layer's zkNode software, and create zero-knowledge validity proofs utilizing zkProver.
+- For each validity proof submitted, aggregators earn the OKB fee, which is paid by the sequencer(s) of the batch(es).
+- Aggregators compete to produce validity proofs based on their strategies and intentions to validate transactions.
+
+## Transactions on X Layer
+Before making any transactions on L2, users need to have some OKB token on X Layer to perform any L2 transaction. To get OKB on L2, users need to transfer some OKB from L1 to L2 through X Layer bridge.
+1. Visit [Bridge user guide](/getting-started/user-guide/bridge "Bridge user guide") for detailed steps to transfer OKB from L1 to L2.
+2. L2 transactions：
+  - The user starts a transaction from their wallet (e.g., MetaMask) and sends it to a sequencer.
+  - Once the sequencer commits to adding the transaction, it becomes finalized on L2.
+  - At this point, the transaction is settled on L2, but its state has not yet propagated to L1. This state is known as the **trusted state**.
+  - The sequencer transmits the batch data to a smart contract on L1, permitting any node to synchronize its state from L1 in a secure, trustless manner. This state is referred to as the **virtual state**.
+  - The aggregator gathers pending transactions for verification and constructs a proof to attain finality on L1.
+  - After the proof undergoes validation, the user's transactions gain finality on L1, a crucial step for actions like withdrawals. This state is called the **verified state**.
+  
+To get a sense of the complete transaction life cycle on X Layer, we recommend you to take a look at the [Transactions and data flow](/developer/learn-more/xlayer-protocol/transactions-n-data-flow "Transactions and data flow") document.
+
+<Tip title="Note">For more EVM and zkEVM related questions, you can visit [Polygon's EVM Equivalence FAQ](https://wiki.polygon.technology/docs/zkevm/faq/zkevm-eth-faq/ "Polygon's EVM Equivalence FAQ") and [General FAQ](https://wiki.polygon.technology/docs/zkevm/faq/zkevm-general-faq/ "General FAQ") for more info.</Tip>

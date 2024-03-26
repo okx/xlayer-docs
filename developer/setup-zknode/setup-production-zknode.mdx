@@ -1,5 +1,5 @@
 # Setup production zkNode
-X1 is now available on the Testnet for developers to launch smart contracts, execute transactions, and experiment with the network. This tutorial extends the exploration by allowing developers to launch their own node on the Public Testnet.
+X Layer is now available on the Testnet for developers to launch smart contracts, execute transactions, and experiment with the network. This tutorial extends the exploration by allowing developers to launch their own node on the Public Testnet.
 Before we begin, this document is fairly technical and requires prior exposure to Docker and CLI. Post spinning up your zkNode instance, you will be able to run the Synchronizer and utilize the JSON-RPC interface.
 
 ## Prerequisites
@@ -15,7 +15,7 @@ This tutorial assumes that you have docker-compose already installed. If you nee
 ### Network Components
 Here is a list of crucial network components that are required before you can run the zkNode:
 - Ethereum Node - Use geth or any service providing a JSON RPC interface for accessing the L1 network
-- X1-Node (or zkNode)  - L2 Network
+- X Layer-Node (or zkNode)  - L2 Network
   - Synchronizer - Responsible for synchronizing data between L1 and L2
   - JSON RPC Server - Interface to L2 network 
   - State DB - Save the L2 account, block and tx data.
@@ -34,43 +34,43 @@ Let's start setting up our zkNode:
 
 1. Download the installation script
 ``` bash
-mkdir -p ./x1-node && cd ./x1-node
+mkdir -p ./xlayer-node && cd ./xlayer-node
 
-wget https://static.okex.org/cdn/chain/x1/snapshot/run_x1_testnet.sh && chmod +x run_x1_testnet.sh && ./run_x1_testnet.sh init && cp ./testnet/example.env ./testnet/.env
+wget https://static.okex.org/cdn/chain/xlayer/snapshot/run_xlayer_testnet.sh && chmod +x run_xlayer_testnet.sh && ./run_xlayer_testnet.sh init && cp ./testnet/example.env ./testnet/.env
 ```
 
 2. The example.env file must be modified according to your configurations. Edit the .env file with your favourite editor (we'll use vim in this guide): `vim ./testnet/.env`
 
 ``` bash
 # URL of a JSON RPC for Sepolia
-X1_NODE_ETHERMAN_URL = "http://your.L1node.url"
+XLAYER_NODE_ETHERMAN_URL = "http://your.L1node.url"
 
 # PATH WHERE THE STATEDB POSTGRES CONTAINER WILL STORE PERSISTENT DATA
-X1_NODE_STATEDB_DATA_DIR = "./x1_testnet_data/statedb"
+XLAYER_NODE_STATEDB_DATA_DIR = "./xlayer_testnet_data/statedb"
 
 # PATH WHERE THE POOLDB POSTGRES CONTAINER WILL STORE PERSISTENT DATA
-X1_NODE_POOLDB_DATA_DIR = "/x1_testnet_data/pooldb"
+XLAYER_NODE_POOLDB_DATA_DIR = "/xlayer_testnet_data/pooldb"
 ```
 
 3. Restore the latest L2 snapshot  locally database for synchronizing  L2 data quickly.
 ``` bash
-./run_x1_testnet.sh restore 
+./run_xlayer_testnet.sh restore 
 ```
 
 ## Starting
 Use the below command to start the zkNode instance:
 ``` bash
-./run_x1_testnet.sh start
+./run_xlayer_testnet.sh start
 
 docker ps -a
 ```
 
 You will see a list of the following containers :
-  - x1-rpc
-  - x1-sync
-  - x1-state-db
-  - x1-pool-db
-  - x1-prover
+  - xlayer-rpc
+  - xlayer-sync
+  - xlayer-state-db
+  - xlayer-pool-db
+  - xlayer-prover
 
 You should now be able to run queries to the JSON-RPC endpoint at http://localhost:8545.
 Run the following query to get the most recently synchronized L2 block; if you call it every few seconds, you should see the number grow:
@@ -81,18 +81,18 @@ curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","metho
 ## Stopping
 Use the below command to stop the zkNode instance:
 ``` bash
-./run_x1_testnet.sh stop
+./run_xlayer_testnet.sh stop
 ```
 
 ## Restarting
 Use the below command to stop the zkNode instance:
 ``` bash
-./run_x1_testnet.sh restart
+./run_xlayer_testnet.sh restart
 ```
 ## Updating
 To update the zkNode software, run the below command, and the file ```./testnet/.env``` will be retained, the other config will be deleted.
 ``` bash
-./run_x1_testnet.sh update
+./run_xlayer_testnet.sh update
 ```
 
 ## Troubleshooting

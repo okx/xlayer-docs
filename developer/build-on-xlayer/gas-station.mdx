@@ -1,0 +1,38 @@
+# Gas station
+X Layer gas station aims to help dApp developers by suggesting gas prices before they send transactions on the X Layer network. 
+It's now on the X Layer testnet, checking 1500 recent transactions for price recommendations.
+
+## Usage
+Send a GET request to the [X Layer Gas Station endpoint](https://testrpc.xlayer.tech/gasstation "X Layer Gas Station endpoint") to get a gas price recommendation from this oracle.
+
+### cURL
+```shell
+curl https://testrpc.xlayer.tech/gasstation
+```
+
+### JavaScript
+```javascript
+fetch('https://testrpc.xlayer.tech/gasstation')  .then(response => response.json())  .then(json => console.log(json))
+```
+
+### Python
+```python
+import requestsrequests.get('https://testrpc.xlayer.tech/gasstation').json()
+```
+
+## Interpretation
+An example JSON response will look like this:
+```json
+{
+        "safeLow": 1,
+        "standard": 1,
+        "fast": 1,
+        "fastest": 1,
+        "blockTime": 2,
+        "blockNumber": 308789
+}
+```
+
+- `safelow`, `standard`, `fast`, `fastest` are gas prices in Gwei. Feel free to utilize these prices according to your requirements before submitting the transaction to the X Layer testnet.
+- `blockTime`, in seconds, gives the average block time of the network.
+- `blockNumber` furnishes details about the most recent mined block at the time the recommendation was generated.

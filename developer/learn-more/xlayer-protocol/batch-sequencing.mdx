@@ -1,0 +1,96 @@
+# Batch sequencing
+Once we have batches of transactions, they are ready to be sequenced. The sequencer will call the L1 [ZkEVM.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/consensus/validium/PolygonValidiumEtrog.sol "ZkEVM.sol") contract's `sequencedBatches` function and provide it with multiple batches of transactions. It is basically a storage structure that holds the queue of sequences defining the virtual state.
+```solidity
+// SequenceBatchNum --> SequencedBatchData
+mapping(uint64 => SequencedBatchData) public sequencedBatches;
+```
+In order to get sequenced, batches need to be included in the array of batches. To do this, the trusted sequencer invokes `ZkEVM.sol` contract's `sequencedBatches` and takes an array of batches as an argument. Please see the code snippet below:
+```solidity
+function sequenceBatches ( 
+    BatchData[] memory batches
+) public ifNotEmergencyState onlyTrustedSequencer
+```
+The figure below shows how a sequence of batches is organized:
+
+![Sequence of Batches](./img/sequence-of-batches.png)
+
+## Contract constraints
+With the [validium](https://ethereum.org/en/developers/docs/data-availability/ "validium") mode, the contract has the following limits:
+- `signaturesAndAddrs` byte array containing the signatures and all the addresses of the committee in ascending order * [signature 0, ..., signature requiredAmountOfSignatures -1, address 0, ... address N]
+- `transactionsHash` is the hash of transactions data, while the `transactions` will be set nil.
+
+With the [rollup](https://ethereum.org/en/developers/docs/data-availability/ "rollup") mode,  the contract has the following two public constants:
+
+- **Max transactions byte length**: determines the maximum number of transactions that can be included in a batch (300,000)
+- **Max verify batches**: limits a sequence to a maximum of 1,000 batches, and the batch array must contain at least one batch
+
+Only the trusted sequencer's Ethereum account can access the `sequencedBatches` mapping. It is also necessary that the contract not be in an emergency state.
+
+**The function call will be reverted if the above conditions are not met.**
+
+## Batch validity & L2 state integrity
+The `sequencedBatches` function iterates over every batch of the sequence, checking its validity. A valid batch must meet the following criteria:
+- It must include a `globalExitRoot` value that is present in the **GlobalExitRootMap** of the bridge's L1 [ZkEVMGlobalExitRoot.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/PolygonZkEVMGlobalExitRootV2.sol "ZkEVMGlobalExitRoot.sol") contract. A batch is valid only if it includes a valid `globalExitRoot`.
+- The length of the transaction's byte array must be less than the value of **MAX_TRANSACTIONS_BYTE_LENGTH** constant.
+- The timestamp of the batch must be greater or equal to that of the last batch sequenced, but less than or equal to the timestamp of the block where the sequencing L1 transaction is executed. All batches must be ordered by time.
+
+If one batch is not valid, the transaction reverts, meaning the whole sequence will be discarded. On the other hand, if all batches to be sequenced are valid, the sequencing process will continue.
+
+A storage variable named `lastBatchSequenced` is used to count and assign specific index numbers to each batch in the batch chain. This helps establish their positions in the batch chain. 
+
+To ensure the integrity of the batch chain, a similar hashing mechanism is employed as seen in blockchains, linking each batch to the one that follows. This includes the previous batch's digest in the calculation of the next batch's digest. Consequently, a batch's digest is essentially an accumulated hash of all the previously sequenced batches, referred to as `oldAccInputHash` for the previous and `newAccInputHash` for the current one.
+An accumulated hash of a specific batch has the following structure:
+```solidity
+keccak256 ( 
+    abi.encodePacked (
+        bytes32 oldAccInputHash, 
+        keccak256(bytes transactions), 
+        bytes32 globalExitRoot ,
+        uint64 timestamp ,
+        address seqAddress
+    )
+)
+```
+Where:
+- `oldAccInputHash` is the accumulated hash of the previous sequenced batch
+- `keccack256(transactions)` is the keccak digest of the transactions byte array
+- `globalExitRoot` is the root of the bridge's global exit Merkle tree
+- `timestamp` is the batch timestamp
+- `seqAddress` is the address of the batch sequencer
+
+![Batch hashes](./img/batch-hashes.png)
+
+As shown in the diagram above, each accumulated input hash ensures the integrity of the current batch's data (i.e., `transactions`, `timestamp`, and `globalExitRoot`, as well as the order in which they were sequenced.)
+
+<Tip title="Note">Any change in the batch chain that causes all future accumulated input hashes to be incorrect, would indicate a lack of integrity in the resulting L2 state.</Tip>
+
+The batch sequence is added to the `sequencedBatches` mapping using the following `SequencedBatchData` struct only after the validity of all batches in a sequence has been verified and the accumulated hash of each batch has been computed.
+```solidity
+struct SequencedBatchData {
+    bytes32 accInputHash;
+    uint64 sequencedTimestamp;
+    uint64 previousLastBatchSequenced;
+}
+```
+Where:
+- `accInputHash` is the batch's unique cryptographic fingerprint of the last batch in the sequence
+- `sequencedTimestamp` is the timestamp of the block where the sequencing L1 transaction is executed
+- `previousLastBatchSequenced` is the index of the last sequenced batch before the first batch of the current sequence (i.e., the last batch of the previous sequence)
+
+The index number of the last batch in the sequence is used as key and the `SequencedBatchData` struct is used as a value for when the sequence is entered into `sequencedBatches` mapping.
+
+## BatchData minimal storage
+To minimize costly storage operations on L1, **storage slots** are primarily employed for sequence commitments. Each slot records two batch indices:
+- last batch of the previous sequence as a value of `SequencedBatchData` struct
+- last batch of the current sequence as a mapping key
+These entries also include the accumulated hash of the last batch in the current sequence and a timestamp.
+
+<Tip title="Note">Only the accumulated hash of the final batch in the sequence is stored; the others are computed on-demand to reach the last one.</Tip>
+
+Batch indices provide additional information about the number of batches in the sequence and their positions. The timestamp marks when the sequence occurred.
+The Data Availability of L2 transactions is ensured because the data for each batch can be reconstructed from the calldata of the sequencing transaction, which is not part of the contract storage but is recorded in the L1 state.
+Finally, a `SequenceBatches` event will be emitted:
+```solidity
+event SequenceBatches (uint64 indexed numBatch)
+```
+Once batches are successfully sequenced on L1, all zkEVM nodes can sync their local L2 state directly from the L1 `ZkEVM.sol` contract, reducing reliance on the trusted sequencer and reaching the L2 virtual state.

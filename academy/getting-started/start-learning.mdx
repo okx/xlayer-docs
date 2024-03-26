@@ -1,0 +1,32 @@
+
+# Getting started
+
+## Objectives
+At the end of this guide, you should be able to:
+
+-   Explain what a layer 2 blockchain is.
+-   Learn more about ERC-20 tokens and use cases.
+-   Explain the rationale behind the utilization of Solidity for crafting smart contracts.
+-   Provide a summary of the historical development and the rate of evolution of Solidity, highlighting its strengths and weaknesses.
+-   Deploy an ERC-20 token using Remix.
+
+
+## Introduction to layer 2 blockchains
+
+Scalability has been a persistent challenge within Layer 1 blockchains, hindering their ability to handle a growing volume of transactions efficiently. As blockchain networks like Ethereum and Bitcoin face limitations in transaction throughput and confirmation times, the need for scaling solutions becomes paramount. Layer 2 blockchains emerge as [scaling solutions](https://ethereum.org/developers/docs/scaling) to address these scalability issues.
+
+Layer 2 solutions are designed to augment the capabilities of Layer 1 blockchains by moving some of the transaction processing off-chain. This enables faster and more cost-effective transactions without compromising the security and decentralization inherent to Layer 1.
+
+Three prominent Layer 2 solutions are Optimistic Rollups and zk-rollups, and Validiums, each offering unique approaches to enhance scalability.
+
+-   Optimistic Rollups: This approach relies on an optimistic execution of smart contracts, allowing transactions to occur off-chain and later be reconciled on the main blockchain. By assuming most transactions are valid, Optimistic Rollups significantly reduce the computational load and improve overall transaction throughput.
+    
+
+-   [ZK-Rollups](https://chain.link/education-hub/zero-knowledge-rollup) (Zero-Knowledge Rollups): Employing advanced cryptographic techniques, zk-rollups ensure the validity of transactions without revealing the specific details. This not only enhances privacy but also provides a scalable solution by compressing transaction data, reducing the burden on Layer 1.
+    
+
+-   Validiums are scaling solutions that use off-chain data availability and computation designed to improve throughput by processing transactions off the Ethereum mainnet. Like ZK-Rollups (Zero-Knowledge Rollups), validiums publish zero-knowledge proofs to verify off-chain transactions on Ethereum. This prevents invalid state transitions and enhances the security guarantees of a validium chain. Validium distinguishes itself by placing a strong emphasis on privacy and confidentiality, making it a compelling solution for various decentralized applications. An example of such a Layer 2 blockchain is [X Layer](https://www.okx.com/xlayer/docs/developer/build-on-xlayer/quickstart).
+    
+    
+
+Learn more about X Layer [here](https://www.okx.com/xlayer/docs/developer/build-on-xlayer/quickstart).

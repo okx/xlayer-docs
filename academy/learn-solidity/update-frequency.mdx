@@ -1,0 +1,13 @@
+
+# Update Frequency
+
+The dynamic and rapidly evolving nature of Solidity development contributes significantly to the necessity for specifying versions when compiling code. The Solidity language experiences frequent updates, and not all changes are backward-compatible. This rapid pace of development introduces potential incompatibilities between different versions of the language.
+
+To address this challenge, developers need to explicitly indicate the Solidity version when compiling their code. This ensures that the compiler understands which set of rules and features to apply when converting the Solidity code into bytecode. By specifying the version, developers can mitigate the risk of unintended consequences that may arise from using an incompatible compiler version.
+
+```
+/ / SPDX-License-Identifier: UNLICENSED
+
+pragma solidity ^0.8.17;
+```
+Refer to [changelog](https://github.com/ethereum/solidity/blob/develop/Changelog.md) to review some of the recent updates and fixes.

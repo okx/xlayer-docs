@@ -1,0 +1,117 @@
+# Bridge to X Layer
+You can use [ZkEVM Bridge Contract](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/PolygonZkEVMBridgeV2.sol "ZkEVM Bridge Contract") to bridge assets like ETH, OKB, and ERC-20 tokens between L1 and L2. However, there are a few points to note:：
+- ETH is the native token of L1 (Ethereum). After bridging to L2 X Layer, it becomes a Wrapped ETH (WETH) ERC-20 token.
+- OKB is an ERC-20 token of L1 (Ethereum). After bridging to L2 X Layer, it becomes a native token.
+- Other ERC-20 tokens, which are bridged to the other side, remain ERC-20 tokens. You can calculate the new ERC-20 address by using the `precalculatedWrapperAddress` method.
+- There are no restrictions if you are bridging ERC-20 tokens from L1 to L2. However, there is a whitelist restriction when bridging assets from L2 to L1. 
+
+<Tip title="Note">If you want to request L2 to L1 token whitelisting, you can join our [X Layer Discord server](https://discord.gg/x1-network "X Layer Discord server"), and navigate to `#support-tickets` to raise whitelising request.</Tip>
+
+The mapping list for OKB and ETH is as follows:
+|ERC-20 Token|Testnet|Mainnet|
+|:----|:----|:----|
+|OKB|[0x3F4B6664338F23d2397c953f2AB4Ce8031663f80](https://sepolia.etherscan.io/address/0x3F4B6664338F23d2397c953f2AB4Ce8031663f80 "0x3F4B6664338F23d2397c953f2AB4Ce8031663f80") (L1 Ethereum Sepolia)|[0x75231f58b43240c9718dd58b4967c5114342a86c](https://etherscan.io/address/0x75231f58b43240c9718dd58b4967c5114342a86c "0x75231f58b43240c9718dd58b4967c5114342a86c") (L1 Ethereum)|
+|WETH|[0xBec7859BC3d0603BeC454F7194173E36BF2Aa5C8](https://www.okx.com/explorer/xlayer-test/address/0xBec7859BC3d0603BeC454F7194173E36BF2Aa5C8 "0xBec7859BC3d0603BeC454F7194173E36BF2Aa5C8") (L2 X Layer testnet)|Will be available after mainnet launch (L2 X Layer mainnet)|
+
+## Deposit OKB and ERC-20 tokens from L1
+The ZkEVM bridge contract allows ETH and ERC-20 token bridging from L1 to L2 using the bridgeAsset function. Notice that ERC-20 tokens will have a different address on L2. You can use the precalculatedWrapperAddress function to query the new address in [ZkEVMBridgeContract.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/PolygonZkEVMBridgeV2.sol "ZkEVMBridgeContract.sol") contract
+
+### bridgeAsset
+Deposit and add a new leaf to the Merkle tree:
+```solidity
+  function bridgeAsset(
+    uint32 destinationNetwork,
+    address destinationAddress,
+    uint256 amount,
+    address token,
+    bool forceUpdateGlobalExitRoot,
+    bytes permitData
+  ) public
+```
+**Parameters**
+|Name|Type|Description|
+|:----|:----|:----|
+|`destinationNetwork`|uint32|Network destination|
+|`destinationAddress`|address|Address destination|
+|`amount`|uint256|Amount of tokens|
+|`token`|address|Token address, 0 address is reserved for ETH|
+|`forceUpdateGlobalExitRoot`|bool|Indicates if the new global exit root is updated or not|
+|`permitData`|bytes|Raw data of the call `permit` of the token|
+
+### precalculatedWrapperAddress
+This returns the precalculated address of a wrapper using the token information.
+Note: Updating the metadata of a token is not supported.
+Since the metadata has relevance in the address deployed, this function will not return a valid wrapped address if the metadata provided is not the original one.
+```solidity
+function precalculatedWrapperAddress(
+    uint32 originNetwork,
+    address originTokenAddress,
+    string name,
+    string symbol,
+    uint8 decimals
+  ) external returns (address)
+```
+**Parameters**
+|Name|Type|Description|
+|:----|:----|:----|
+|`originNetwork`|uint32|Origin network|
+|`originTokenAddress`|address|Origin token address, 0 address is reserved for ETH|
+|`name`|string|Name of the token|
+|`symbol`|string|Symbol of the token|
+|`decimals`|uint8|Decimals of the token|
+
+## Withdrawing OKB and ERC-20 tokens from L2
+You can use the `claimAsset` method to retrieve assets on L2. Calling this method on L2 incurs no Gas fees, so the official bridge service will be provided to automatically invoke the `claimAsset` method for you.
+
+### claimAsset
+```solidity
+ function claimAsset(
+    bytes32[_DEPOSIT_CONTRACT_TREE_DEPTH] calldata smtProofLocalExitRoot,
+    bytes32[_DEPOSIT_CONTRACT_TREE_DEPTH] calldata smtProofRollupExitRoot,
+    uint256 globalIndex,
+    bytes32 mainnetExitRoot,
+    bytes32 rollupExitRoot,
+    uint32 originNetwork,
+    address originTokenAddress,
+    uint32 destinationNetwork,
+    address destinationAddress,
+    uint256 amount,
+    bytes calldata metadata
+  ) external
+```
+**Parameters**
+|Name|Type|Description|
+|:----|:----|:----|
+|`smtProofLocalExitRoot`|bytes32[32]| Smt proof to proof the leaf against the network exit root|
+|`smtProofRollupExitRoot`|bytes32[32]| Smt proof to proof the rollupLocalExitRoot against the rollups exit root |
+|`globalIndex`|uint32|Index of the leaf|
+|`mainnetExitRoot`|bytes32|Mainnet exit root|
+|`rollupExitRoot`|bytes32|Rollup exit root|
+|`originNetwork`|uint32|Origin network|
+|`originTokenAddress`|address|Origin token address, 0 address is reserved for ETH|
+|`destinationNetwork`|uint32|Network destination|
+|`destinationAddress`|address|Address destination|
+|`amount`|uint256`|Amount of tokens|
+|`metadata`|bytes|Abi encoded metadata if any, empty otherwise|
+
+# Bridge to Ethereum
+## Creating an ERC-20 token with custom logic on X  (L2)
+ERC-20 is the technical standard for fungible tokens created using the Ethereum blockchain. A fungible token is interchangeable with another token — whereas the well-known non-fungible tokens (NFTs) are not interchangeable.
+You can read more information about ERC-20 [here](https://ethereum.org/en/developers/docs/standards/tokens/erc-20/ "here").
+Deploy a simple ERC-20 contract with any of the tools like [Truffle](/developer/smart-contract/deploy-with-truffle "Truffle"), [Hardhat](/developer/smart-contract/deploy-with-hardhat "Hardhat"), or [Foundry](/developer/smart-contract/deploy-with-foundry "Foundry"). This contract is implemented based on the open-source library, which can be found at [OpenZeppelin](https://www.openzeppelin.com/contracts# "OpenZeppelin").
+```go
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.9;
+
+import "@openzeppelin/contracts@4.9.3/token/ERC20/ERC20.sol";
+
+contract MyToken is ERC20 {
+    constructor() ERC20("MyToken", "MTK") {}
+}
+```
+
+## Depositing OKB and ERC-20 tokens from L2
+The same bridge contract is used on both L1 and L2, so the interface definition is identical.
+
+
+<Tip title="Note">Claiming assets on Ethereum will consume gas fees and is not free.</Tip>

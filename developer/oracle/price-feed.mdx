@@ -1,5 +1,5 @@
 # Price feed
-[X1 Oracle](https://www.okx.com/x1/oracle "X1 Oracle") price feeds is the quickest way to connect your smart contracts to the real-world market prices of crypto assets.
+[X Layer Oracle](https://www.okx.com/xlayer/oracle "X Layer Oracle") price feeds is the quickest way to connect your smart contracts to the real-world market prices of crypto assets.
 
 For example, one use case for data feeds is to enable smart contracts to retrieve the latest pricing data for a crypto asset in a single call.
 
@@ -7,11 +7,11 @@ For example, one use case for data feeds is to enable smart contracts to retriev
 
 Import this interface to your contract and use it to run functions in the proxy contract. Create the interface object by pointing to the proxy address.
 
-For example, on X1 testnet you could create the interface object in the constructor of your contract using the following example:
+For example, on X Layer testnet you could create the interface object in the constructor of your contract using the following example:
 
 ```solidity
 /**
- * Network: X1 testnet
+ * Network: X Layer testnet
  * Address: 0x64481ebfFe69d688d754e09918e82C89D8Da2507
  */
  constructor() {
@@ -141,7 +141,7 @@ contract Demo {
 ```
 
 
-## X1 testnet Oracle contract address
+## X Layer testnet Oracle contract address
 | Name | Address |
 | - | - |
 | Oracle  |0x64481ebfFe69d688d754e09918e82C89D8Da2507|
@@ -151,14 +151,14 @@ contract Demo {
 ## Available feeds & refresh frequency
 We collect data from trusted data sources (OKX, Coinbase, Kraken, CoinGecko, CoinMarketCap, CryptoCompare, etc.) and publish it to our on-chain Oracle smart contracts through a robust pipeline.
 
-To ensure accurate data is fed to the smart contracts in a timely manner, X1 Oracle will feed the price to the smart contracts in regards to two parameters: `deviation threshold` and `heartbeat threshold`:
+To ensure accurate data is fed to the smart contracts in a timely manner, X Layer Oracle will feed the price to the smart contracts in regards to two parameters: `deviation threshold` and `heartbeat threshold`:
 
 | Parameter | Description |
 | - | - |
 | Deviation threshold | The deviation of real-world data beyond a certain interval triggers all the nodes to update. |
 | Heartbeat threshold | If the data values stay within the deviation parameters, it will only trigger an update every x minutes/seconds. |
 
-The list shown below represents X1 testnet Oracle price feeds:
+The list shown below represents X Layer testnet Oracle price feeds:
 
 | Pair | Assets |  Decimals | Deviation threshold(%)| Heartbeat threshold(s) |
 | - | - |-|-|-|

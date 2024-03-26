@@ -1,0 +1,8 @@
+
+# Contract Size Limit
+
+Understanding the contract size limit is crucial for Ethereum developers as it directly impacts the deployment and functionality of smart contracts on the blockchain. EIP-170, a pivotal Ethereum Improvement Proposal, set a compiled byte-code size limit of 24 KiB (24,576 B) for Ethereum Smart Contracts. This restriction is significantly smaller than what developers might be accustomed to, and it imposes constraints that necessitate a shift in perspective when designing and deploying contracts.
+
+This byte-code size limit doesn't have a precise correlation to the number of lines of Solidity code. Developers find themselves working within the confines of deploying contracts that typically range from 300 to 500 lines of Solidity code. The compact nature of the byte-code limit requires careful consideration of code efficiency and optimization to stay within the prescribed size boundaries.
+
+To address the challenges posed by this limitation, developers can explore various strategies. One approach involves contracts exposing their functions to be invoked by other contracts, albeit with an associated additional cost. This allows for the creation of a network of contracts designed to collaboratively perform tasks. Additionally, developers can leverage pre-deployed contracts by others, providing a modular and efficient way to reuse code. More advanced solutions, such as EIP-2535, offer further alternatives to navigate and overcome the constraints imposed by the contract size limit. These considerations highlight the importance of strategic coding practices and the exploration of innovative solutions within the Ethereum ecosystem.

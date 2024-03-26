@@ -1,9 +1,9 @@
 # Flow of assets
-The X1 bridge is a decentralized bridge that enables users to securely transfer assets between L1 and L2. Here's how it works:
+The X Layer bridge is a decentralized bridge that enables users to securely transfer assets between L1 and L2. Here's how it works:
 1. To bridge an asset from L1 to L2, the user must lock the asset in L1. The **L2 bridge smart contract** will then mint a wrapped token in L2, representing an equivalent value of the asset. After the minting process is finished, the user or recipient can claim the asset in L2.
 2. In the opposite operation, after burning the wrapped token in L2, the **L1 bridge smart contract** unlocks the original asset in L1.
 
-![Bridge Asset L1 across L2](./img/bridge-asset-l1-l2.png)
+![Bridge Asset L1 across L2](./img/bridge-asset-l1-l2.jpg)
 
 Asset transferring is enabled by three smart contracts: 
 - The bridge smart contract (`ZkEVMBridge.sol`)
@@ -11,9 +11,9 @@ Asset transferring is enabled by three smart contracts:
 - The consensus contract (`ZkEVM.sol`)
 
 Please refer to the previous document for more detailed information: 
-<Card mainTitle="X1 bridge smart contracts" subTitle='Smart contracts for asset transfer' link="./asset-transfer"/>
+<Card mainTitle="X Layer bridge smart contracts" subTitle='Smart contracts for asset transfer' link="./asset-transfer"/>
 
-## Flow of assets in X1 bridge
+## Flow of assets in X Layer bridge
 ### Asset flow from L1 → L2
 1. The `Bridge` function of the zkEVM bridge smart contract (`ZkEVMBridge.sol`) on the L1 network is invoked. If the bridge request is valid, the bridge smart contract appends an exit leaf to the L1 exit tree and computes the new L1 exit tree root.
 2. The Global Exit Root Manager (`ZkEVMGlobalExitRoot.sol`) appends the new L1 exit tree root to the global exit tree and computes the global exit root.
@@ -34,4 +34,4 @@ Please refer to the previous document for more detailed information:
 7. The bridge smart contract retrieves the global exit root from the L1 Global Exit Root Manager smart contract and verifies validity of the Merkle proof. If the Merkle proof is valid, the bridge smart contract successfully completes the bridging process. Otherwise, the transaction is reverted.
 
 <Tip title="Note">The architecture shown in the diagram below is simplified, emphasizing the connection between different bridge elements. 
-It doesn't include the interaction between the consensus contract and the sequencer, which is discussed in more detail in earlier subsections of this documentation, particularly in the [consensus contract](https://github.com/okx/x1-contracts/blob/release/v0.1.0/contracts/PolygonZkEVM.sol "consensus contract") section.</Tip>
+It doesn't include the interaction between the consensus contract and the sequencer, which is discussed in more detail in earlier subsections of this documentation, particularly in the [consensus contract](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/consensus/validium/PolygonValidiumEtrog.sol "consensus contract") section.</Tip>
