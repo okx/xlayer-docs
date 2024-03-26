@@ -22,7 +22,7 @@ Before you begin using RPC endpoints on X Layer, it's important to read the rele
 To start the HTTP JSON-RPC, curl method is recommended:
 ```shell
 # mainnet
-Will be available after mainnet launch
+curl -X POST --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' -H "Content-Type: application/json" https://rpc.xlayer.tech
 # testnet
 curl -X POST --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' -H "Content-Type: application/json" https://testrpc.xlayer.tech
 ```
