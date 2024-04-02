@@ -15,7 +15,7 @@ module.exports = {
     solidity: "0.8.19",
     networks: {
         xlayer: {
-            url: "https://testrpc.xlayer.tech",
+            url: "https://testrpc.xlayer.tech", #or https://rpc.xlayer.tech for mainnet
             accounts: [process.env.PRIVKEY]
         }
     },
@@ -24,10 +24,10 @@ module.exports = {
         customChains: [
             {
                 network: "xlayer",
-                chainId: 195,
+                chainId: 195, #196 for mainnet
                 urls: {
-                    apiURL: "https://www.oklink.com/api/explorer/v1/contract/verify/async/api/xlayer_test",
-                    browserURL: "https://www.oklink.com/xlayer-test"
+                    apiURL: "https://www.oklink.com/api/explorer/v1/contract/verify/async/api/xlayer_test", #or https://www.oklink.com/api/explorer/v1/contract/verify/async/api/xlayer for mainnet
+                    browserURL: "https://www.oklink.com/xlayer-test" #or https://www.oklink.com/xlayer for mainnet
                 }
             }
         ]
