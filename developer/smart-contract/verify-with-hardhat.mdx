@@ -26,7 +26,7 @@ module.exports = {
                 network: "xlayer",
                 chainId: 195, #196 for mainnet
                 urls: {
-                    apiURL: "https://www.oklink.com/api/explorer/v1/contract/verify/async/api/xlayer_test", #or https://www.oklink.com/api/explorer/v1/contract/verify/async/api/xlayer for mainnet
+                    apiURL: "https://www.oklink.com/api/explorer/v1/contract/verify/async/api/xlayer_testnet", #or https://www.oklink.com/api/v5/explorer/contract/verify-source-code-plugin/XLAYER for mainnet
                     browserURL: "https://www.oklink.com/xlayer-test" #or https://www.oklink.com/xlayer for mainnet
                 }
             }
@@ -40,12 +40,12 @@ Replace `process.env.PRIVKEY` with your own deployment address's private key, an
 ```javascript
 hh run scripts/deploy.js --network xlayer
 ```
-![Verify with Hardhat 1](./img/verify-hardhat-1.png)
+![Verify with Hardhat 1](./img/verify-with-hardhat-1.png)
 
 4. Wait for one to two minutes, and then verify the contract by running the following command and specifying the contract file you want to verify.
 ```javascript
 hh verify --contract contracts/Lock.sol:Lock <address> <unlock time> --network xlayer
 ```
-![Verify with Hardhat 2](./img/verify-hardhat-2.png)
+![Verify with Hardhat 2](./img/verified-hardhat-2.png)
 
-5. Check if the contract has been successfully verified by visiting https://www.oklink.com/xlayer-test/address/0xa6Ae4dc27a7a9fa2D26BC7CeFBd41Db406553fC8#code
+5. Check if the contract has been successfully verified by visiting  [here](https://www.oklink.com/xlayer-test/address/0xa6Ae4dc27a7a9fa2D26BC7CeFBd41Db406553fC8#code/ "Testnet OKLink") for testnet, or [here](https://www.oklink.com/xlayer/address/0x21F2018Fe98f49C15Fab002f3D4cFBE9D6EeA88b#code "Mainnet OKLink") for mainnet.
