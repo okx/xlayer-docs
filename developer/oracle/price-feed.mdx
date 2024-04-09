@@ -1,182 +1,241 @@
 # Price feed
-[X Layer Oracle](https://www.okx.com/xlayer/oracle "X Layer Oracle") price feeds is the quickest way to connect your smart contracts to the real-world market prices of crypto assets.
+You can use X Layer data feeds to connect your smart contracts to asset pricing data such as the `BTC/USD`. These data feeds use data aggregated from many independent data sources. Each price feed has an onchain address and functions that enable contracts to read pricing data from that address.
+## Using data feeds
+The code for reading Data Feeds is the same across all EVM-compatible blockchains and Data Feed types. You choose different types of feeds for different uses, but the request and response format are the same. To read a feed, specify the following variables:
+- RPC endpoint URL: This determines which network that your smart contracts will run on. You can use a node provider service or point to your own client. If you are using a Web3 wallet, it is already configured with the RPC endpoints for several networks and the Remix IDE will automatically detect them for you.
+- Price feed contract address: This determines which data feed your smart contract will read on X Layer mainnet or testnet.
+The examples in this document indicate these variables, but you can modify the examples to work on different networks and read different feeds.
 
-For example, one use case for data feeds is to enable smart contracts to retrieve the latest pricing data for a crypto asset in a single call.
+The following guide will show an example that reads data feeds using the following languages:
+- Onchain consumer contracts:
+  - Solidity
+  - Vyper
 
-## Price feeds API reference
+## Reading data feeds onchain
+  These code examples demonstrate how to deploy a consumer contract onchain that reads a data feed and stores the value.
+## Solidity
+To consume price data, your smart contract should reference **AggregatorV3Interface**, which defines the external functions implemented by data feeds.
 
-Import this interface to your contract and use it to run functions in the proxy contract. Create the interface object by pointing to the proxy address.
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
 
-For example, on X Layer testnet you could create the interface object in the constructor of your contract using the following example:
-
-```solidity
 /**
- * Network: X Layer testnet
- * Address: 0x64481ebfFe69d688d754e09918e82C89D8Da2507
+ * Aggregator Interface that is compatible with Chainlink's AggregatorV3Interface
  */
- constructor() {
-    priceFeed = ExOraclePriceDataInterface(0x64481ebfFe69d688d754e09918e82C89D8Da2507);
+interface AggregatorV3Interface {
+    function decimals() external view returns (uint8);
+
+    function description() external view returns (string memory);
+
+    function version() external view returns (uint256);
+
+    function getRoundData(
+        uint80 _roundId
+    )
+        external
+        view
+        returns (
+            uint80 roundId,
+            int256 answer,
+            uint256 startedAt,
+            uint256 updatedAt,
+            uint80 answeredInRound
+        );
+
+    function latestRoundData()
+        external
+        view
+        returns (
+            uint80 roundId,
+            int256 answer,
+            uint256 startedAt,
+            uint256 updatedAt,
+            uint80 answeredInRound
+        );
+}
+
+contract DataConsumer {
+    AggregatorV3Interface internal dataFeed;
+
+    /**
+     * Network: XLayer Testnet
+     * Aggregator: WBTC/USD
+     * Address: 0x03e29FB6DBb5e0600AD062e5F80Cf50e651571B3
+     */
+
+    constructor() {
+        dataFeed = AggregatorV3Interface(
+            0x03e29FB6DBb5e0600AD062e5F80Cf50e651571B3
+        );
     }
+
+    function getWbtcFeedLatestAnswer() public view returns (int256) {
+        // prettier-ignore
+        (
+            /* uint80 roundID */,
+            int answer,
+            /*uint startedAt*/,
+            /*uint timeStamp*/,
+            /*uint80 answeredInRound*/
+        ) = dataFeed.latestRoundData();
+        return answer;
+    }
+}
+
 ```
+## Vyper
+To use the price data, your smart contract should import `AggregatorV3Interface` which defines the external functions implemented by data feeds. You can find it [here](https://github.com/smartcontractkit/apeworx-starter-kit/blob/main/contracts/interfaces/AggregatorV3Interface.vy "Data feed smart contract"). You can also find a `PriceConsumer` example [here](https://github.com/smartcontractkit/apeworx-starter-kit/blob/main/contracts/PriceConsumer.vy "Price Consumer Contract"). Read the apeworx-starter-kit [README](https://github.com/smartcontractkit/apeworx-starter-kit "README") to learn how to run the example code.
 
-## Functions
-### latestRoundData
-Get the latest round data (the most recent data for a given price type and data source):
-```solidity
-function latestRoundData(string calldata priceType, address source) external view returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound);
-```
+## Using feed registry
+The feed registry is an onchain mapping of assets to feeds. It enables you to query data feeds from asset addresses directly, without needing to know the feed contract addresses. They enable smart contracts to get the latest price of an asset in a single call, from a single contract.
 
-**Parameters**
-- `priceType`: The priceType specifies which price to get, i.e., BTC. Please note that upper case letters must be used.
-- `source`: The source specifies which data source you want to get the price from, i.e., the address of OKX.
-
-**Returns**
-- `roundId`: is set to 0
-- `answer`: is the actual value of the priceType
-- `startedAt`: is set to 0
-- `updatedAt`: the timestamp when this answer is submitted to the Oracle
-- `answeredInRound`: is set to 0
-
-### get
-Read a single key from an authenticated source:
-```solidity
-function get(string calldata priceType, address source) external view returns (uint256 price, uint256 timestamp);
-```
-
-**Parameters**
-- `priceType`: The priceType specifies which price to get, i.e., BTC. Please note that upper case letters must be used.
-- `source`: The source specifies which data source you want to get the price from, i.e., the address of OKX.
-
-**Returns**
-- `price`: the value of the priceType
-- `timestamp`: timestamp of last updated
-
-
-### getOffchain
-Get the price data off-chain:
-```solidity
-function getOffchain(string calldata priceType, address source) external view returns (uint256 price, uint256 timestamp);
-```
-
-**Parameters**
-- `priceType`: The priceType specifies which price to get, i.e., BTC. Please note that upper case letters must be used.
-- `source`: The source specifies which data source you want to get the price from, i.e., the address of OKX.
-
-**Returns**
-- `price`: value of the priceType
-- `timestamp`: timestamp of last updated
-
-### getCumulativePrice
-Read a cumulative price from an authenticated source:
-```solidity
-function getCumulativePrice(string calldata priceType, address source) external view returns (uint256 cumulativePrice,uint32 timestamp);
-```
-
-**Parameters**
-- `priceType`: The priceType specifies which price to get, i.e., BTC. Please note that upper case letters must be used.
-- `source`: The source specifies which data source you want to get the price from, i.e., the address of OKX.
-
-**Returns**
-- `cumulativePrice`: cumulative price from an authenticated source
-- `timestamp`: timestamp of last updated
-
-
-### lastResponseTime
-The timestamp of the last data source response:
-```solidity
-function lastResponseTime(address source) external view returns (uint256);
-```
-
-**Parameters**
-- `source`: The source specifies which data source you want to get the price from, i.e., the address of OKX.
-
-**Returns**
-- `timestamp`: timestamp of last updated
+For a complete list of functions and parameters for the `FeedRegistryInterface`, see the [Feed Registry API Reference](https://docs.chain.link/data-feeds/feed-registry/feed-registry-functions "API Registry").
 
 ## Code example
-```solidity
-pragma solidity ^0.5.17;
-pragma experimental ABIEncoderV2;
+### Solidity
+To use the  price data from the feed registry, your smart contract should reference `FeedRegistryInterface`, which defines the external functions implemented by the feed registry.
 
-interface IExOraclePriceData
-{
-    function latestRoundData(string calldata priceType, address dataSource) external view returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound);
-    function get(string calldata priceType, address source) external view returns (uint256 price, uint256 timestamp);
-    function getOffchain(string calldata priceType, address source) external view returns (uint256 price, uint256 timestamp);
-    function getCumulativePrice(string calldata priceType, address source) external view returns (uint256 cumulativePrice,uint32 timestamp);
-    function lastResponseTime(address source) external view returns (uint256);
-}
-
-contract Demo {
-    address public exOracleAddress;
-    
-     /**
-     * Input an ExOracle contract address
-     */
-    constructor(address oracle) public {
-        exOracleAddress = oracle;
-    }
-    
-    /**
-     * @notice Read a single key from an authenticated source. 
-     * @param priceType The selector for the value to return
-     * @param source The verifiable author of the data
-     */
-    function getLatestPrice(string memory priceType, address source) public view returns (uint256) 
-    {
-        IExOraclePriceData oracle = IExOraclePriceData(exOracleAddress);
-        (uint256  value, uint256 timestamp) = oracle.get(priceType, source);
-        return value;
-    }
-    
-    /**
-    * @notice A specific example to get BTC-USD price
-    */
-    function getBtcPrice() public view returns (uint256) 
-    {
-        address dataSource = 0x6cf2a39d1c85adfb50da183060dc0d46529f3f9c;
-        return getLatestPrice("BTC", dataSource);
-    }
-}
 ```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
 
+interface IFeedRegistry {
+    // V3 AggregatorV3Interface
+    function decimals(
+        address base,
+        address quote
+    ) external view returns (uint8);
 
-## X Layer testnet Oracle contract address
-| Name | Address |
-| - | - |
-| Oracle  |0x64481ebfFe69d688d754e09918e82C89D8Da2507|
-| dataSource |0x6cf2a39d1c85adfb50da183060dc0d46529f3f9c|
+    function description(
+        address base,
+        address quote
+    ) external view returns (string memory);
 
+    function version(
+        address base,
+        address quote
+    ) external view returns (uint256);
 
-## Available feeds & refresh frequency
-We collect data from trusted data sources (OKX, Coinbase, Kraken, CoinGecko, CoinMarketCap, CryptoCompare, etc.) and publish it to our on-chain Oracle smart contracts through a robust pipeline.
+    function latestRoundData(
+        address base,
+        address quote
+    )
+        external
+        view
+        returns (
+            uint80 roundId,
+            int256 answer,
+            uint256 startedAt,
+            uint256 updatedAt,
+            uint80 answeredInRound
+        );
 
-To ensure accurate data is fed to the smart contracts in a timely manner, X Layer Oracle will feed the price to the smart contracts in regards to two parameters: `deviation threshold` and `heartbeat threshold`:
+    function getRoundData(
+        address base,
+        address quote,
+        uint80 _roundId
+    )
+        external
+        view
+        returns (
+            uint80 roundId,
+            int256 answer,
+            uint256 startedAt,
+            uint256 updatedAt,
+            uint80 answeredInRound
+        );
+}
 
-| Parameter | Description |
-| - | - |
-| Deviation threshold | The deviation of real-world data beyond a certain interval triggers all the nodes to update. |
-| Heartbeat threshold | If the data values stay within the deviation parameters, it will only trigger an update every x minutes/seconds. |
+contract PriceConsumer {
+    IFeedRegistry internal registry;
+    /**
+     * Following fiat currency standards of https://en.wikipedia.org/wiki/ISO_4217
+     */
+    address internal constant USD = address(840);
+    address internal constant WETH = 0x5A77f1443D16ee5761d310e38b62f77f726bC71c;
 
-The list shown below represents X Layer testnet Oracle price feeds:
+    /**
+     * Network: XLayer Mainnet
+     * Feed Registry: 0xfe3240995c771f10D2583e8fa95F92ee40E15150
+     * WETH: 0x5A77f1443D16ee5761d310e38b62f77f726bC71c
+     */
+    constructor() {
+        registry = IFeedRegistry(0xfe3240995c771f10D2583e8fa95F92ee40E15150);
+    }
 
-| Pair | Assets |  Decimals | Deviation threshold(%)| Heartbeat threshold(s) |
-| - | - |-|-|-|
-| BTC/USD | BTC |6|0.1|60|
-| DAI/USD | DAI |6|0.1|120|
-| ETH/USD | ETH |6|0.1|60|
-| LINK/USD | LINK |6|0.2|120|
-| OKB/USD | OKB |6|0.5|120|
-| SUSHI/USD | SUSHI |6|0.5|120|
-| USDC/USD | USDC |6|0.1|120|
-| USDT/USD | USDT |6|0.1|120|
-| UNI/USD | UNI |6|0.2|120|
+    /**
+     * Returns the WETH / USD price
+     */
+    function getWethUsdPrice() public view returns (int256) {
+        // prettier-ignore
+        (
+            /*uint80 roundID*/,
+            int price,
+            /*uint startedAt*/,
+            /*uint timeStamp*/,
+            /*uint80 answeredInRound*/
+        ) = registry.latestRoundData(WETH, USD);
+        return price;
+    }
 
+    /**
+     * Returns the latest price
+     */
+    function getPrice(address base, address quote) public view returns (int) {
+        // prettier-ignore
+        (
+            /*uint80 roundID*/,
+            int price,
+            /*uint startedAt*/,
+            /*uint timeStamp*/,
+            /*uint80 answeredInRound*/
+        ) = registry.latestRoundData(base, quote);
+        return price;
+    }
+}
 
+```
+## Price feed contract addresses
 
+To ensure accurate data is fed to the smart contracts in a timely manner, X Layer oracle will feed the price to the smart contracts in regards to two parameters: deviation threshold and heartbeat threshold:
 
+- **Deviation threshold**: The deviation of crypto price data beyond a certain interval triggers smart contracts to update. 
+- **Heartbeat threshold**: If the data values stay within the deviation parameters, it will only trigger an update every x minute.
 
+## Fiat currency standard
+Fiat currencies lack a canonical EVM address on-chain, and are configured on X Layer to maintain the following [standard](https://en.wikipedia.org/wiki/ISO_4217 "Fiat Standard")
 
+|Currency|Address|
+|:----|:----|
+|USD|0x0000000000000000000000000000000000000840|
+##  Feed registry address (X Layer mainnet)
+|Network|Feed registry address|
+|:----|:----|
+|X Layer mainnet|0xfe3240995c771f10D2583e8fa95F92ee40E15150|
 
+## Feed adapter address (X Layer mainnet)
+|Network|Deviation threshold|Heartbeat|Feed adapter address|
+|:----|:----|:----|:----|
+|WBTC/USD|0.5%|3600s|0x3C7dCE5F83E99452CD399a1bCa5542BEd979E6CA|
+|WETH/USD|0.5%|3600s|0x98ff91433c992153A8D6507cEA5b791Df69d7c99|
+|OKB/USD|0.5%|3600s|0x90AB4bc4991c71889A67F25eec044fD90E255e77|
+|USDT/USD|0.5%|3600s|0xB249978EfdB8E01D5266F926409870c1Ec7336EA|
+|USDC/USD|0.5%|3600s|0xc975719d0ec39bb8880444acea9cc8d29a35e4d4|
+|DAI/USD|0.5%|3600s|0x960cF115eeEAFBF5B184070DE9eD89593c712B71|
 
+##  Feed registry address (X Layer testnet)
+|Network|Feed registry address|
+|:----|:----|
+|X Layer testnet|0x038969dD2036270c22D9F5ABE840cd5CDC079848|
+
+## Feed adapter address (X Layer mainnet)
+|Network|Deviation threshold|Heartbeat|Feed adapter address|
+|:----|:----|:----|:----|
+|WBTC/USD|0.5%|3600s|0x03e29fb6dbb5e0600ad062e5f80cf50e651571b3|
+|WETH/USD|0.5%|3600s|0x258b77b31dF0eF3C2F1495152b81e305bD83Aab8|
+|OKB/USD|0.5%|3600s|0x92ac502FC54356868C4EAc1B2eF0f941C2895dd0|
+|USDT/USD|0.5%|3600s|0xA774557280A45E4433a1208f6E5c0dA718a84b7C|
+|USDC/USD|0.5%|3600s|0xa8f52bbb506E0bD05253e007A46f6A1d8a4000cf|
+|DAI/USD|0.5%|3600s|0x185919669101D4748423B3Ce7C07A0207e6d99e8|
 

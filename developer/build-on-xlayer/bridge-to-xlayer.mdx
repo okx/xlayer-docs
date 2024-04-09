@@ -5,7 +5,7 @@ You can use [ZkEVM Bridge Contract](https://github.com/okx/xlayer-contracts/blob
 - Other ERC-20 tokens, which are bridged to the other side, remain ERC-20 tokens. You can calculate the new ERC-20 address by using the `precalculatedWrapperAddress` method.
 - There are no restrictions if you are bridging ERC-20 tokens from L1 to L2. However, there is a whitelist restriction when bridging assets from L2 to L1. 
 
-<Tip title="Note">If you want to request L2 to L1 token whitelisting, you can join our [X Layer Discord server](https://discord.gg/x1-network "X Layer Discord server"), and navigate to `#support-tickets` to raise whitelising request.</Tip>
+<Tip title="Note">If you want to request L2 to L1 token whitelisting, you can join our [X Layer Discord server](https://discord.gg/xlayer "X Layer Discord server"), and navigate to `#support-tickets` to raise whitelising request.</Tip>
 
 The mapping list for OKB and ETH is as follows:
 |ERC-20 Token|Testnet|Mainnet|
@@ -95,7 +95,7 @@ You can use the `claimAsset` method to retrieve assets on L2. Calling this metho
 |`metadata`|bytes|Abi encoded metadata if any, empty otherwise|
 
 # Bridge to Ethereum
-## Creating an ERC-20 token with custom logic on X  (L2)
+## Creating an ERC-20 token with custom logic on X Layer (L2)
 ERC-20 is the technical standard for fungible tokens created using the Ethereum blockchain. A fungible token is interchangeable with another token — whereas the well-known non-fungible tokens (NFTs) are not interchangeable.
 You can read more information about ERC-20 [here](https://ethereum.org/en/developers/docs/standards/tokens/erc-20/ "here").
 Deploy a simple ERC-20 contract with any of the tools like [Truffle](/developer/smart-contract/deploy-with-truffle "Truffle"), [Hardhat](/developer/smart-contract/deploy-with-hardhat "Hardhat"), or [Foundry](/developer/smart-contract/deploy-with-foundry "Foundry"). This contract is implemented based on the open-source library, which can be found at [OpenZeppelin](https://www.openzeppelin.com/contracts# "OpenZeppelin").
