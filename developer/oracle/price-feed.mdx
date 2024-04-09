@@ -18,44 +18,59 @@ To consume price data, your smart contract should reference **AggregatorV3Interf
 
 ```
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.7;
-
-import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+pragma solidity ^0.8.20;
 
 /**
- * THIS IS AN EXAMPLE CONTRACT THAT USES HARDCODED
- * VALUES FOR CLARITY.
- * THIS IS AN EXAMPLE CONTRACT THAT USES UN-AUDITED CODE.
- * DO NOT USE THIS CODE IN PRODUCTION.
+ * Aggregator Interface that is compatible with Chainlink's AggregatorV3Interface
  */
+interface AggregatorV3Interface {
+    function decimals() external view returns (uint8);
 
-/**
- * If you are reading data feeds on L2 networks, you must
- * check the latest answer from the L2 Sequencer Uptime
- * Feed to ensure that the data is accurate in the event
- * of an L2 sequencer outage. See the
- * https://docs.chain.link/data-feeds/l2-sequencer-feeds
- * page for details.
- */
+    function description() external view returns (string memory);
 
-contract DataConsumerV3 {
+    function version() external view returns (uint256);
+
+    function getRoundData(
+        uint80 _roundId
+    )
+        external
+        view
+        returns (
+            uint80 roundId,
+            int256 answer,
+            uint256 startedAt,
+            uint256 updatedAt,
+            uint80 answeredInRound
+        );
+
+    function latestRoundData()
+        external
+        view
+        returns (
+            uint80 roundId,
+            int256 answer,
+            uint256 startedAt,
+            uint256 updatedAt,
+            uint80 answeredInRound
+        );
+}
+
+contract DataConsumer {
     AggregatorV3Interface internal dataFeed;
 
     /**
-     * Network: Sepolia
-     * Aggregator: BTC/USD
-     * Address: 0x1b44F3514812d835EB1BDB0acB33d3fA3351Ee43
+     * Network: XLayer Testnet
+     * Aggregator: WBTC/USD
+     * Address: 0x03e29FB6DBb5e0600AD062e5F80Cf50e651571B3
      */
+
     constructor() {
         dataFeed = AggregatorV3Interface(
-            0x1b44F3514812d835EB1BDB0acB33d3fA3351Ee43
+            0x03e29FB6DBb5e0600AD062e5F80Cf50e651571B3
         );
     }
 
-    /**
-     * Returns the latest answer.
-     */
-    function getChainlinkDataFeedLatestAnswer() public view returns (int) {
+    function getWbtcFeedLatestAnswer() public view returns (int256) {
         // prettier-ignore
         (
             /* uint80 roundID */,
@@ -67,6 +82,7 @@ contract DataConsumerV3 {
         return answer;
     }
 }
+
 ```
 ## Vyper
 To use the price data, your smart contract should import `AggregatorV3Interface` which defines the external functions implemented by data feeds. You can find it [here](https://github.com/smartcontractkit/apeworx-starter-kit/blob/main/contracts/interfaces/AggregatorV3Interface.vy "Data feed smart contract"). You can also find a `PriceConsumer` example [here](https://github.com/smartcontractkit/apeworx-starter-kit/blob/main/contracts/PriceConsumer.vy "Price Consumer Contract"). Read the apeworx-starter-kit [README](https://github.com/smartcontractkit/apeworx-starter-kit "README") to learn how to run the example code.
@@ -82,32 +98,76 @@ To use the  price data from the feed registry, your smart contract should refere
 
 ```
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.7;
+pragma solidity ^0.8.20;
 
-import {FeedRegistryInterface} from "@chainlink/contracts/src/v0.8/interfaces/FeedRegistryInterface.sol";
-import {Denominations} from "@chainlink/contracts/src/v0.8/Denominations.sol";
+interface IFeedRegistry {
+    // V3 AggregatorV3Interface
+    function decimals(
+        address base,
+        address quote
+    ) external view returns (uint8);
 
-/**
- * THIS IS AN EXAMPLE CONTRACT THAT USES HARDCODED VALUES FOR CLARITY.
- * THIS IS AN EXAMPLE CONTRACT THAT USES UN-AUDITED CODE.
- * DO NOT USE THIS CODE IN PRODUCTION.
- */
+    function description(
+        address base,
+        address quote
+    ) external view returns (string memory);
+
+    function version(
+        address base,
+        address quote
+    ) external view returns (uint256);
+
+    function latestRoundData(
+        address base,
+        address quote
+    )
+        external
+        view
+        returns (
+            uint80 roundId,
+            int256 answer,
+            uint256 startedAt,
+            uint256 updatedAt,
+            uint80 answeredInRound
+        );
+
+    function getRoundData(
+        address base,
+        address quote,
+        uint80 _roundId
+    )
+        external
+        view
+        returns (
+            uint80 roundId,
+            int256 answer,
+            uint256 startedAt,
+            uint256 updatedAt,
+            uint80 answeredInRound
+        );
+}
 
 contract PriceConsumer {
-    FeedRegistryInterface internal registry;
+    IFeedRegistry internal registry;
+    /**
+     * Following fiat currency standards of https://en.wikipedia.org/wiki/ISO_4217
+     */
+    address internal constant USD = address(840);
+    address internal constant WETH = 0x5A77f1443D16ee5761d310e38b62f77f726bC71c;
 
     /**
-     * Network: Ethereum Mainnet
-     * Feed Registry: 0x47Fb2585D2C56Fe188D0E6ec628a38b74fCeeeDf
+     * Network: XLayer Mainnet
+     * Feed Registry: 0xfe3240995c771f10D2583e8fa95F92ee40E15150
+     * WETH: 0x5A77f1443D16ee5761d310e38b62f77f726bC71c
      */
-    constructor(address _registry) {
-        registry = FeedRegistryInterface(_registry);
+    constructor() {
+        registry = IFeedRegistry(0xfe3240995c771f10D2583e8fa95F92ee40E15150);
     }
 
     /**
-     * Returns the ETH / USD price
+     * Returns the WETH / USD price
      */
-    function getEthUsdPrice() public view returns (int) {
+    function getWethUsdPrice() public view returns (int256) {
         // prettier-ignore
         (
             /*uint80 roundID*/,
@@ -115,7 +175,7 @@ contract PriceConsumer {
             /*uint startedAt*/,
             /*uint timeStamp*/,
             /*uint80 answeredInRound*/
-        ) = registry.latestRoundData(Denominations.ETH, Denominations.USD);
+        ) = registry.latestRoundData(WETH, USD);
         return price;
     }
 
@@ -134,6 +194,7 @@ contract PriceConsumer {
         return price;
     }
 }
+
 ```
 ## Price feed contract addresses
 
@@ -142,6 +203,12 @@ To ensure accurate data is fed to the smart contracts in a timely manner, X Laye
 - **Deviation threshold**: The deviation of crypto price data beyond a certain interval triggers smart contracts to update. 
 - **Heartbeat threshold**: If the data values stay within the deviation parameters, it will only trigger an update every x minute.
 
+## Fiat currency standard
+Fiat currencies lack a canonical EVM address on-chain, and are configured on X Layer to maintain the following [standard](https://en.wikipedia.org/wiki/ISO_4217 "Fiat Standard")
+
+|Currency|Address|
+|:----|:----|
+|USD|0x0000000000000000000000000000000000000840|
 ##  Feed registry address (X Layer mainnet)
 |Network|Feed registry address|
 |:----|:----|
@@ -151,7 +218,7 @@ To ensure accurate data is fed to the smart contracts in a timely manner, X Laye
 |Network|Deviation threshold|Heartbeat|Feed adapter address|
 |:----|:----|:----|:----|
 |WBTC/USD|0.5%|3600s|0x3C7dCE5F83E99452CD399a1bCa5542BEd979E6CA|
-|ETH/USD|0.5%|3600s|0x98ff91433c992153A8D6507cEA5b791Df69d7c99|
+|WETH/USD|0.5%|3600s|0x98ff91433c992153A8D6507cEA5b791Df69d7c99|
 |OKB/USD|0.5%|3600s|0x90AB4bc4991c71889A67F25eec044fD90E255e77|
 |USDT/USD|0.5%|3600s|0xB249978EfdB8E01D5266F926409870c1Ec7336EA|
 |USDC/USD|0.5%|3600s|0xc975719d0ec39bb8880444acea9cc8d29a35e4d4|
@@ -166,7 +233,7 @@ To ensure accurate data is fed to the smart contracts in a timely manner, X Laye
 |Network|Deviation threshold|Heartbeat|Feed adapter address|
 |:----|:----|:----|:----|
 |WBTC/USD|0.5%|3600s|0x03e29fb6dbb5e0600ad062e5f80cf50e651571b3|
-|ETH/USD|0.5%|3600s|0x258b77b31dF0eF3C2F1495152b81e305bD83Aab8|
+|WETH/USD|0.5%|3600s|0x258b77b31dF0eF3C2F1495152b81e305bD83Aab8|
 |OKB/USD|0.5%|3600s|0x92ac502FC54356868C4EAc1B2eF0f941C2895dd0|
 |USDT/USD|0.5%|3600s|0xA774557280A45E4433a1208f6E5c0dA718a84b7C|
 |USDC/USD|0.5%|3600s|0xa8f52bbb506E0bD05253e007A46f6A1d8a4000cf|
