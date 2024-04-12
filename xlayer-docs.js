@@ -1,7 +1,7 @@
 /*
- * @Author: KW369 karen wong
- * @Date: 2023-10-16 14:20:40
- * @LastEditTime: 2023-03-23 12:40:21
+ * @Author: Low Ze Sheng
+ * @Date: 2024-04-12 
+ * @LastEditTime: 2023-04-12 2.25pm
  * @Description: X Layer doc structure
  */
 
@@ -157,6 +157,26 @@ module.exports = [
             '/academy/try-remix/remix-overview',
             '/academy/try-remix/features',
             '/academy/try-remix/tutorial-guide'
+        ],
+        },
+      ],
+    },
+    {
+      title: 'Tools',
+      basePath: ['/tools'],
+      children: [
+        {
+          title: 'Tools',
+          icon: 'okx-defi-okbc-resources',
+          children: [
+            '/tools/account-abstraction', 
+            '/tools/block-explorers',
+            '/tools/cross-chain',
+            '/tools/data-indexers',
+            '/tools/dev-tooling',
+            '/tools/oracles',
+            '/tools/node-providers',
+            '/tools/user-onboarding'
         ],
         },
       ],
