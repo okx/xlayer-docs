@@ -89,7 +89,15 @@ module.exports = [
           title: 'Oracle',
           icon: 'okx-defi-build-oracle',
           children: [
-            '/developer/oracle/price-feed', 
+            '/developer/oracle/price-feed',
+            {
+              title: 'Price feed interface',
+              path: '/developer/oracle/price-feed-interface',
+              children: [
+                  '/developer/oracle/price-feed-interface/offchain-aggregator',
+                  '/developer/oracle/price-feed-interface/feed-registry',
+              ],
+          },    
           ],
         },
         {

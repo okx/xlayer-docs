@@ -1,0 +1,205 @@
+# IXLayerOffchainAggregator
+A dedicated price feed for an asset pair, which comes with batch viewing capabilities._createMdxContent
+
+## XLayerOffchainAggregator
+- Includes batch view functions
+- Includes `IAggregator`, `IConfig` and `IExternalValidator` which are listed below
+
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+interface IXLayerOffchainAggregator is
+    IAggregator,
+    IExternalValidator,
+    IConfig
+{
+    //Batch view related queries
+    function fetchRange(
+        uint80 startId,
+        uint80 endId
+    )
+        external
+        view
+        returns (
+            uint80[] memory roundId,
+            int256[] memory answer,
+            uint256[] memory startedAt,
+            uint256[] memory updatedAt,
+            uint80[] memory answeredInRound
+        );
+
+    function fetchLastEntries(
+        uint80 count
+    )
+        external
+        view
+        returns (
+            uint80[] memory roundId,
+            int256[] memory answer,
+            uint256[] memory startedAt,
+            uint256[] memory updatedAt,
+            uint80[] memory answeredInRound
+        );
+}
+```
+
+|Function|Permission|Description|
+|:----|:----|:----|
+|fetchRange|-|1. Provide a range of entries in ascending order based on `startId` and `endId`<br/>2. Results include both `startId` and `endId`.|
+|fetchLastEntries|-|1. Provides a range of entries in ascending order based on `count`.<br/>2. Total number of entries returned will be counted, and includes the last entry.|
+
+## IAggregator
+This is a Chainlink compatible interface for retrieving asset prices on contracts. It supports both AggregatorV3 (latest) and AggregatorV2 (deprecated).
+
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+interface IAggregator {
+    event AnswerUpdated(
+        int256 indexed current,
+        uint256 indexed roundId,
+        uint256 updatedAt
+    );
+    event NewRound(
+        uint256 indexed roundId,
+        address indexed startedBy,
+        uint256 startedAt
+    );
+
+    struct Transmission {
+        int192 answer; // 192 bits ought to be enough for anyone
+        uint64 timestamp;
+    }
+
+    struct HotVars {
+        bytes16 latestConfigDigest; //rewrote as bytes16(keccak256(abi.encode(implAddr, description, version, min, max)))
+        uint80 latestAggregatorRoundId;
+    }
+    
+    // AggregatorV3Interface
+    function decimals() external view returns (uint8);
+
+    function description() external view returns (string memory);
+
+    function version() external view returns (uint256);
+
+    function getRoundData(
+        uint80 _roundId
+    )
+        external
+        view
+        returns (
+            uint80 roundId,
+            int256 answer,
+            uint256 startedAt,
+            uint256 updatedAt,
+            uint80 answeredInRound
+        );
+
+    function latestRoundData()
+        external
+        view
+        returns (
+            uint80 roundId,
+            int256 answer,
+            uint256 startedAt,
+            uint256 updatedAt,
+            uint80 answeredInRound
+        );
+
+    // AggregatorV2Interface
+    function latestAnswer() external view returns (int256);
+
+    function latestTimestamp() external view returns (uint256);
+
+    function latestRound() external view returns (uint256);
+
+    function getAnswer(uint256 roundId) external view returns (int256);
+
+    function getTimestamp(uint256 roundId) external view returns (uint256);
+}
+```
+
+|Function|Permission|Description|
+|:----|:----|:----|
+|decimals|-|Number of decimals present in the response|
+|description|-|Description of the underlying aggregator |
+|version|-|Version number of the aggregator. Increases each time the contract is upgraded|
+|getRoundData|-|Retrieves data for a specific roundId. Reverts if it does not fall in the range of the current aggregator,|
+|latestRoundData|-|Retrieves data from the latest round.|
+|latestAnswer|-|Retrieves price from latest round.|
+|latestTimestamp|-|Retrieves timestamp from latest round.|
+|latestRound|-|Retrieves latest roundid.|
+|getAnswer|-|Retrieves price for a specific roundId. Reverts if it does not fall in the range of the current aggregator.|
+|getTimestamp|-|Retrieves price for a specific roundId. Reverts if it does not fall in the range of the current aggregator.|
+
+## IConfig
+It retrieves the latest config details, and updates bounds of minimum and maximum price updates.
+
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+interface IConfig {
+    event UpdatedConfig(uint256 indexed version, bytes16 configDigest);
+
+    function updateLowerBound(int192 newMinAnswer) external;
+
+    function updateUpperBound(int192 newMaxAnswer) external;
+
+    function latestConfigDetails() external view returns (bytes16 configDigest);
+}
+
+```
+|Function|Permission|Description|
+|:----|:----|:----|
+|updateLowerBound|Owner|Updates the minimum price that can be transmitted to this aggregator. If valid, will trigger an update for configdigest and emit UpdatedConfig.|
+|updateUpperBound|Owner|Updates the maximum price that can be transmitted to this aggregator. If valid, will trigger an update for configdigest and emit UpdatedConfig.|
+|latestConfigDetails|-|Retrieves the current configdigest|
+
+## IExternalValidator
+This is used for updating the external validator configuration, which will be triggered as a callback during price update.
+
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+interface IExternalValidator {
+    struct ValidatorConfig {
+        AggregatorValidatorInterface validator;
+        uint32 gasLimit;
+    }
+
+    event ValidatorConfigSet(
+        AggregatorValidatorInterface indexed previousValidator,
+        uint32 previousGasLimit,
+        AggregatorValidatorInterface indexed currentValidator,
+        uint32 currentGasLimit
+    );
+
+    function validatorConfig()
+        external
+        view
+        returns (AggregatorValidatorInterface validator, uint32 gasLimit);
+
+    function setValidatorConfig(
+        AggregatorValidatorInterface _newValidator,
+        uint32 _newGasLimit
+    ) external;
+}
+
+interface AggregatorValidatorInterface {
+    function validate(
+        uint256 previousRoundId,
+        int256 previousAnswer,
+        uint256 currentRoundId,
+        int256 currentAnswer
+    ) external returns (bool);
+}
+```
+|Function|Permission|Description|
+|:----|:----|:----|
+|validatorConfig|-|Retrieves the current validator confi
+|setValidatorConfig|Owner|1. Updates validator config if Validator address changes OR Gas allocated is changed. <br/><br/>2. Emits ValidatorConfigSet if update is successful.|
