@@ -1,0 +1,218 @@
+# XLayerFeedRegistry
+An-on chain mapping of asset pairs to aggregators, allowing for fetching various asset prices through a single contract._createMdxContent
+
+## IXLayerFeedRegistry
+- Includes batch view functions based on base-quote pairs
+- Includes IFeedRegistry listed below.
+
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+interface IXLayerFeedRegistry is IFeedRegistry {
+    //Batch view related queries
+    function fetchRange(
+        address base,
+        address quote,
+        uint80 startId,
+        uint80 endId
+    )
+        external
+        view
+        returns (
+            uint80[] memory roundId,
+            int256[] memory answer,
+            uint256[] memory startedAt,
+            uint256[] memory updatedAt,
+            uint80[] memory answeredInRound
+        );
+
+    function fetchLastEntries(
+        address base,
+        address quote,
+        uint80 count
+    )
+        external
+        view
+        returns (
+            uint80[] memory roundId,
+            int256[] memory answer,
+            uint256[] memory startedAt,
+            uint256[] memory updatedAt,
+            uint80[] memory answeredInRound
+        );
+}
+```
+
+|Function|Permission|Description|
+|:----|:----|:----|
+|fetchRange|-|1. Provide a range of entries in ascending order based on `startId` and `endId`, and base-quote pair.<br/>2. Results include both `startId` and `endId`.|
+|fetchLastEntries|-|1. Provides a range of entries in ascending order based on `count` and base-quote pair.<br/>2. Total number of entries returned will be counted, and includes the last entry.|
+
+## IFeedRegistry
+
+- Exposes AggregatorV2V3 type view functions that support base-quote pair routing to the appropriate aggregator
+- Supports updating of feeds for base-quote pairs
+
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+interface IFeedRegistry {
+    //reusing the chainlink event, in case certain legacy systems rely on this
+    event FeedConfirmed(
+        address indexed asset,
+        address indexed denomination,
+        address indexed latestAggregator,
+        address previousAggregator,
+        uint16 nextPhaseId,
+        address sender
+    );
+
+    // V3 AggregatorV3Interface
+    function decimals(
+        address base,
+        address quote
+    ) external view returns (uint8);
+
+    function description(
+        address base,
+        address quote
+    ) external view returns (string memory);
+
+    function version(
+        address base,
+        address quote
+    ) external view returns (uint256);
+
+    function latestRoundData(
+        address base,
+        address quote
+    )
+        external
+        view
+        returns (
+            uint80 roundId,
+            int256 answer,
+            uint256 startedAt,
+            uint256 updatedAt,
+            uint80 answeredInRound
+        );
+
+    function getRoundData(
+        address base,
+        address quote,
+        uint80 _roundId
+    )
+        external
+        view
+        returns (
+            uint80 roundId,
+            int256 answer,
+            uint256 startedAt,
+            uint256 updatedAt,
+            uint80 answeredInRound
+        );
+
+    // V2 AggregatorInterface
+    function latestAnswer(
+        address base,
+        address quote
+    ) external view returns (int256 answer);
+
+    function latestTimestamp(
+        address base,
+        address quote
+    ) external view returns (uint256 timestamp);
+
+    function latestRound(
+        address base,
+        address quote
+    ) external view returns (uint256 roundId);
+
+    function getAnswer(
+        address base,
+        address quote,
+        uint256 roundId
+    ) external view returns (int256 answer);
+
+    function getTimestamp(
+        address base,
+        address quote,
+        uint256 roundId
+    ) external view returns (uint256 timestamp);
+
+    // Registry getters
+
+    function getFeed(
+        address base,
+        address quote
+    ) external view returns (IXLayerOffchainAggregator aggregator);
+
+    function getPhaseFeed(
+        address base,
+        address quote,
+        uint16 phaseId
+    ) external view returns (IXLayerOffchainAggregator aggregator);
+
+    function isFeedEnabled(address aggregator) external view returns (bool);
+    
+    function getRoundFeed(
+        address base,
+        address quote,
+        uint80 roundId
+    ) external view returns (IXLayerOffchainAggregator aggregator);
+
+    function getPhaseRange(
+        address base,
+        address quote,
+        uint16 phaseId
+    ) external view returns (uint80 startingRoundId, uint80 endingRoundId);
+
+    function getPreviousRoundId(
+        address base,
+        address quote,
+        uint80 roundId
+    ) external view returns (uint80 previousRoundId);
+
+    function getNextRoundId(
+        address base,
+        address quote,
+        uint80 roundId
+    ) external view returns (uint80 nextRoundId);
+
+    // Feed management
+
+    function updateFeed(
+        address base,
+        address quote,
+        address aggregator
+    ) external;
+
+    // Phases
+    function getCurrentPhaseId(
+        address base,
+        address quote
+    ) external view returns (uint16 currentPhaseId);
+}
+```
+|Function|Permission|Description|
+|:----|:----|:----|
+|decimals|-|Number of decimals present in the response|
+|description|-|Description of the underlying aggregator |
+|version|-|Version number of the aggregator. Increases each time the contract is upgraded|
+|getRoundData|-|Retrieves data for a specific roundId. Reverts if it does not fall in the range of the current aggregator,|
+|latestRoundData|-|Retrieves data from the latest round.|
+|latestAnswer|-|Retrieves price from latest round.|
+|latestTimestamp|-|Retrieves timestamp from latest round.|
+|latestRound|-|Retrieves latest roundid.|
+|getAnswer|-|Retrieves price for a specific roundId. Reverts if it does not fall in the range of the current aggregator.|
+|getTimestamp|-|Retrieves price for a specific roundId. Reverts if it does not fall in the range of the current aggregator.|
+|getFeed|-|Retrieves the current aggregator for the pair.|
+|getPhaseFeed|-|1. Retrieves the aggregator based on the phase specified. <br/><br/>2. Reverts if phase specified is < 1|
+|isFeedEnabled|-|Returns a bool to indicate whether aggregator is active.|
+|getPhaseRange|-|1. Returns the aggregator for a particular base-quote pair. <br/><br/>2. Reverts if phase specified is < 1|
+|getRoundFeed|-|Returns the previous roundId if it falls within the range of the aggregator. Reverts if it is invalid.|
+|getNextRoundId|-|Returns the next roundId if it falls within the range of the aggregator. Reverts if it is invalid.|
+|updateFeed|Owner|Updates the aggregator for a base quote pair if the following conditions are met: <br/>1. Addresses are not 0. <br/>2. New aggregator is not the same as the current. <br/>3. Base and quote are not the same address emits FeedConfired when successful.|
+|getCurrentPhaseId|-|Retrieves the latest round from the specified base-quote pair and returns the phase.|
