@@ -4,6 +4,17 @@ You can use [ZkEVM Bridge Contract](https://github.com/okx/xlayer-contracts/blob
 - OKB is an ERC-20 token of L1 (Ethereum). After bridging to L2 X Layer, it becomes a native token.
 - Other ERC-20 tokens, which are bridged to the other side, remain ERC-20 tokens. You can calculate the new ERC-20 address by using the `precalculatedWrapperAddress` method.
 - There are no restrictions if you are bridging ERC-20 tokens from L1 to L2. However, there is a whitelist restriction when bridging assets from L2 to L1. 
+- `NetworkId` and `ChainId` are not the same. `NetworkId` is a property that is unique to Polygon's Agglayer whereas `ChainId` is typically a transaction replay protection mechanism across EVM chains. The relevant information for Ethereum and X Layer are shown below.
+
+|Network (Mainnet)|ChainId|NetworkId|
+|:----|:----|:----|
+|Ethereum|1|0|
+|X Layer|196|3|
+
+|Network (Testnet)|ChainId|NetworkId|
+|:----|:----|:----|
+|Sepolia|11155111|0|
+|X Layer testnet|195|1|
 
 <Tip title="Note">If you want to request L2 to L1 token whitelisting, you can join our [X Layer Discord server](https://discord.gg/xlayer "X Layer Discord server"), and navigate to `#support-tickets` to raise whitelising request.</Tip>
 
