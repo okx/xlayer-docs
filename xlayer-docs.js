@@ -87,7 +87,7 @@ module.exports = [
               title: 'USDC on X Layer',
               path: '/developer/bridge/usdc-on-x-layer',
               children: [
-                  '/developer/bridge/usdc-on-x-layer/bridging-usdc-workflow',
+                  '/developer/bridge/bridging-usdc-workflow',
               ],
           },
           ],
