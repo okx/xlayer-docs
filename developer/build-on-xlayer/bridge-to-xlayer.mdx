@@ -27,6 +27,7 @@ The mapping list for OKB and ETH is as follows:
 ## Deposit OKB and ERC-20 tokens from L1
 The ZkEVM bridge contract allows ETH and ERC-20 token bridging from L1 to L2 using the bridgeAsset function. Notice that ERC-20 tokens will have a different address on L2. You can use the precalculatedWrapperAddress function to query the new address in [ZkEVMBridgeContract.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/PolygonZkEVMBridgeV2.sol "ZkEVMBridgeContract.sol") contract
 
+If the asset you bridged is USDC, please refer to this [document](https://www.okx.com/xlayer/docs/developer/bridge/usdc-on-x-layer "usdc document").
 ### bridgeAsset
 Deposit and add a new leaf to the Merkle tree:
 ```solidity
@@ -42,7 +43,7 @@ Deposit and add a new leaf to the Merkle tree:
 **Parameters**
 |Name|Type|Description|
 |:----|:----|:----|
-|`destinationNetwork`|uint32|Network destination|
+|`destinationNetwork`|uint32|Network destination. 3 for X Layer|
 |`destinationAddress`|address|Address destination|
 |`amount`|uint256|Amount of tokens|
 |`token`|address|Token address, 0 address is reserved for ETH|
@@ -74,6 +75,7 @@ function precalculatedWrapperAddress(
 ## Withdrawing OKB and ERC-20 tokens from L2
 You can use the `claimAsset` method to retrieve assets on L2. Calling this method on L2 incurs no Gas fees, so the official bridge service will be provided to automatically invoke the `claimAsset` method for you.
 
+If the asset you withdrew is native USDC, please refer to this [document](https://www.okx.com/xlayer/docs/developer/bridge/usdc-on-x-layer "usdc document").
 ### claimAsset
 ```solidity
  function claimAsset(
@@ -98,9 +100,9 @@ You can use the `claimAsset` method to retrieve assets on L2. Calling this metho
 |`globalIndex`|uint32|Index of the leaf|
 |`mainnetExitRoot`|bytes32|Mainnet exit root|
 |`rollupExitRoot`|bytes32|Rollup exit root|
-|`originNetwork`|uint32|Origin network|
+|`originNetwork`|uint32|Origin network. 0 for assets from originating from L1|
 |`originTokenAddress`|address|Origin token address, 0 address is reserved for ETH|
-|`destinationNetwork`|uint32|Network destination|
+|`destinationNetwork`|uint32|Network destination. 0 for L1|
 |`destinationAddress`|address|Address destination|
 |`amount`|uint256`|Amount of tokens|
 |`metadata`|bytes|Abi encoded metadata if any, empty otherwise|
