@@ -83,6 +83,13 @@ module.exports = [
             '/developer/bridge/overview',
             '/developer/bridge/asset-transfer',
             '/developer/bridge/flow-of-assets',
+            {
+              title: 'USDC on X Layer',
+              path: '/developer/bridge/usdc-on-x-layer',
+              children: [
+                  '/developer/bridge/usdc-on-x-layer/bridging-usdc-workflow',
+              ],
+          },
           ],
         },
         {

@@ -155,7 +155,7 @@ SELECT max(batch_num) FROM state.verified_batch;
 3. Look for the target block and batch to delete
 - Look for this batch in [OK Link](https://www.oklink.com/xlayer-test/batch/330000 "OK Link")
 and get "Sequence Tx Hash" value (0xf5bcff8bc5e03be47e36d642d26f0551ff4a66094e1fb67c9e02ec739c7fca82)
-- Go to previous batches (you can use "<" button) until you reach the first batch sequenced with the same "Sequence Tx Hash" (in this example **329992**). 
+- Go to previous batches (you can use "\<" button) until you reach the first batch sequenced with the same "Sequence Tx Hash" (in this example **329992**). 
 - Look for the "Sequence Tx Hash" in [etherscan](https://sepolia.etherscan.io/tx/0xf5bcff8bc5e03be47e36d642d26f0551ff4a66094e1fb67c9e02ec739c7fca82 "Sequence Tx Hash") to get the L1 block where that tx was confirmed (in this example **5517146**). 
 4. Delete the block and batch
 ``` bash
