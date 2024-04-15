@@ -101,8 +101,8 @@ module.exports = [
               title: 'Price feed interface',
               path: '/developer/oracle/price-feed-interface',
               children: [
-                  '/developer/oracle/price-feed-interface/offchain-aggregator',
-                  '/developer/oracle/price-feed-interface/feed-registry',
+                  '/developer/oracle/offchain-aggregator',
+                  '/developer/oracle/feed-registry',
               ],
           },    
           ],
