@@ -32,7 +32,7 @@ module.exports = [
                     '/getting-started/user-guide/get-testnet-okb-from-faucet',
                 ],
             }, 
-            '/getting-started/user-guide/bridge-mainet',           
+            '/getting-started/user-guide/bridge-mainnet',           
             '/getting-started/user-guide/bridge',
         ],
         },
