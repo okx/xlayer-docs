@@ -1,5 +1,5 @@
 # RPC endpoints
-X Layer supports JSON-RPC methods that are compatible with Ethereum, and zkEVM RPC methods for zkEVM.
+X Layer supports JSON-RPC methods that are compatible with Ethereum, and ZKEVM RPC methods for zkEVM.
 <Tip title="Note">There is a limit of 100 requests per second per IP address on both the mainnet and testnet.</Tip>
 
 ## Mainnet (chain-id: 0xC4, 196 in decimals)
@@ -27,7 +27,7 @@ curl -X POST --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id
 curl -X POST --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' -H "Content-Type: application/json" https://testrpc.xlayer.tech
 ```
 ## JSON-RPC methods
-There are two types of RPC methods on X Layer, one is Ethereum compatible RPC, and the other one is zkEVM RPC. Each RPC offers specific functionalities.
+There are two types of RPC methods on X Layer, one is Ethereum compatible RPC, and the other one is ZKEVM RPC. Each RPC offers specific functionalities.
 
 ### 1. Ethereum compatible RPC
 Here you will find the list of all supported JSON RPC endpoints and the differences between them in comparison to the default behavior of an Ethereum node.
@@ -79,8 +79,8 @@ You can find more details in [Ethereum’s JSON-RPC doc](https://ethereum.org/en
 |debug_traceTransaction|Debug|Returns all traces of a given transaction|
 |txpool_content|Txpool|Response is always empty|
 
-### 2. zkEVM RPC
-You can use the following RPC methods to execute specific zkEVM functionalities:
+### 2. ZKEVM RPC
+You can use the following RPC methods to execute specific ZKEVM functionalities:
 
 |Method name|Summary|
 |:----|:----|

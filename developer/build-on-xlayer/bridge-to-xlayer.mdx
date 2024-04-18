@@ -1,5 +1,5 @@
 # Bridge to X Layer
-You can use [ZkEVM Bridge Contract](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/PolygonZkEVMBridgeV2.sol "ZkEVM Bridge Contract") to bridge assets like ETH, OKB, and ERC-20 tokens between layer 1 and layer 2. However, there are a few points to note:
+You can use [ZKEVM Bridge Contract](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/PolygonZkEVMBridgeV2.sol "ZkEVM Bridge Contract") to bridge assets like ETH, OKB, and ERC-20 tokens between layer 1 and layer 2. However, there are a few points to note:
 - ETH is the native token of layer 1 (Ethereum). After bridging to layer 2 X Layer, it becomes a Wrapped ETH (WETH) ERC-20 token.
 - OKB is an ERC-20 token of layer 1 (Ethereum). After bridging to layer 2 X Layer, it becomes a native token.
 - Other ERC-20 tokens, which are bridged to the other side, remain ERC-20 tokens. You can calculate the new ERC-20 address by using the `precalculatedWrapperAddress` method.
@@ -25,7 +25,7 @@ The mapping list for OKB and ETH is as follows:
 |WETH|[0xBec7859BC3d0603BeC454F7194173E36BF2Aa5C8](https://www.okx.com/explorer/xlayer-test/address/0xBec7859BC3d0603BeC454F7194173E36BF2Aa5C8 "0xBec7859BC3d0603BeC454F7194173E36BF2Aa5C8") (Layer 2 X Layer testnet)| [0x5a77f1443d16ee5761d310e38b62f77f726bc71c](https://www.okx.com/explorer/xlayer/address/0x5a77f1443d16ee5761d310e38b62f77f726bc71c "0x5a77f1443d16ee5761d310e38b62f77f726bc71c") (Layer 2 X Layer mainnet)|
 
 ## Deposit OKB and ERC-20 tokens from layer 1
-The ZkEVM bridge contract allows ETH and ERC-20 token bridging from layer 1 to layer 2 using the bridgeAsset function. Notice that ERC-20 tokens will have a different address on layer 2. You can use the precalculatedWrapperAddress function to query the new address in [ZkEVMBridgeContract.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/PolygonZkEVMBridgeV2.sol "ZkEVMBridgeContract.sol") contract
+The ZKEVM bridge contract allows ETH and ERC-20 token bridging from layer 1 to layer 2 using the bridgeAsset function. Notice that ERC-20 tokens will have a different address on layer 2. You can use the precalculatedWrapperAddress function to query the new address in [ZkEVMBridgeContract.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/PolygonZkEVMBridgeV2.sol "ZKEVMBridgeContract.sol") contract
 
 If the asset you bridged is USDC, please refer to this [document](https://www.okx.com/xlayer/docs/developer/bridge/usdc-on-x-layer "usdc document").
 ### bridgeAsset

@@ -1,5 +1,5 @@
 # Transaction validation
-Once the batches have been successfully aggregated on layer 1, all zkEVM nodes can verify their local layer 2 state by directly retrieving and validating consolidated roots from the layer 1 Consensus Contract ([ZkEVM.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/consensus/validium/PolygonValidiumEtrog.sol "ZkEVM.sol")). This marks the achievement of a consolidated layer 2 state.
+Once the batches have been successfully aggregated on layer 1, all ZKEVM nodes can verify their local layer 2 state by directly retrieving and validating consolidated roots from the layer 1 Consensus Contract ([ZkEVM.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/consensus/validium/PolygonValidiumEtrog.sol "ZKEVM.sol")). This marks the achievement of a consolidated layer 2 state.
 
 ## Batch rollup verifier
 The `rollupVerifier` is an external contract featuring a critical function known as `verifyProof`. This function takes a proof (`proofA`, `proofB`, `proofC`) and an input value called `inputSnark`. It then returns a Boolean value, which is `true` if the proof is valid and false`` if it is not.

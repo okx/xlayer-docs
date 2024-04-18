@@ -2,16 +2,16 @@
 
 ## Contracts
 
-1. [BridgedWrapped USDC](https://zkevm.polygonscan.com/address/0xA8CE8aee21bC2A48a5EF670afCc9274C7bbbC035 "Bridged Wrapped USDC") (zkEVM)<br/>The existing token for USDC in zkEVM, created by the Polygon ZkEVMBridge using the default TokenWrapped ERC20 contract known as **USDC.e**. It is **BWUSDC** in the flowchart.
+1. [BridgedWrapped USDC](https://zkevm.polygonscan.com/address/0xA8CE8aee21bC2A48a5EF670afCc9274C7bbbC035 "Bridged Wrapped USDC") (ZKEVM)<br/>The existing token for USDC in zkEVM, created by the Polygon ZkEVMBridge using the default TokenWrapped ERC20 contract known as **USDC.e**. It is **BWUSDC** in the flowchart.
 
-2. [USDC-e](https://zkevm.polygonscan.com/address/0x37eAA0eF3549a5Bb7D431be78a3D99BD360d19e5 "USDC-e") (zkEVM) <br/>
-"Native" USDC in zkEVM known as known as **USDC**. This contract matches the current USDC contract deployed on Ethereum, with all expected features. The contract address is different from the current "bridge wrapped" USDC in use today, and has the ability to issue and burn tokens as well as "blacklist" addresses. [See USDC-e project](https://github.com/omnifient/usdc-e "USDC-e project").
+2. [USDC-e](https://zkevm.polygonscan.com/address/0x37eAA0eF3549a5Bb7D431be78a3D99BD360d19e5 "USDC-e") (ZKEVM) <br/>
+"Native" USDC in ZKEVM known as known as **USDC**. This contract matches the current USDC contract deployed on Ethereum, with all expected features. The contract address is different from the current "bridge wrapped" USDC in use today, and has the ability to issue and burn tokens as well as "blacklist" addresses. [See USDC-e project](https://github.com/omnifient/usdc-e "USDC-e project").
 
 3. [L1Escrow](https://etherscan.io/address/0x70E70e58ed7B1Cec0D8ef7464072ED8A52d755eB) (L1) <br/>
-This contract receives layer 1 USDC from users, and triggers the ZkMinterBurner contract on zkEVM (through the Polygon ZkEVM Bridge) to mint USDC-e. It holds all of the layer 1 backing of USDC-e. It’s also triggered by the Bridge to withdraw layer 1 USDC.
+This contract receives layer 1 USDC from users, and triggers the ZKMinterBurner contract on ZKEVM (through the Polygon ZKEVM Bridge) to mint USDC-e. It holds all of the layer 1 backing of USDC-e. It’s also triggered by the Bridge to withdraw layer 1 USDC.
 
-4. [ZkMinterBurner](https://zkevm.polygonscan.com/address/0xBDa0B27f93B2FD3f076725b89cf02e48609bC189 "ZkMinterBurner") (zkEVM) <br/>
-This contract receives BridgeWrappedUSDC on zkEVM and mints back USDC-e. It also has a permissionless publicly callable function called "migrate" which withdraws all BridgedWrappedUSDC to layer 1 through the Bridge. The beneficiary address is the L1Escrow, thus migrating the supply and settling the balance.
+4. [ZKMinterBurner](https://zkevm.polygonscan.com/address/0xBDa0B27f93B2FD3f076725b89cf02e48609bC189 "ZKMinterBurner") (ZKEVM) <br/>
+This contract receives BridgeWrappedUSDC on ZKEVM and mints back USDC-e. It also has a permissionless publicly callable function called "migrate" which withdraws all BridgedWrappedUSDC to layer 1 through the Bridge. The beneficiary address is the L1Escrow, thus migrating the supply and settling the balance.
 
 ## Bridge transactions guide
 
@@ -23,13 +23,13 @@ Bridge USDC (layer 1) to USDC-e (layer 2)
 
 Bridge USDC-e (layer 2) to USDC(layer 1)
 
-1. Approve USDC-e amount for ZkMinterBurner our [bridge](https://www.okx.com/xlayer/bridge "xlayer bridge").
+1. Approve USDC-e amount for ZKMinterBurner our [bridge](https://www.okx.com/xlayer/bridge "xlayer bridge").
 2. bridgeToken on layer 2.
 3. claimMessage on layer 1.
 
 Bridge USDC (layer 1) to BWUSDC (layer 2)
 
-1. Approve USDC amount for ZkEVMBridge on layer 1.
+1. Approve USDC amount for ZKEVMBridge on layer 1.
 2. bridgeAsset on layer 1.
 3. claimAsset (BWUSDC) on layer 2.
 
@@ -58,7 +58,7 @@ Migrate BWUSDC (layer 2) to USDC (layer 1)
     ) external;
 ```
    - To: L1Escrow Address on layer 1
-   - Description: Transfers USDC to L1Escrow and sends a bridgeMessage to the ZkEVMBridge on layer 2.
+   - Description: Transfers USDC to L1Escrow and sends a bridgeMessage to the ZKEVMBridge on layer 2.
 
 
 2. `claimMessage`
@@ -80,7 +80,7 @@ Migrate BWUSDC (layer 2) to USDC (layer 1)
     ) external;
 ```
    - To: Bridge address on layer 1
-   - Description: Claims zkMinterburner’s message and initiates callback to L1Escrow to release escrowed USDC.
+   - Description: Claims ZKMinterburner’s message and initiates callback to L1Escrow to release escrowed USDC.
     - Steps for construction of arguments are shown in the section below.
 
 3. `approve`
@@ -104,8 +104,8 @@ function approve(address spender, uint256 amount) external returns (bool);
         bool forceUpdateGlobalExitRoot //true
     ) external;
 ```
-   - To: ZkMinterBurner Address on layer 2
-   - Description: Transfers USDC-e to ZkMinterBurner and sends a bridgeMessage to the L1Escrow on L1.
+   - To: ZKMinterBurner Address on layer 2
+   - Description: Transfers USDC-e to ZKMinterBurner and sends a bridgeMessage to the L1Escrow on L1.
 
 2. `claimMessage`
     - Calldata:
@@ -126,7 +126,7 @@ function approve(address spender, uint256 amount) external returns (bool);
     ) external;
 ```
    - To: Bridge Address on layer 2
-   - Description: Claims L1Escrow’s message and initiates callback to ZkMinterBurner to mint USDC-e.
+   - Description: Claims L1Escrow’s message and initiates callback to ZKMinterBurner to mint USDC-e.
     - Steps for construction of arguments are shown in the section below.
 
 3. `approve`
@@ -137,7 +137,7 @@ function approve(address spender, uint256 amount) external returns (bool);
 
 ```
    - To: USDC-e / BWUSDC Address on layer 2
-   - Description: provides allowance to the ZkMinterburner/NativeConverter to allow "pulling" of tokens.
+   - Description: provides allowance to the ZKMinterburner/NativeConverter to allow "pulling" of tokens.
 
 4. `convert`
     - Calldata:
@@ -338,7 +338,7 @@ Event details from bridgeToken
 |:----|:----|
 |USDC.e (BWUSDC)|0x426840dE56a73C8Cfd09996c128dd18ff90BA666|
 |USDC (USDC-e)|0xe8926a7f935675e95c4881a0FFBb84ea320AF6FD|
-|ZkMinterBurner|0x8AEACF2eBB6b24f8dE234E919f2696F76e3d91C2|
+|ZKMinterBurner|0x8AEACF2eBB6b24f8dE234E919f2696F76e3d91C2|
 |NativeConverter|0xf3c0330Edf50Aa0c3D04b05feE585D42c1fCE27E|
 |Bridge|0x7a4Ee6f9F0aB037fE771FC36D39C1E19bcc0Fdb5|
 
@@ -356,6 +356,6 @@ Event details from bridgeToken
 |:----|:----|
 |USDC.e (BWUSDC)|0xA8CE8aee21bC2A48a5EF670afCc9274C7bbbC035|
 |USDC (USDC-e)|0x74b7F16337b8972027F6196A17a631aC6dE26d22|
-|ZkMinterBurner|0x1A8C4999D32F05B63A227517Be0824AeD47e4728|
+|ZKMinterBurner|0x1A8C4999D32F05B63A227517Be0824AeD47e4728|
 |NativeConverter|0x9258cCeb28884D7a58e9d485Ec61C30768a23D45|
 |Bridge|0x2a3DD3EB832aF982ec71669E178424b10Dca2EDe|

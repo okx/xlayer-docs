@@ -2,7 +2,7 @@
 The process of validating a specific transaction within the batch typically involves three steps:
 1. **Trusted state**: This state is given by the trusted sequencer almost instantaneously. The state is updated on layer 2, but has not yet reached layer 1.
 2. **Virtual state**: Batches have been sequenced and data is on layer 1. At this point, transactions and data can not be modified as the state is final, yet they are not yet proven and are available on layer 1 for anyone to prove.
-3. **Verified state**: Zk-proof has been posted on layer 1, and the smart contract verifies the virtual state, allowing for the withdrawal of funds.
+3. **Verified state**: ZK-proof has been posted on layer 1, and the smart contract verifies the virtual state, allowing for the withdrawal of funds.
 
 ![layer 2 State Stages](./img/l2-state-stages.png)
 
@@ -12,7 +12,7 @@ Transactions on the X Layer network have a typical flow starting from the users�
 2. Transactions are executed almost instantly.
 3. Transactions are batched together using data encryption methods.
 4. Batches are sequenced and sent to Ethereum layer 1.
-5. Consolidated finality is achieved on Ethereum layer 1 with the power of zk-proofs.
+5. Consolidated finality is achieved on Ethereum layer 1 with the power of ZK-proofs.
 
 ![Transactions and Data Flow](./img/transactions-and-data-flow.png)
 
@@ -20,7 +20,7 @@ Transactions on the X Layer network have a typical flow starting from the users�
 As a user, you submit transactions by signing transactions and sending them through the JSON-RPC interface.
 
 ### 2. Executing transactions
-The transactions are then stored in the pending transaction pool, where the sequencer node running the zkEVM software picks these transactions up and decides which ones it wants to process or discard.
+The transactions are then stored in the pending transaction pool, where the sequencer node running the ZKEVM software picks these transactions up and decides which ones it wants to process or discard.
 The sequencer will do a few of the following checks to see if the transaction should be discarded or processed:
 1. If the sender has sufficient funds to complete the transaction
 2. If the smart contract called actually exists and contains valid bytecode
@@ -38,11 +38,11 @@ Batches are not necessarily validated or confirmed at this stage.
 Using ZKPs, the `ZkEVM.sol` smart contract acts as a verifier in verifying transactions. It verifies whether the batch just received is valid or not, through sending the batch to an aggregator node.
 
 ### 5. Generating & verifying zk-proofs/validity proofs
-The `ZkEVM.sol` smart contract sends the batch it just received to an aggregator node, which is a machine running zkEVM software that communicates with a zkProver. The flow is as follows:
+The `ZkEVM.sol` smart contract sends the batch it just received to an aggregator node, which is a machine running ZKEVM software that communicates with a ZKProver. The flow is as follows:
   - The aggregator receives the batch from the smart contract
-  - The aggregator sends the batch to the zkProver
-  - The zkProver creates multiple zk-STARKs -> a single zk-STARK -> a zk-SNARK
-  - The zk-SNARK (the validity proof) gets sent back to the aggregator
+  - The aggregator sends the batch to the ZKProver
+  - The ZKProver creates multiple ZK-STARKs -> a single ZK-STARK -> a ZK-SNARK
+  - The ZK-SNARK (the validity proof) gets sent back to the aggregator
   - The aggregator sends back the validity proof to the `ZkEVM.sol` smart contract
   - `ZkEVM.sol` verifies the validity proof
     - If the validity proof is valid, accept it
@@ -50,7 +50,7 @@ The `ZkEVM.sol` smart contract sends the batch it just received to an aggregator
 
 ### 6. Reading events on X Layer
 Finally, DApps read information from X Layer through the synchronizer.
-It reads events from the Ethereum smart contract(s), storing knowledge of both the zk-validity proofs from the aggregator, and the batches submitted from the sequencer.
+It reads events from the Ethereum smart contract(s), storing knowledge of both the ZK-validity proofs from the aggregator, and the batches submitted from the sequencer.
 This way, DApps can easily get a view of the state of X Layer via JSON-RPC.
 
-<Tip title="Note">To find answers to more transaction-related questions, you can visit [Polygon’s zkEVM protocol FAQ](https://wiki.polygon.technology/docs/zkevm/faq/zkevm-protocol-faq/ "Polygon’s zkEVM protocol FAQ") for more info.</Tip>
+<Tip title="Note">To find answers to more transaction-related questions, you can visit [Polygon’s zkEVM protocol FAQ](https://wiki.polygon.technology/docs/zkevm/faq/zkevm-protocol-faq/ "Polygon’s ZKEVM protocol FAQ") for more info.</Tip>

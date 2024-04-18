@@ -3,7 +3,7 @@ This document aims to explain how the X Layer protocol manages the layer 2 rollu
 
 ## Trustless layer 2 state management
 The trusted sequencer generates batches for quick layer 2 transaction finality. Instead of waiting for the next layer 1 block, these batches are shared with layer 2 nodes through a broadcast channel. Each node processes the batches locally to compute the layer 2 state.
-After the trusted sequencer commits batch sequences from layer 1, layer 2 nodes independently re-execute them, eliminating the need for complete trust. Off-chain batch execution is later verified on-chain using zero-knowledge proofs, and the resulting layer 2 state root is committed. With zkEVM advancements, layer 2 nodes sync new layer 2 state roots directly from layer 1.
+After the trusted sequencer commits batch sequences from layer 1, layer 2 nodes independently re-execute them, eliminating the need for complete trust. Off-chain batch execution is later verified on-chain using zero-knowledge proofs, and the resulting layer 2 state root is committed. With ZKEVM advancements, layer 2 nodes sync new layer 2 state roots directly from layer 1.
 
 <Tip title="Note">Data Availability and transaction execution verification are based solely on layer 1 security assumptions. In the protocol’s final stage, nodes depend only on layer 1 data to stay in sync with every layer 2 state change.</Tip>
 
