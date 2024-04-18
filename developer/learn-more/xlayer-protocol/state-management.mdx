@@ -1,17 +1,17 @@
 # State management
-This document aims to explain how the X Layer protocol manages the L2 rollup's states while providing state transition verifiability and security.
+This document aims to explain how the X Layer protocol manages the layer 2 rollup’s states while providing state transition verifiability and security.
 
-## Trustless L2 state management
-The trusted sequencer generates batches for quick L2 transaction finality. Instead of waiting for the next L1 block, these batches are shared with L2 nodes through a broadcast channel. Each node processes the batches locally to compute the L2 state.
-After the trusted sequencer commits batch sequences from L1, L2 nodes independently re-execute them, eliminating the need for complete trust. Off-chain batch execution is later verified on-chain using zero-knowledge proofs, and the resulting L2 state root is committed. With zkEVM advancements, L2 nodes sync new L2 state roots directly from L1.
+## Trustless layer 2 state management
+The trusted sequencer generates batches for quick layer 2 transaction finality. Instead of waiting for the next layer 1 block, these batches are shared with layer 2 nodes through a broadcast channel. Each node processes the batches locally to compute the layer 2 state.
+After the trusted sequencer commits batch sequences from layer 1, layer 2 nodes independently re-execute them, eliminating the need for complete trust. Off-chain batch execution is later verified on-chain using zero-knowledge proofs, and the resulting layer 2 state root is committed. With ZKEVM advancements, layer 2 nodes sync new layer 2 state roots directly from layer 1.
 
-<Tip title="Note">Data Availability and transaction execution verification are based solely on L1 security assumptions. In the protocol's final stage, nodes depend only on L1 data to stay in sync with every L2 state change.</Tip>
+<Tip title="Note">Data Availability and transaction execution verification are based solely on layer 1 security assumptions. In the protocol’s final stage, nodes depend only on layer 1 data to stay in sync with every layer 2 state change.</Tip>
 
 ![Batch Data Flow](./img/batch-data-flow.png)
 
-In the diagram above, **L2 nodes receive batch data through three methods**:
-1. **From the trusted sequencer**: before batches are committed to L1
-2. **Directly from L1**: after the batches are sequenced
+In the diagram above, **layer 2 nodes receive batch data through three methods**:
+1. **From the trusted sequencer**: before batches are committed to layer 1
+2. **Directly from layer 1**: after the batches are sequenced
 3. **After verification**: once execution correctness is proven by the aggregator and verified by the `ZkEVM.sol` contract
 
 Worth noting, these three batch data formats arrive in the order mentioned above.

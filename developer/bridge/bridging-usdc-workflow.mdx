@@ -2,63 +2,63 @@
 
 ## Contracts
 
-1. [BridgedWrapped USDC](https://zkevm.polygonscan.com/address/0xA8CE8aee21bC2A48a5EF670afCc9274C7bbbC035 "Bridged Wrapped USDC") (zkEVM)<br/>The existing token for USDC in zkEVM, created by the Polygon ZkEVMBridge using the default TokenWrapped ERC20 contract known as **USDC.e**. It is **BWUSDC** in the flowchart.
+1. [BridgedWrapped USDC](https://zkevm.polygonscan.com/address/0xA8CE8aee21bC2A48a5EF670afCc9274C7bbbC035 "Bridged Wrapped USDC") (ZKEVM)<br/>The existing token for USDC in zkEVM, created by the Polygon ZkEVMBridge using the default TokenWrapped ERC20 contract known as **USDC.e**. It is **BWUSDC** in the flowchart.
 
-2. [USDC-e](https://zkevm.polygonscan.com/address/0x37eAA0eF3549a5Bb7D431be78a3D99BD360d19e5 "USDC-e") (zkEVM) <br/>
-"Native" USDC in zkEVM known as known as **USDC**. This contract matches the current USDC contract deployed on Ethereum, with all expected features. The contract address is different from the current "bridge wrapped" USDC in use today, and has the ability to issue and burn tokens as well as "blacklist" addresses. [See USDC-e project](https://github.com/omnifient/usdc-e "USDC-e project").
+2. [USDC-e](https://zkevm.polygonscan.com/address/0x37eAA0eF3549a5Bb7D431be78a3D99BD360d19e5 "USDC-e") (ZKEVM) <br/>
+"Native" USDC in ZKEVM known as known as **USDC**. This contract matches the current USDC contract deployed on Ethereum, with all expected features. The contract address is different from the current "bridge wrapped" USDC in use today, and has the ability to issue and burn tokens as well as "blacklist" addresses. [See USDC-e project](https://github.com/omnifient/usdc-e "USDC-e project").
 
 3. [L1Escrow](https://etherscan.io/address/0x70E70e58ed7B1Cec0D8ef7464072ED8A52d755eB) (L1) <br/>
-This contract receives L1 USDC from users, and triggers the ZkMinterBurner contract on zkEVM (through the Polygon ZkEVM Bridge) to mint USDC-e. It holds all of the L1 backing of USDC-e. It's also triggered by the Bridge to withdraw L1 USDC.
+This contract receives layer 1 USDC from users, and triggers the ZKMinterBurner contract on ZKEVM (through the Polygon ZKEVM Bridge) to mint USDC-e. It holds all of the layer 1 backing of USDC-e. It’s also triggered by the Bridge to withdraw layer 1 USDC.
 
-4. [ZkMinterBurner](https://zkevm.polygonscan.com/address/0xBDa0B27f93B2FD3f076725b89cf02e48609bC189 "ZkMinterBurner") (zkEVM) <br/>
-This contract receives BridgeWrappedUSDC on zkEVM and mints back USDC-e. It also has a permissionless publicly callable function called "migrate" which withdraws all BridgedWrappedUSDC to L1 through the Bridge. The beneficiary address is the L1Escrow, thus migrating the supply and settling the balance.
+4. [ZKMinterBurner](https://zkevm.polygonscan.com/address/0xBDa0B27f93B2FD3f076725b89cf02e48609bC189 "ZKMinterBurner") (ZKEVM) <br/>
+This contract receives BridgeWrappedUSDC on ZKEVM and mints back USDC-e. It also has a permissionless publicly callable function called "migrate" which withdraws all BridgedWrappedUSDC to layer 1 through the Bridge. The beneficiary address is the L1Escrow, thus migrating the supply and settling the balance.
 
 ## Bridge transactions guide
 
-Bridge USDC(L1) to USDC-e(L2)
+Bridge USDC (layer 1) to USDC-e (layer 2)
 
-1. Approve USDC amount for L1Escrow on L1 using our [bridge](https://www.okx.com/xlayer/bridge "xlayer bridge").
-2. bridgeToken on L1.
-3. claimMessage on L2.
+1. Approve USDC amount for L1Escrow on layer 1 using our [bridge](https://www.okx.com/xlayer/bridge "xlayer bridge").
+2. bridgeToken on layer 1.
+3. claimMessage on layer 2.
 
-Bridge USDC-e(L2) to USDC(L1)
+Bridge USDC-e (layer 2) to USDC(layer 1)
 
-1. Approve USDC-e amount for ZkMinterBurner our [bridge](https://www.okx.com/xlayer/bridge "xlayer bridge").
-2. bridgeToken on L2.
-3. claimMessage on L1.
+1. Approve USDC-e amount for ZKMinterBurner our [bridge](https://www.okx.com/xlayer/bridge "xlayer bridge").
+2. bridgeToken on layer 2.
+3. claimMessage on layer 1.
 
-Bridge USDC(L1) to BWUSDC(L2)
+Bridge USDC (layer 1) to BWUSDC (layer 2)
 
-1. Approve USDC amount for ZkEVMBridge on L1.
-2. bridgeAsset on L1.
-3. claimAsset (BWUSDC) on L2.
+1. Approve USDC amount for ZKEVMBridge on layer 1.
+2. bridgeAsset on layer 1.
+3. claimAsset (BWUSDC) on layer 2.
 
-Convert BWUSDC(L2) to USDC-e(L2)
+Convert BWUSDC (layer 2) to USDC-e (layer 2)
 
-1. Approve BWUSDC amount for NativeConverter on L2.
-2. Convert on L2.
+1. Approve BWUSDC amount for NativeConverter on layer 2.
+2. Convert on layer 2.
 
-Migrate BWUSDC(L2) to USDC(L1)
+Migrate BWUSDC (layer 2) to USDC (layer 1)
 
-1. Migrate on L2.
-2. claimAsset on L1.
+1. Migrate on layer 2.
+2. claimAsset on layer 1.
 
 ## Transaction description
 
-## L1 transactions
+## Layer 1 transactions
 
 1. `bridgeToken`
     - Calldata:
 
 ``` 
     function bridgeToken(
-        address destinationAddress, //indicate your address on L2
+        address destinationAddress, //indicate your address on layer 2
         uint256 amount, //amount of usdc
         bool forceUpdateGlobalExitRoot //true
     ) external;
 ```
-   - To: L1Escrow Address on L1
-   - Description: Transfers USDC to L1Escrow and sends a bridgeMessage to the ZkEVMBridge on L2.
+   - To: L1Escrow Address on layer 1
+   - Description: Transfers USDC to L1Escrow and sends a bridgeMessage to the ZKEVMBridge on layer 2.
 
 
 2. `claimMessage`
@@ -79,8 +79,8 @@ Migrate BWUSDC(L2) to USDC(L1)
         bytes calldata metadata
     ) external;
 ```
-   - To: Bridge Address on L1
-   - Description: Claims zkMinterburner's message and initiates callback to L1Escrow to release escrowed USDC.
+   - To: Bridge address on layer 1
+   - Description: Claims ZKMinterburner’s message and initiates callback to L1Escrow to release escrowed USDC.
     - Steps for construction of arguments are shown in the section below.
 
 3. `approve`
@@ -89,23 +89,23 @@ Migrate BWUSDC(L2) to USDC(L1)
 ``` 
 function approve(address spender, uint256 amount) external returns (bool);
 ```
-   - To: USDC Address on L1
+   - To: USDC address on layer 1
    - Description: Provides allowance to the L1Escrow to allow "pulling" of tokens。
 
-## L2 transactions
+## Layer 2 transactions
 
 1. `bridgeToken`
     - Calldata:
 
 ``` 
     function bridgeToken(
-        address destinationAddress, //indicate your address on L2
+        address destinationAddress, //indicate your address on layer 2
         uint256 amount, //amount of usdc
         bool forceUpdateGlobalExitRoot //true
     ) external;
 ```
-   - To: ZkMinterBurner Address on L2
-   - Description: Transfers USDC-e to ZkMinterBurner and sends a bridgeMessage to the L1Escrow on L1.
+   - To: ZKMinterBurner Address on layer 2
+   - Description: Transfers USDC-e to ZKMinterBurner and sends a bridgeMessage to the L1Escrow on L1.
 
 2. `claimMessage`
     - Calldata:
@@ -125,8 +125,8 @@ function approve(address spender, uint256 amount) external returns (bool);
         bytes calldata metadata
     ) external;
 ```
-   - To: Bridge Address on L2
-   - Description: Claims L1Escrow's message and initiates callback to ZkMinterBurner to mint USDC-e.
+   - To: Bridge Address on layer 2
+   - Description: Claims L1Escrow’s message and initiates callback to ZKMinterBurner to mint USDC-e.
     - Steps for construction of arguments are shown in the section below.
 
 3. `approve`
@@ -136,8 +136,8 @@ function approve(address spender, uint256 amount) external returns (bool);
 function approve(address spender, uint256 amount) external returns (bool);
 
 ```
-   - To: USDC-e / BWUSDC Address on L2
-   - Description: provides allowance to the ZkMinterburner/NativeConverter to allow "pulling" of tokens.
+   - To: USDC-e / BWUSDC Address on layer 2
+   - Description: provides allowance to the ZKMinterburner/NativeConverter to allow "pulling" of tokens.
 
 4. `convert`
     - Calldata:
@@ -149,8 +149,8 @@ function approve(address spender, uint256 amount) external returns (bool);
         bytes calldata permitData
     ) external;
 ```
-   - To: NativeConverter Address on L2
-   - Description: Transfers BWUSDC to NativeConverter and mints USDC-e into receiver's wallet.
+   - To: NativeConverter Address on layer 2
+   - Description: Transfers BWUSDC to NativeConverter and mints USDC-e into receiver’s wallet.
 
 5. `migrate`
     - Calldata:
@@ -158,7 +158,7 @@ function approve(address spender, uint256 amount) external returns (bool);
 ```
 function migrate() external;
 ```
-   - To: NativeConverter Address on L2
+   - To: NativeConverter Address on layer 2
    - Description: Approves bridge for token pulling and calls bridgeAsset to bridge BWUSDC to the L1Escrow.
 
 ## Extracting ClaimMessage Arguments
@@ -168,7 +168,7 @@ Event details from bridgeToken
 1. After submission of `bridgeToken` transactions, a `BridgeEvent` is emitted by the bridge, which contains fields that are required for construction of claims to the bridge.
 2. `originNetwork`, `originAddress`, `destinationNetwork`, `destinationAddress`, `amount` and `metadata` can be used as is for claimMessage. Deposit count will be used in the subsequent step to extract the other details
 3. Samples of BridgeEvent:
-    - Emitted from a Testnet L1 to L2 bridgeToken [transaction](https://sepolia.etherscan.io/tx/0xcec854f18b42d9d4600dcbe5c5bc699fb4241f896d5bc5c6ffec2cb882025664#eventlog "bridgeToken transaction").
+    - Emitted from a testnet layer 1 to layer 2 bridgeToken [transaction](https://sepolia.etherscan.io/tx/0xcec854f18b42d9d4600dcbe5c5bc699fb4241f896d5bc5c6ffec2cb882025664#eventlog "bridgeToken transaction").
 
 ![bridgeToken testnet tranaction](./img/bridgetoken-transaction-testnet.png)
 
@@ -190,14 +190,14 @@ Event details from bridgeToken
 
 2. Example requests
       - Testnet
-    - Intent: Claiming a bridgeToken call sent from L1 with a depositCount of 1103532 
+    - Intent: Claiming a bridgeToken call sent from layer 1 with a depositCount of 1103532 
       - https://testrpc.x1.tech/priapi/v1/ob/bridge/merkle-proof?net_id=0&deposit_cnt=1103532
-    - Intent: Claiming a bridgeToken call sent from L2 with a depositCount of 776346
+    - Intent: Claiming a bridgeToken call sent from layer 2 with a depositCount of 776346
       - https://testrpc.x1.tech/priapi/v1/ob/bridge/merkle-proof?net_id=1&deposit_cnt=776346
   - Mainnet
-    - Intent: Claiming a bridgeToken call sent from L1 with a depositCount of 177400
+    - Intent: Claiming a bridgeToken call sent from layer 1 with a depositCount of 177400
       - https://rpc.xlayer.tech/priapi/v1/ob/bridge/merkle-proof?net_id=0&deposit_cnt=177400
-    - Intent: Claiming a bridgeToken call sent from L2 with a depositCount of 12
+    - Intent: Claiming a bridgeToken call sent from layer 2 with a depositCount of 12
       - https://rpc.xlayer.tech/priapi/v1/ob/bridge/merkle-proof?net_id=3&deposit_cnt=12
 
 3. Response
@@ -297,7 +297,7 @@ Event details from bridgeToken
 
 2. Description
   - `mainnetFlag`
-    - Boolean to represent whether the message originated from L1
+    - Boolean to represent whether the message originated from layer 1
   - `rollUpIndex`
     - Index of the rollup, according to the RollupManager if mainnet flag is 0 
     - Bridge contract on testnet and mainnet are on different forks, and as such will require different handling
@@ -310,16 +310,16 @@ Event details from bridgeToken
 
 3. Examples of globalIndex
   - Testnet
-    - L1 to L2 bridgeToken transaction claim, depositCount of 1103532.
+    - layer 1 to layer 2 bridgeToken transaction claim, depositCount of 1103532.
       - 18446744073710655148(decimal) - 0x000000000000000000000000000000000000000000000001000000000010d6ac(hex)
     
-    - L2 to L1 bridgeToken transaction claim, depositCount of 772142.
+    - layer 2 to layer 1 bridgeToken transaction claim, depositCount of 772142.
       - 772142(decimal) - 0x00000000000000000000000000000000000000000000000000000000000bc82e(hex)
   - Mainnet
-    - L1 to L2 bridgeToken transaction claim, depositCount of 177400.
+    - layer 1 to layer 2 bridgeToken transaction claim, depositCount of 177400.
       - 18446744073709729016(decimal) - 0x000000000000000000000000000000000000000000000001000000000002b4f8(hex)
     
-    - L2 to L1 bridgeToken transaction claim, depositCount of 12.
+    - layer 2 to layer 1 bridgeToken transaction claim, depositCount of 12.
       - 8589934604(decimal) - 0x000000000000000000000000000000000000000000000000000000020000000C(hex)
 
 ## Addresses
@@ -336,9 +336,9 @@ Event details from bridgeToken
 
 |Name|Address|
 |:----|:----|
-|USDC.e(BWUSDC)|0x426840dE56a73C8Cfd09996c128dd18ff90BA666|
+|USDC.e (BWUSDC)|0x426840dE56a73C8Cfd09996c128dd18ff90BA666|
 |USDC (USDC-e)|0xe8926a7f935675e95c4881a0FFBb84ea320AF6FD|
-|ZkMinterBurner|0x8AEACF2eBB6b24f8dE234E919f2696F76e3d91C2|
+|ZKMinterBurner|0x8AEACF2eBB6b24f8dE234E919f2696F76e3d91C2|
 |NativeConverter|0xf3c0330Edf50Aa0c3D04b05feE585D42c1fCE27E|
 |Bridge|0x7a4Ee6f9F0aB037fE771FC36D39C1E19bcc0Fdb5|
 
@@ -354,8 +354,8 @@ Event details from bridgeToken
 
 |Name|Address|
 |:----|:----|
-|USDC.e(BWUSDC)|0xA8CE8aee21bC2A48a5EF670afCc9274C7bbbC035|
+|USDC.e (BWUSDC)|0xA8CE8aee21bC2A48a5EF670afCc9274C7bbbC035|
 |USDC (USDC-e)|0x74b7F16337b8972027F6196A17a631aC6dE26d22|
-|ZkMinterBurner|0x1A8C4999D32F05B63A227517Be0824AeD47e4728|
+|ZKMinterBurner|0x1A8C4999D32F05B63A227517Be0824AeD47e4728|
 |NativeConverter|0x9258cCeb28884D7a58e9d485Ec61C30768a23D45|
 |Bridge|0x2a3DD3EB832aF982ec71669E178424b10Dca2EDe|

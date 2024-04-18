@@ -1,15 +1,15 @@
-# Setup local zkNode
-It's crucial that developers can thoroughly test the network for a developing blockchain technology like X Layer zkEVM without putting users or themselves at unnecessary risk. Developers should be able to test their smart contracts, experiment with new code, and play around with the network on their local machines.
-X Layer zkEVM has a local development environment setup for this reason. This tutorial will help you create a local single-node zkEVM blockchain with no connections to external peers. It only exists on your local machine.
+# Setup local ZKNode
+It’s crucial that developers can thoroughly test the network for a developing blockchain technology like X Layer ZKEVM without putting users or themselves at unnecessary risk. Developers should be able to test their smart contracts, experiment with new code, and play around with the network on their local machines.
+X Layer ZKEVM has a local development environment setup for this reason. This tutorial will help you create a local single-node ZKEVM blockchain with no connections to external peers. It only exists on your local machine.
 
-<Tip title="CAUTION">Currently the zkProver does not run on ARM-powered Macs. For Windows users, using WSL/WSL2 is not recommended. Unfortunately, Apple M1 chips are not supported for now - since some optimizations on the zkProver require specific Intel instructions. This means some non-M1 computers won't work regardless of the OS, for example: AMD.</Tip>
+<Tip title="CAUTION">Currently the ZKProver does not run on ARM-powered Macs. For Windows users, using WSL/WSL2 is not recommended. Unfortunately, Apple M1 chips are not supported for now - since some optimizations on the ZKProver require specific Intel instructions. This means some non-M1 computers won’t work regardless of the OS, for example: AMD.</Tip>
 
 After completing this tutorial, you will have the following components running:
-- zkEVM node databases
+- ZKEVM node databases
 - Explorer databases
-- L1 network
+- Layer 1 network
 - Prover
-- zkEVM node components
+- ZKEVM node components
 - Explorers
 
 ## Prerequisites
@@ -19,22 +19,22 @@ The tutorial for current version of the environment requires `Foundryup`, `go`, 
 - https://www.docker.com/get-started
 - https://docs.docker.com/compose/install/
 
-### System Requirements
-- zkEVM node: 16GB RAM with 4-core CPU
-- Mock zkProver (Default): 16GB RAM with 4-core CPU
-- Full zkProver: 1TB RAM with 128-core CPU
+### System requirements
+- ZKEVM node: 16GB RAM with 4-core CPU
+- Mock ZKProver (Default): 16GB RAM with 4-core CPU
+- Full ZKProver: 1TB RAM with 128-core CPU
 
-If you want to run a full-fledged zkProver on your own, you'll need at least 1TB of RAM. If you are unable to meet the Prover requirements, you can still run the zkNode.
+If you want to run a full-fledged ZKProver on your own, you’ll need at least 1TB of RAM. If you are unable to meet the Prover requirements, you can still run the zkNode.
 
-## Setup zkNode
-Before starting the zkEVM node setup, we need to clone the [official zkNode repository](https://github.com/okx/xlayer-node "official zkNode repository") from xlayer-node Github.
+## Setup ZKNode
+Before starting the ZKEVM node setup, we need to clone the [official ZKNode repository](https://github.com/okx/xlayer-node "official ZKNode repository") from xlayer-node Github.
 
 ```bash
 git clone -b release/v0.3.0 https://github.com/okx/xlayer-node.git
 cd xlayer-node
 ```
 
-The `xlayer-node` docker image must be built at least once and whenever the code is changed. If you haven't already built the `xlayer-node` image, you must run:
+The `xlayer-node` docker image must be built at least once and whenever the code is changed. If you haven’t already built the `xlayer-node` image, you must run:
 ```bash
 make build-docker
 ```
@@ -48,28 +48,28 @@ The `test/` directory contains scripts and files for developing and debugging. C
 ```bash
 cd test/
 ```
-Now, run the zkNode environment:
+Now, run the ZKNode environment:
 ```bash
 make run
 ```
-To stop the zkNode:
+To stop the ZKNode:
 ```bash
 make stop
 ```
-To restart the whole zkNode environment:
+To restart the whole ZKNode environment:
 ```bash
 make restart
 ``` 
 
-## Configuration Parameters
-The Synchronizer regularly pulls for network updates, mainly from Ethereum but also via the Trusted Sequencer's broadcasting mechanism, in order to stay up-to-date. Unless otherwise specified in the setup, the Synchronizer's default syncing rate is every 2 seconds.
+## Configuration parameters
+The Synchronizer regularly pulls for network updates, mainly from Ethereum but also via the Trusted Sequencer’s broadcasting mechanism, in order to stay up-to-date. Unless otherwise specified in the setup, the Synchronizer’s default syncing rate is every 2 seconds.
 The Keystore file, used to store private keys, is normally required for running the Sequencer & Aggregator but not for a Synchronizer/RPC-setup.
 
-<Tip title="Note">We have the inconvenient situation where the Keystore file is required to run the node when it shouldn't be, for example, if no transactions are sent to L1. Keystore is not required in the Mango Testnet as it uses a trusted sequencer and aggregator.
-This will be reviewed when a decentralised zkEVM network is implemented.</Tip>
+<Tip title="Note">We have the inconvenient situation where the Keystore file is required to run the node when it shouldn’t be, for example, if no transactions are sent to layer 1. Keystore is not required in the Mango Testnet as it uses a trusted sequencer and aggregator.
+This will be reviewed when a decentralised ZKEVM network is implemented.</Tip>
 
-## Sample Data
-It's important to populate your local zkEVM node with some data before you start testing out the network. The `make run` command will execute the containers required to run the environment, but it will not execute anything else. Your local L2 network will be essentially empty.
+## Sample data
+It’s important to populate your local ZKEVM node with some data before you start testing out the network. The `make run` command will execute the containers required to run the environment, but it will not execute anything else. Your local layer 2 network will be essentially empty.
 The following scripts are available if you require sample data that has already been deployed to the network.
 ```bash
 cast send --legacy --from 0x2ECF31eCe36ccaC2d3222A303b1409233ECBB225 --private-key 0xde3ca643a52f5543e84ba984c4419ff40dbabd0e483c31c1d09fee8168d68e38 --rpc-url http://127.0.0.1:8123 0xC949254d682D8c9ad5682521675b8F43b102aec4 --value 10ether
@@ -87,13 +87,13 @@ make run-approve-matic
 ## Connecting to Metamask
 <Tip title="Note">Metamask requires the network to be running while configuring it, so make sure your network is up.</Tip>
 
-To configure your MetaMask to use your local zkEVM environment, follow these steps:  
+To configure your MetaMask to use your local ZKEVM environment, follow these steps:  
 
 1. Log in to your MetaMask wallet.
 2. Click on your account picture and then on Settings.
 3. On the left menu, click on **Networks**.
 4. Click on **Add Network** button.
-5. Fill in the L2 network information:
+5. Fill in the layer 2 network information:
     - Network Name: X Layer zkEVM - Local
     - New RPC URL: http://localhost:8123
     - ChainID: 1001
@@ -101,11 +101,11 @@ To configure your MetaMask to use your local zkEVM environment, follow these ste
     - Block Explorer URL: http://localhost:4000
 6. Click on **Save**.
 7. Click on **Add Network** button.
-8. Fill in the L1 network information:
+8. Fill in the layer 1 network information:
     - Network name: Geth - Local
     - New RPC URL: http://localhost:8545
     - ChainID: 1337
     - Currency symbol: ETH
 9. Click on **Save**.
 
-You can now interact with your local zkEVM network and sign transactions from your MetaMask wallet.
+You can now interact with your local ZKEVM network and sign transactions from your MetaMask wallet.

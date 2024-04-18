@@ -1,6 +1,6 @@
-# How to Create and Deploy an ERC20 token
+# How to create and deploy an ERC-20 token
 
-Now that you understand more about what ERC20 tokens are, and how Remix is structured, it is time to create and deploy your own ERC20 token! In this section, you will learn how to create and deploy an ERC-20 token using Remix.IDE!
+Now that you understand more about what ERC-20 tokens are, and how Remix is structured, it is time to create and deploy your own ERC-20 token! In this section, you will learn how to create and deploy an ERC-20 token using Remix.IDE!
 
 ## What you need
 
@@ -15,7 +15,7 @@ Now that you understand more about what ERC20 tokens are, and how Remix is struc
 
 ## Step 1
 
-Download a Web3 wallet. You can download OKX's wallet from [here](https://chromewebstore.google.com/detail/okx-wallet/mcohilncbfahbmgdjkbpemcciiolgcge) or read more about installing a Web3 compatible wallet on [our website](https://www.okx.com/oktc/docs/dev/quick-start/wallet/metamask/quick-start#install-a-web3-compatible-wallet).
+Download a Web3 wallet. You can download OKX’s wallet from [here](https://chromewebstore.google.com/detail/okx-wallet/mcohilncbfahbmgdjkbpemcciiolgcge) or read more about installing a Web3 compatible wallet on [our website](https://www.okx.com/oktc/docs/dev/quick-start/wallet/metamask/quick-start#install-a-web3-compatible-wallet).
 
 ##  Step 2
 
@@ -46,7 +46,7 @@ _mint(msg.sender, 1000000 * (10 ** uint256(decimals())));
 ```
 ![Compiler](./img/compiler-guide.png)
 
-Click on the **Compile** button. Do verify that the compiler's version is at least **0.8.20** because of the line `pragma solidity ^0.8.20;` in the editor pane. You should see a green tick mark on the Compile button! Well done!
+Click on the **Compile** button. Do verify that the compiler’s version is at least **0.8.20** because of the line `pragma solidity ^0.8.20;` in the editor pane. You should see a green tick mark on the **Compile** button! Well done!
 
 ##  Step 3 Code breakdown
 
@@ -61,13 +61,13 @@ To help you understand the code better, here is a breakdown of the code we have 
     
     1.  The pragma directive specifies the compiler version to use. It ensures that the code is compiled with a specific version of the compiler to avoid compatibility issues.
         
-3.  **Importing ERC20 from OpenZeppelin**:
+3.  **Importing ERC-20 from OpenZeppelin**:
     
-    1.  The ERC20 contract from OpenZeppelin is a well-established and widely used implementation of the ERC-20 standard, providing a foundation for creating tokens.
+    1.  The ERC-20 contract from OpenZeppelin is a well-established and widely used implementation of the ERC-20 standard, providing a foundation for creating tokens.
         
 4.  **Creating MyToken Contract**:
     
-    1.  The `MyToken` contract is being defined and it extends the functionality of the ERC20 contract. This means it inherits all the functions and features from the ERC20 contract.
+    1.  The `MyToken` contract is being defined and it extends the functionality of the ERC-20 contract. This means it inherits all the functions and features from the ERC-20 contract.
         
 5.  **Constructor Function**:
     
@@ -79,7 +79,7 @@ To help you understand the code better, here is a breakdown of the code we have 
         
 7.  **Decimals Adjustment**:
     
-    1.  The number of tokens minted is adjusted by the `decimals` value. The `decimals` value is a standard in ERC-20 contracts and is often set to 18 by default in OpenZeppelin's implementation.
+    1.  The number of tokens minted is adjusted by the `decimals` value. The `decimals` value is a standard in ERC-20 contracts and is often set to 18 by default in OpenZeppelin’s implementation.
         
 8.  You can see the full ERC-20 code on the OpenZeppelin website [here](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol).
     
@@ -100,7 +100,7 @@ Confirm the transaction in your Web3 wallet. In this case, we are using the OKX 
 
 Confirm the transaction in your wallet.
 
-Congratulations! Your contract is now deployed on Ethereum's Sepolia test network! To see the contract that you have deployed, click on "Deployed Contracts" to see the functions of the contract. You should be able to edit the contract name as well.
+Congratulations! Your contract is now deployed on Ethereum’s Sepolia test network! To see the contract that you have deployed, click on "Deployed Contracts" to see the functions of the contract. You should be able to edit the contract name as well.
 
 ![contract deployed](./img/contract-deployed.png)
 
@@ -113,7 +113,7 @@ Congratulations! You have created your very own token on the Ethereum Sepolia Te
 
 Utilizing the input to store and retrieve a value incurs a gas cost, and the nuanced aspect lies in the distinction between storing and retrieving.
 
-Both operations approximately cost 23500 gas. However, there's an important nuance: the gas cost for the retrieve function is only applicable when it is called by another contract. When called from the web, there is no gas cost because you are merely reading data from the blockchain. In this case, you are not instructing the EVM to perform a computational task, making the retrieval operation free when accessed from the web.
+Both operations approximately cost 23500 gas. However, there’s an important nuance: the gas cost for the retrieve function is only applicable when it is called by another contract. When called from the web, there is no gas cost because you are merely reading data from the blockchain. In this case, you are not instructing the EVM to perform a computational task, making the retrieval operation free when accessed from the web.
 
 ##  Disabling Artifact Generation
 
