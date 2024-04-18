@@ -1,18 +1,18 @@
 # Transactions and data flow
 The process of validating a specific transaction within the batch typically involves three steps:
-1. **Trusted state**: This state is given by the trusted sequencer almost instantaneously. The state is updated on L2, but has not yet reached L1.
-2. **Virtual state**: Batches have been sequenced and data is on L1. At this point, transactions and data can not be modified as the state is final, yet they are not yet proven and are available on L1 for anyone to prove.
-3. **Verified state**: Zk-proof has been posted on L1, and the smart contract verifies the virtual state, allowing for the withdrawal of funds.
+1. **Trusted state**: This state is given by the trusted sequencer almost instantaneously. The state is updated on layer 2, but has not yet reached layer 1.
+2. **Virtual state**: Batches have been sequenced and data is on layer 1. At this point, transactions and data can not be modified as the state is final, yet they are not yet proven and are available on layer 1 for anyone to prove.
+3. **Verified state**: Zk-proof has been posted on layer 1, and the smart contract verifies the virtual state, allowing for the withdrawal of funds.
 
-![L2 State Stages](./img/l2-state-stages.png)
+![layer 2 State Stages](./img/l2-state-stages.png)
 
 ## Data flow in X Layer
-Transactions on the X Layer network have a typical flow starting from the users' interactions with their wallet on X Layer, to how the transactions are batched, sequenced, and aggregated on Ethereum L1:
+Transactions on the X Layer network have a typical flow starting from the users’ interactions with their wallet on X Layer, to how the transactions are batched, sequenced, and aggregated on Ethereum layer 1:
 1. Transactions are submitted to X Layer.
 2. Transactions are executed almost instantly.
 3. Transactions are batched together using data encryption methods.
-4. Batches are sequenced and sent to Ethereum L1.
-5. Consolidated finality is achieved on Ethereum L1 with the power of zk-proofs.
+4. Batches are sequenced and sent to Ethereum layer 1.
+5. Consolidated finality is achieved on Ethereum layer 1 with the power of zk-proofs.
 
 ![Transactions and Data Flow](./img/transactions-and-data-flow.png)
 
@@ -25,10 +25,10 @@ The sequencer will do a few of the following checks to see if the transaction sh
 1. If the sender has sufficient funds to complete the transaction
 2. If the smart contract called actually exists and contains valid bytecode
 3. If the transaction is not a duplicate
-4. If the transaction does not involve a "double-spend", which means the sender's funds have not already been used in another transaction
+4. If the transaction does not involve a "double-spend", which means the sender’s funds have not already been used in another transaction
 
 Once the transaction is considered valid, the sequencer will update the X Layer state. Users will experience transactions going through almost instantly.
-From here onwards, the user remains engaged in the X Layer L2 state. Everything that follows involves sharing transaction data back to Ethereum L1, but this step is only important for users who wish to transfer their funds from X Layer L2 back to Ethereum L1.
+From here onwards, the user remains engaged in the X Layer layer 2 state. Everything that follows involves sharing transaction data back to Ethereum layer 1, but this step is only important for users who wish to transfer their funds from X Layer layer 2 back to Ethereum layer 1.
 
 ### 3. Batching transactions
 The sequencer combines multiple transactions into a single batch and sends them to the `ZkEVM.sol` smart contract. This contract is stored on Ethereum mainnet and also has a separate version on the Ethereum Sepolia testnet.
@@ -53,4 +53,4 @@ Finally, DApps read information from X Layer through the synchronizer.
 It reads events from the Ethereum smart contract(s), storing knowledge of both the zk-validity proofs from the aggregator, and the batches submitted from the sequencer.
 This way, DApps can easily get a view of the state of X Layer via JSON-RPC.
 
-<Tip title="Note">To find answers to more transaction-related questions, you can visit [Polygon's zkEVM protocol FAQ](https://wiki.polygon.technology/docs/zkevm/faq/zkevm-protocol-faq/ "Polygon's zkEVM protocol FAQ") for more info.</Tip>
+<Tip title="Note">To find answers to more transaction-related questions, you can visit [Polygon’s zkEVM protocol FAQ](https://wiki.polygon.technology/docs/zkevm/faq/zkevm-protocol-faq/ "Polygon’s zkEVM protocol FAQ") for more info.</Tip>

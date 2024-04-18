@@ -1,5 +1,5 @@
 # Verifying with Hardhat
-To verify your code on [OKLink](https://www.oklink.com/ "OKLink"), you just need to modify one file (hardhat.config.js), following the same process and commands outlined in [Hardhat](https://hardhat.org/hardhat-runner/docs/guides/verifying "Hardhat")'s official documentation.
+To verify your code on [OKLink](https://www.oklink.com/ "OKLink"), you just need to modify one file (hardhat.config.js), following the same process and commands outlined in [Hardhat](https://hardhat.org/hardhat-runner/docs/guides/verifying "Hardhat")’s official documentation.
 
 ## Important notes
 1. First, you need to apply for a key in [OKLink browser](https://www.oklink.com/docs/en/#quickstart-guide-getting-started "OKLink guide").
@@ -34,7 +34,7 @@ module.exports = {
     }
 };
 ```
-Replace `process.env.PRIVKEY` with your own deployment address's private key, and `process.env.ETHERSCAN_KEY` can be filled with your OKLink API Key, which can be applied from [My account - API management] on https://www.oklink.com/ for free
+Replace `process.env.PRIVKEY` with your own deployment address’s private key, and `process.env.ETHERSCAN_KEY` can be filled with your OKLink API Key, which can be applied from [My account - API management] on https://www.oklink.com/ for free
 
 3. Compile your Hardhat contract code and deploy it with this command:
 ```javascript

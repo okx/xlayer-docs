@@ -19,7 +19,7 @@ module.exports = [
         ],
         },
         {
-          title: 'User Guide',
+          title: 'User guide',
           icon: 'okds-guide',
           children: [
             '/getting-started/user-guide/set-up-wallets',
@@ -59,7 +59,7 @@ module.exports = [
           icon: 'okds-records',
           children: [
             {
-              title: 'Deploying Contract',
+              title: 'Deploying contract',
               path: '/developer/smart-contract/deploying-contract',
               children: [
                 '/developer/smart-contract/deploy-with-truffle',
@@ -68,7 +68,7 @@ module.exports = [
                 ],
             },
             {
-              title: 'Verifying Contract',
+              title: 'Verifying contract',
               path: '/developer/smart-contract/verifying-contract',
               children: [
                 '/developer/smart-contract/manual-verification',
@@ -155,7 +155,7 @@ module.exports = [
         ],
         },
         {
-          title: 'Learn Solidity',
+          title: 'Learn solidity',
           icon: 'okds-guide',
           children: [
             '/academy/learn-solidity/introduction-to-solidity',
@@ -167,7 +167,7 @@ module.exports = [
         ],
         },
         {
-          title: 'Try Remix',
+          title: 'Try remix',
           icon: 'okds-guide',
           children: [
             '/academy/try-remix/remix-overview',

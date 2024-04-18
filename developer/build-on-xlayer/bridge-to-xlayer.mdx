@@ -1,9 +1,9 @@
 # Bridge to X Layer
-You can use [ZkEVM Bridge Contract](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/PolygonZkEVMBridgeV2.sol "ZkEVM Bridge Contract") to bridge assets like ETH, OKB, and ERC-20 tokens between L1 and L2. However, there are a few points to note:
-- ETH is the native token of L1 (Ethereum). After bridging to L2 X Layer, it becomes a Wrapped ETH (WETH) ERC-20 token.
-- OKB is an ERC-20 token of L1 (Ethereum). After bridging to L2 X Layer, it becomes a native token.
+You can use [ZkEVM Bridge Contract](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/PolygonZkEVMBridgeV2.sol "ZkEVM Bridge Contract") to bridge assets like ETH, OKB, and ERC-20 tokens between layer 1 and layer 2. However, there are a few points to note:
+- ETH is the native token of layer 1 (Ethereum). After bridging to layer 2 X Layer, it becomes a Wrapped ETH (WETH) ERC-20 token.
+- OKB is an ERC-20 token of layer 1 (Ethereum). After bridging to layer 2 X Layer, it becomes a native token.
 - Other ERC-20 tokens, which are bridged to the other side, remain ERC-20 tokens. You can calculate the new ERC-20 address by using the `precalculatedWrapperAddress` method.
-- There are no restrictions if you are bridging ERC-20 tokens from L1 to L2. However, there is a whitelist restriction when bridging assets from L2 to L1. 
+- There are no restrictions if you are bridging ERC-20 tokens from layer 1 to layer 2. However, there is a whitelist restriction when bridging assets from layer 2 to layer 1. 
 - `NetworkId` and `ChainId` are not the same. `NetworkId` is a property that is unique to Polygon's Agglayer whereas `ChainId` is typically a transaction replay protection mechanism across EVM chains. The relevant information for Ethereum and X Layer are shown below.
 
 |Network (Mainnet)|ChainId|NetworkId|
@@ -16,16 +16,16 @@ You can use [ZkEVM Bridge Contract](https://github.com/okx/xlayer-contracts/blob
 |Sepolia|11155111|0|
 |X Layer testnet|195|1|
 
-<Tip title="Note">If you want to request L2 to L1 token whitelisting, you can join our [X Layer Discord server](https://discord.gg/xlayer "X Layer Discord server"), and navigate to `#support-tickets` to raise whitelising request.</Tip>
+<Tip title="Note">If you want to request layer 2 to layer 1 token whitelisting, you can join our [X Layer Discord server](https://discord.gg/xlayer "X Layer Discord server"), and navigate to `#support-tickets` to raise whitelising request.</Tip>
 
 The mapping list for OKB and ETH is as follows:
 |ERC-20 Token|Testnet|Mainnet|
 |:----|:----|:----|
-|OKB|[0x3F4B6664338F23d2397c953f2AB4Ce8031663f80](https://sepolia.etherscan.io/address/0x3F4B6664338F23d2397c953f2AB4Ce8031663f80 "0x3F4B6664338F23d2397c953f2AB4Ce8031663f80") (L1 Ethereum Sepolia)|[0x75231f58b43240c9718dd58b4967c5114342a86c](https://etherscan.io/address/0x75231f58b43240c9718dd58b4967c5114342a86c "0x75231f58b43240c9718dd58b4967c5114342a86c") (L1 Ethereum)|
-|WETH|[0xBec7859BC3d0603BeC454F7194173E36BF2Aa5C8](https://www.okx.com/explorer/xlayer-test/address/0xBec7859BC3d0603BeC454F7194173E36BF2Aa5C8 "0xBec7859BC3d0603BeC454F7194173E36BF2Aa5C8") (L2 X Layer testnet)| [0x5a77f1443d16ee5761d310e38b62f77f726bc71c](https://www.okx.com/explorer/xlayer/address/0x5a77f1443d16ee5761d310e38b62f77f726bc71c "0x5a77f1443d16ee5761d310e38b62f77f726bc71c") (L2 X Layer mainnet)|
+|OKB|[0x3F4B6664338F23d2397c953f2AB4Ce8031663f80](https://sepolia.etherscan.io/address/0x3F4B6664338F23d2397c953f2AB4Ce8031663f80 "0x3F4B6664338F23d2397c953f2AB4Ce8031663f80") (Layer 1 Ethereum Sepolia)|[0x75231f58b43240c9718dd58b4967c5114342a86c](https://etherscan.io/address/0x75231f58b43240c9718dd58b4967c5114342a86c "0x75231f58b43240c9718dd58b4967c5114342a86c") (Layer 1 Ethereum)|
+|WETH|[0xBec7859BC3d0603BeC454F7194173E36BF2Aa5C8](https://www.okx.com/explorer/xlayer-test/address/0xBec7859BC3d0603BeC454F7194173E36BF2Aa5C8 "0xBec7859BC3d0603BeC454F7194173E36BF2Aa5C8") (Layer 2 X Layer testnet)| [0x5a77f1443d16ee5761d310e38b62f77f726bc71c](https://www.okx.com/explorer/xlayer/address/0x5a77f1443d16ee5761d310e38b62f77f726bc71c "0x5a77f1443d16ee5761d310e38b62f77f726bc71c") (Layer 2 X Layer mainnet)|
 
-## Deposit OKB and ERC-20 tokens from L1
-The ZkEVM bridge contract allows ETH and ERC-20 token bridging from L1 to L2 using the bridgeAsset function. Notice that ERC-20 tokens will have a different address on L2. You can use the precalculatedWrapperAddress function to query the new address in [ZkEVMBridgeContract.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/PolygonZkEVMBridgeV2.sol "ZkEVMBridgeContract.sol") contract
+## Deposit OKB and ERC-20 tokens from layer 1
+The ZkEVM bridge contract allows ETH and ERC-20 token bridging from layer 1 to layer 2 using the bridgeAsset function. Notice that ERC-20 tokens will have a different address on layer 2. You can use the precalculatedWrapperAddress function to query the new address in [ZkEVMBridgeContract.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/PolygonZkEVMBridgeV2.sol "ZkEVMBridgeContract.sol") contract
 
 If the asset you bridged is USDC, please refer to this [document](https://www.okx.com/xlayer/docs/developer/bridge/usdc-on-x-layer "usdc document").
 ### bridgeAsset
@@ -72,8 +72,8 @@ function precalculatedWrapperAddress(
 |`symbol`|string|Symbol of the token|
 |`decimals`|uint8|Decimals of the token|
 
-## Withdrawing OKB and ERC-20 tokens from L2
-You can use the `claimAsset` method to retrieve assets on L2. Calling this method on L2 incurs no Gas fees, so the official bridge service will be provided to automatically invoke the `claimAsset` method for you.
+## Withdrawing OKB and ERC-20 tokens from layer 2
+You can use the `claimAsset` method to retrieve assets on layer 2. Calling this method on layer 2 incurs no Gas fees, so the official bridge service will be provided to automatically invoke the `claimAsset` method for you.
 
 If the asset you withdrew is native USDC, please refer to this [document](https://www.okx.com/xlayer/docs/developer/bridge/usdc-on-x-layer "usdc document").
 ### claimAsset
@@ -100,15 +100,15 @@ If the asset you withdrew is native USDC, please refer to this [document](https:
 |`globalIndex`|uint32|Index of the leaf|
 |`mainnetExitRoot`|bytes32|Mainnet exit root|
 |`rollupExitRoot`|bytes32|Rollup exit root|
-|`originNetwork`|uint32|Origin network. 0 for assets from originating from L1|
+|`originNetwork`|uint32|Origin network. 0 for assets from originating from layer 1|
 |`originTokenAddress`|address|Origin token address, 0 address is reserved for ETH|
-|`destinationNetwork`|uint32|Network destination. 0 for L1|
+|`destinationNetwork`|uint32|Network destination. 0 for layer 1|
 |`destinationAddress`|address|Address destination|
 |`amount`|uint256`|Amount of tokens|
 |`metadata`|bytes|Abi encoded metadata if any, empty otherwise|
 
 # Bridge to Ethereum
-## Creating an ERC-20 token with custom logic on X Layer (L2)
+## Creating an ERC-20 token with custom logic on X Layer (layer 2)
 ERC-20 is the technical standard for fungible tokens created using the Ethereum blockchain. A fungible token is interchangeable with another token — whereas the well-known non-fungible tokens (NFTs) are not interchangeable.
 You can read more information about ERC-20 [here](https://ethereum.org/en/developers/docs/standards/tokens/erc-20/ "here").
 Deploy a simple ERC-20 contract with any of the tools like [Truffle](/developer/smart-contract/deploy-with-truffle "Truffle"), [Hardhat](/developer/smart-contract/deploy-with-hardhat "Hardhat"), or [Foundry](/developer/smart-contract/deploy-with-foundry "Foundry"). This contract is implemented based on the open-source library, which can be found at [OpenZeppelin](https://www.openzeppelin.com/contracts# "OpenZeppelin").
@@ -123,8 +123,8 @@ contract MyToken is ERC20 {
 }
 ```
 
-## Depositing OKB and ERC-20 tokens from L2
-The same bridge contract is used on both L1 and L2, so the interface definition is identical.
+## Depositing OKB and ERC-20 tokens from layer 2
+The same bridge contract is used on both layer 1 and layer 2, so the interface definition is identical.
 
 
 <Tip title="Note">Claiming assets on Ethereum will consume gas fees and is not free.</Tip>
