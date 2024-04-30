@@ -3,7 +3,9 @@
 ## Safe
 Safe provides modular smart account infrastructure and account abstraction stack via their Safe{Core} [Account Abstraction SDK](https://docs.safe.global/sdk/overview "AA SDK"), [API](https://docs.safe.global/advanced/api-supported-networks "Safe API"), and [Protocol](https://github.com/5afe/safe-core-protocol "Safe Protocol").
 
+
 **Supported network**: 
+- X Layer mainnet
 - X Layer testnet
 ---
 ## Particle Network
