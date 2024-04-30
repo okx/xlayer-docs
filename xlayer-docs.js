@@ -48,6 +48,7 @@ module.exports = [
           children: [
             '/developer/build-on-xlayer/quickstart',
             '/developer/build-on-xlayer/zkevm-contracts',
+            'developer/buildon-xlayer/safe-contracts',
             '/developer/build-on-xlayer/bridge-to-xlayer',
             '/developer/build-on-xlayer/rpc-endpoints',
             '/developer/build-on-xlayer/websocket-endpoints',
