@@ -1,10 +1,66 @@
 # Verifying with Hardhat
-To verify your code on [OKLink](https://www.oklink.com/ "OKLink"), you just need to modify one file (hardhat.config.js), following the same process and commands outlined in [Hardhat](https://hardhat.org/hardhat-runner/docs/guides/verifying "Hardhat")’s official documentation.
+There are currently two methods to verify your code on [OKLink](https://www.oklink.com/ "OKLink"). You can either use the recommended [@okxweb3/hardhat-explorer-verify](https://github.com/okx/hardhat-explorer-verify "hardhat plugin") plugin, or modify the `hardhat.config.js` file according to Hardhat's [official documentation](https://hardhat.org/hardhat-runner/docs/guides/verifying "documentation").
 
 ## Important notes
 1. First, you need to apply for a key in [OKLink browser](https://www.oklink.com/docs/en/#quickstart-guide-getting-started "OKLink guide").
 2. After you deploy your contract code, make sure to wait at least one minute before verifying it.
-3. Currently, verifying proxy contracts through Hardhat is not supported. If you need to verify proxy contracts, you will need to manually verify them through a browser.
+
+## Verify by using plugin (Recommended)
+
+## Example
+1. First, install the plugin in your Hardhat project by using the following command:
+
+```npm install @okxweb3/hardhat-explorer-verify```
+
+2. In your Hardhat configuration file (usually hardhat.config.js or hardhat.config.ts), import and configure the plugin. ensure that your network configuration and API keys are correctly set. Here is a sample configuration: 
+
+``` import { HardhatUserConfig } from "hardhat/config";
+import "@nomicfoundation/hardhat-toolbox";
+import '@okxweb3/hardhat-explorer-verify';  // Import the plugin
+
+const config: HardhatUserConfig = {
+  solidity: "0.8.24",
+  sourcify: {
+    enabled: true,
+  },
+  networks: {
+    xlayer: {
+      url: "https://xlayerrpc.example.com",
+      accounts: ["<Your Wallet Private Key>"],
+    },
+  },
+  etherscan: {
+     apiKey: '...'
+  },
+  okxweb3explorer: {
+    apiKey: "<Your API Key>",
+  }
+};
+
+export default config;
+```
+
+3. After deploying the contracts, use Hardhat to run the verification script. This typically involves running a specific Hardhat task that automatically fetches the contract data and submitting it to the OKX Chain explorer for verification.
+Here is an example command:
+
+```npx hardhat okverify --network xlayer <Your Contract Address>```
+
+4. Once verification is successful, you can view the verification status and the contract code on the OKX Chain blockchain explorer.
+
+![Verify with OKX plugin](./img/verify-with-okxplugin.png)
+
+5. Verify TransparentUpgradeableProxy contract
+
+An example command:
+
+``` npx hardhat okxverify --network xlayer --contract <Contract>:<Name> --proxy <address>```
+
+- `--proxy` refers to the proxy contract address.
+
+<Tip title="Note"> If you are using **897 Contract**, you do not need to add `--proxy`. Instead, replace it with `--contract`.</Tip>
+
+
+## Verify by modifying `hardhat.config.js` (Alternative)
 
 ## Example
 1. Start by creating a Hardhat project and using the Lock contract as an example. 
