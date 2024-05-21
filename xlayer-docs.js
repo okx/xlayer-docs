@@ -73,7 +73,8 @@ module.exports = [
               path: '/developer/smart-contract/verifying-contract',
               children: [
                 '/developer/smart-contract/manual-verification',
-                '/developer/smart-contract/verify-with-hardhat'
+                '/developer/smart-contract/verify-with-hardhat',
+                '/developer/smart-contract/verify-with-foundry',
                 ],
             }
         ],

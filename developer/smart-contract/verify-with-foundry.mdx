@@ -1,0 +1,48 @@
+# Verifying with Foundry
+Foundry is a smart contract development toolchain and supports X Layer. 
+
+You can visit [here](https://book.getfoundry.sh/ "foundry") to get started. The tutorial below will also guide you to verify your smart contract with Foundry.
+## Important notes
+1. First, you need to apply for a key in [OKLink browser](https://www.oklink.com/docs/en/#quickstart-guide-getting-started "OKLink guide").
+2. After you deploy your contract code, make sure to wait at least one minute before verifying it.
+
+## Verify by using Foundry
+
+## Example
+
+1. Ensure that you have applied for an OKLink API key [here](https://www.oklink.com/docs/en/#quickstart-guide-getting-started "OKLink guide").
+
+
+2. Verify a smart contract with the `forge verify-contract` command.
+
+  Note that you must provide the following:
+
+  - The smart contract address
+  - The contract name or the pathway to the smart contract such as `<path>:<contractname>`.
+  - The `verify-url` in the following format. You can find the `chainShortName` [here](https://www.oklink.com/docs/en/#quickstart-guide-supported-chains "shortchainname").
+
+  ```
+  https://www.oklink.com/api/v5/explorer/contract/verify-source-code-plugin/{chainShortName} 
+  ```
+
+- The OKLink API key in the following format:
+
+  ```javascript
+
+  forge verify-contract <the_contract_address>
+        src/MyToken.sol:MyToken  
+        --verifier oklink 
+        --verifier-url oklinkverifyUrl
+        --api-key oklinkApiKey
+
+  ```
+
+3. In case of an Etherscan verification, you must also provide your Etherscan API key, either by passing it as an argument or setting `ETHERSCAN_API_KEY`.
+
+4. Check your verification results. It is recommended that you use the `--watch` flag along with the `verify-contract` command in order to poll for the verification result.
+
+If the `--watch` flag was not supplied, you can also check the verification status with the `forge verify-check` command:
+
+```
+forge verify-check --chain 11155111 --verifier oklink --verifier-url https://www.oklink.com/api/v5/explorer/contract/verify-source-code-plugin/{chainShortName} --api-key <your_OKLink_api_key>  <GUID>
+```
