@@ -7,15 +7,15 @@
 
 module.exports = [
     {
-      title: 'Getting started',
-      basePath: ['/getting-started'],
+      title: 'Users',
+      basePath: ['/users'],
       children: [
         {
           title: 'Welcome',
           icon: 'okds-finance-bank',
           children: [
-            '/getting-started/welcome/welcome-to-xlayer',
-            '/getting-started/welcome/introduction',
+            '/users/welcome/about-xlayer',
+            '/users/welcome/introduction',
         ],
         },
         {
