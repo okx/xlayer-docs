@@ -1,41 +1,10 @@
-# Welcome to X Layer
-X Layer is a ZK layer 2 network powered by the OKB token and built using Polygon CDK, that offers 100% EVM compatibility, exceptional performance, low fees, and robust security — achieved with seamless integration. 
+X Layer is a cutting-edge Ethereum layer 2 (L2) network built by OKX and Polygon using Polygon's CDK. It offers full compatibility with the Ethereum Virtual Machine (EVM), enabling developers to deploy existing Ethereum applications and develop new, innovative projects at a fraction of the cost compared to doing so on Ethereum. X Layer also enables users to use dapps at significantly lower gas fees and faster speed compared to Ethereum. 
 
-In this documentations, you will be guided through 3 main sections:
-- **Getting started**: introduction and user guide of X Layer
-- **Developer**: guide to build on X Layer and our product(s)
-- **Academy**: the fundamental guide to start building with Solidity
+X Layer's underlying architecture is that of a zkEVM validium, which means that transactions are secured via ZK proofs. This architecture is a close sibling of ZK rollup, but it offers the following advantages over rollups:
+- Significantly lower fees, since they don't consume expensive Ethereum gas, i.e., blockspace to store transaction data.
+- Significantly higher scalability, since rollups’ throughput is bounded by the amount of transaction data that can be published to Ethereum.
+For more detailed information, you can explore the X Layer [architecture](/developer/about-x-layer/x-layer-architecture "architecture") in the developer's section of the documentations>.
 
-## Getting started
-<Card mainTitle="What is X Layer" subTitle='Explore how X Layer scales Ethereum' link="./introduction"/>
-<Card mainTitle="Build on X Layer" subTitle='Quickstart guide to start building on X Layer' link="../../developer/build-on-xlayer/quickstart"/>
-<Card mainTitle="Deploy smart contract" subTitle='Guide to deploy smart contracts with Truffle, Hardhart and Foundry' link="../../developer/smart-contract/deploy-with-truffle"/>
+X Layer uses the OKB token as it's native gas fees. Getting started with X Layer is straightforward, you can by funding your Web3 wallet (we support many!), or by bridging over funds.
 
-## Product guides
-<ImgCards
-  list={[
-    {
-      imgSrc: '/cdn/assets/imgs/2312/1F4283B1486C0D4C.png',
-      title: 'X Layer bridge',
-      subTitle:'Bridge assets between layer 1 and layer 2',
-      link: '../user-guide/bridge',
-      alt:'X Layer bridge'
-    },
-    {
-      imgSrc: '/cdn/assets/imgs/2312/BB9D0EBCF4135DA4.png',
-      title: "X Layer faucet",
-      subTitle:'Get testnet OKB to test your DApps or protocols',
-      link: '../user-guide/faucet',
-      alt:'X Layer faucet'
-
-    },
-]}
-/>
-
-## Resources
-<ResourceBtn icon="okds-orders" link='../user-guide/network-information'isXLayerDocs>Network information</ResourceBtn>
-<ResourceBtn icon="okds-records" link='../../developer/build-on-xlayer/zkevm-contracts'isXLayerDocs>X Layer contracts</ResourceBtn>
-<ResourceBtn icon="okx-defi-okc-explorer" link='https://www.okx.com/web3/explorer/xlayer'isXLayerDocs>X Layer explorer</ResourceBtn>
-<ResourceBtn icon="okx-defi-okc-faucet" link='/xlayer/faucet'isXLayerDocs>X Layer faucet</ResourceBtn>
-<ResourceBtn icon="okx-defi-okc-bridge" link='/xlayer/bridge'isXLayerDocs>X Layer bridge</ResourceBtn>
-<ResourceBtn icon="okx-defi-build-oracle" link='/xlayer/oracle'isXLayerDocs>X Layer oracle</ResourceBtn>
+<Tip title="Note">If you run into a problem and require technical assistance, feel free to contact our technical team in the [X Layer discord group](https://discord.gg/xlayer "disord").</Tip>

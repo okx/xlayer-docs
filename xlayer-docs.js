@@ -15,25 +15,13 @@ module.exports = [
           icon: 'okds-finance-bank',
           children: [
             '/users/welcome/about-xlayer',
-            '/users/welcome/introduction',
-        ],
-        },
-        {
-          title: 'User guide',
-          icon: 'okds-guide',
-          children: [
-            '/getting-started/user-guide/set-up-wallets',
-            '/getting-started/user-guide/network-information',
             {
-                title: 'Faucet',
-                path: '/getting-started/user-guide/faucet',
-                children: [
-                    '/getting-started/user-guide/bridge-testnet-okb-from-goerli-to-xlayer',
-                    '/getting-started/user-guide/get-testnet-okb-from-faucet',
-                ],
-            }, 
-            '/getting-started/user-guide/bridge-mainnet',           
-            '/getting-started/user-guide/bridge',
+              title: 'Move funds to X Layer',
+              path: '/users/welcome/move-funds-to-x-layer',
+              children: [
+                  '/users/welcome/set-up-wallets'
+              ],
+          }, 
         ],
         },
       ],
@@ -46,119 +34,188 @@ module.exports = [
           title: 'Build on X Layer',
           icon: 'okx-defi-okbc-resources',
           children: [
-            '/developer/build-on-xlayer/quickstart',
-            '/developer/build-on-xlayer/zkevm-contracts',
-            '/developer/build-on-xlayer/safe-contracts',
-            '/developer/build-on-xlayer/bridge-to-xlayer',
-            '/developer/build-on-xlayer/rpc-endpoints',
-            '/developer/build-on-xlayer/websocket-endpoints',
-            '/developer/build-on-xlayer/gas-station'
-        ],
-        },
-        {
-          title: 'Smart Contract',
-          icon: 'okds-records',
-          children: [
-            {
-              title: 'Deploying contract',
-              path: '/developer/smart-contract/deploying-contract',
-              children: [
-                '/developer/smart-contract/deploy-with-truffle',
-                '/developer/smart-contract/deploy-with-hardhat',
-                '/developer/smart-contract/deploy-with-foundry',
-                ],
-            },
-            {
-              title: 'Verifying contract',
-              path: '/developer/smart-contract/verifying-contract',
-              children: [
-                '/developer/smart-contract/manual-verification',
-                '/developer/smart-contract/verify-with-hardhat',
-                '/developer/smart-contract/verify-with-foundry',
-                ],
-            }
-        ],
-        },
-        {
-          title: 'Bridge',
-          icon: 'okx-defi-okc-bridge',
-          children: [
-            '/developer/bridge/overview',
-            '/developer/bridge/asset-transfer',
-            '/developer/bridge/flow-of-assets',
-            {
-              title: 'USDC on X Layer',
-              path: '/developer/bridge/usdc-on-x-layer',
-              children: [
-                  '/developer/bridge/bridging-usdc-workflow',
+            '/developer/build-on-xlayer/about-xlayer',
+
+          {
+            title:'Network information and contracts',
+            path: '/developer/build-on-xlayer/network-information',
+            children: [
+                '/developer/build-on-xlayer/zkevm-contracts',
+                '/developer/build-on-xlayer/safe-contracts',
+              ],
+          }, 
+
+          {
+            title:'Deploy a smart contract',
+            path: '/developer/deploy-a-smart-contract/deploying-contract',
+            children: [
+                '/developer/deploy-a-smart-contract/deploy-with-hardhat',
+                '/developer/deploy-a-smart-contract/deploy-with-foundry',
+                '/developer/deploy-a-smart-contract/deploy-with-truffle'
               ],
           },
-          ],
-        },
-        {
-          title: 'Oracle',
-          icon: 'okx-defi-build-oracle',
-          children: [
-            '/developer/oracle/price-feed',
-            {
-              title: 'Price feed interface',
-              path: '/developer/oracle/price-feed-interface',
-              children: [
-                  '/developer/oracle/offchain-aggregator',
-                  '/developer/oracle/feed-registry',
+
+          {
+            title:'Verify a smart contract',
+            path: '/developer/verify-a-smart-contract/verifying-contract',
+            children: [
+                '/developer/verify-a-smart-contract/manual-verification',
+                '/developer/verify-a-smart-contract/verify-with-foundry',
+                '/developer/deploy-a-smart-contract/deploy-with-hardhat',
               ],
-          },    
-          ],
-        },
+          },
+
+          {
+            title:'Receive and bridge testnet OKB tokens',
+            path: '/developer/bridge/get-testnet-okb-from-faucet',
+            children: [
+              '/developer/bridge/bridge-testnet-okb',
+            ],
+          },
+
+          {
+            title:'Setup nodes',
+            path: 'developer/setup-zknode/setup',
+            children: [
+              '/developer/setup-zknode/setup-local-zknode',
+              '/developer/setup-zknode/setup-production-zknode'
+            ],
+          },
+          {
+            title: 'Deploying contract',
+            path: '/developer/smart-contract/deploying-contract',
+            children: [
+              '/developer/smart-contract/deploy-with-truffle',
+              '/developer/smart-contract/deploy-with-hardhat',
+              '/developer/smart-contract/deploy-with-foundry',
+              ],
+          },
+          {
+            title: 'Verifying contract',
+            path: '/developer/smart-contract/verifying-contract',
+            children: [
+              '/developer/smart-contract/manual-verification',
+              '/developer/smart-contract/verify-with-hardhat',
+              '/developer/smart-contract/verify-with-foundry',
+              ],
+           },
+            '/developer/rpc-endpoints/rpc-endpoints',
+            '/developer/gas-station/setup',
         {
-          title: 'Setup zkNode',
-          icon: 'okx-defi-okbc-resources',
-          children: [
-            '/developer/setup-zknode/setup-local-zknode',
-            '/developer/setup-zknode/setup-production-zknode', 
-          ],
-        },
-        {
-          title:'Learn more',
+          title:'Guides ',
           icon:'okx-defi-okbc-resources',
           children:[
-            '/developer/learn-more/xlayer-architecture',
-            '/developer/learn-more/xlayer-protocol/state-management',
-            {
-              title: 'Transactions',
-              path: '/developer/learn-more/xlayer-protocol/transactions',
-              children: [
-                '/developer/learn-more/xlayer-protocol/transactions-n-data-flow',
-                '/developer/learn-more/xlayer-protocol/transactions-batching',
-                '/developer/learn-more/xlayer-protocol/batch-sequencing',
-                '/developer/learn-more/xlayer-protocol/batch-aggregation',
-                '/developer/learn-more/xlayer-protocol/transaction-validation',
-                ],
-            },
-            '/developer/learn-more/xlayer-protocol/incentive-model'
-
-            
-
-          ]
-
-        }
-      ],
-    },
-    {
-      title: 'Academy',
-      basePath: ['/academy'],
-      children: [
+            '/developer/guides/xlayer-architecture',
+            '/developer/guides/xlayer-protocol/state-management',
+              {
+                title: 'Transactions',
+                path: '/developer/guides/xlayer-protocol/transactions',
+                children: [
+                  '/developer/guides/xlayer-protocol/transactions-n-data-flow',
+                  '/developer/guides/xlayer-protocol/transactions-batching',
+                  '/developer/guides/xlayer-protocol/batch-sequencing',
+                  '/developer/guides/xlayer-protocol/batch-aggregation',
+                  '/developer/guides/xlayer-protocol/transaction-validation',
+                  ],
+              },
+              '/developer/learn-more/xlayer-protocol/incentive-model'
+            ]
+          },
         {
-          title: 'Learn',
-          icon: 'okds-finance-bank',
-          children: [
-            '/academy/getting-started/start-learning', 
-            '/academy/getting-started/erc-20-tokens',
+          title:'Tooling and infrastructure',
+          icon: 'okx-defi-okbc-resources',
+          children:[
+            {
+              title:'Account abstraction',
+              path:'/developer/tools/account-abstraction',
+              children: [
+                '/developer/tools/account-abstraction/particle-network',
+                '/developer/tools/account-abstraction/safe',
+              ],
+            },
+            {
+              title:'Block explorers',
+              path:'/developer/tools/block-explorers',
+              children: [
+                '/developer/tools/block-explorers/l2scan-explorer',
+              ]
+            },
+            {
+              title:'Cross-chain',
+              path:'/developer/tools/cross-chain',
+              children: [
+                '/developer/tools/cross-chain/layer-zero',
+                '/developer/tools/cross-chain/wormhole',
+                '/developer/tools/cross-chain/connext',
+              ]
+            },
+            {
+              title:'Data indexers',
+              path:'/developer/tools/data-indexers',
+              children: [
+                '/developer/tools/data-indexers/the-graph',
+                '/developer/tools/data-indexers/envio',
+                '/developer/tools/data-indexers/goldsky',
+                '/developer/tools/data-indexers/subquery',
+                '/developer/tools/data-indexers/subsquid',
+              ]
+            },
+            {
+              title:'Developer tools',
+              path:'/developer/tools/dev-tooling',
+              children: [
+                '/developer/tools/dev-tooling/sentio',
+                '/developer/tools/dev-tooling/thirdweb'
+              ]
+            },
+            {
+              title:'Node providers',
+              path:'/developer/tools/node-providers',
+              children: [
+                '/developer/tools/node-providers/zan',
+                '/developer/tools/node-providers/ankr',
+              ]
+            },
+            {
+              title:'Oracles',
+              path:'/developer/tools/oracles',
+              children: [
+                '/developer/tools/oracles/api3',
+                '/developer/tools/oracles/band-protocol',
+                '/developer/tools/oracles/supraoracles',
+                '/developer/tools/oracles/redstone',
+                '/developer/tools/oracles/umbrella',
+              ]
+            },
+            {
+              title:'User onboarding',
+              path: '/developer/tools/user-onboarding',
+              children: [
+                '/developer/tools/user-onboarding/privy',
+              ]
+            },
+          ],
+        },
         ],
         },
+      ],
+      },
+  ],
+  {
+    title: 'Academy',
+    basePath: ['/academy'],
+    children: [
         {
-          title: 'Learn solidity',
-          icon: 'okds-guide',
+        title: 'Learn',
+        icon: 'okds-finance-bank',
+        children: [
+          '/academy/getting-started/start-learning',
+          '/academy/gettingstarted/erc-20-tokens',
+          ],
+        },
+        {
+          title:'Learn solidity',
+          icon:'okds-guide',
           children: [
             '/academy/learn-solidity/introduction-to-solidity',
             '/academy/learn-solidity/gas-fees',
@@ -166,7 +223,7 @@ module.exports = [
             '/academy/learn-solidity/stack-limit',
             '/academy/learn-solidity/permanence',
             '/academy/learn-solidity/update-frequency',
-        ],
+          ],
         },
         {
           title: 'Try remix',
@@ -178,25 +235,4 @@ module.exports = [
         ],
         },
       ],
-    },
-    {
-      title: 'Tools',
-      basePath: ['/tools'],
-      children: [
-        {
-          title: 'Tools',
-          icon: 'okx-defi-okbc-resources',
-          children: [
-            '/tools/account-abstraction', 
-            '/tools/block-explorers',
-            '/tools/cross-chain',
-            '/tools/data-indexers',
-            '/tools/dev-tooling',
-            '/tools/oracles',
-            '/tools/node-providers',
-            '/tools/user-onboarding'
-        ],
-        },
-      ],
-    },
-  ];
+    }
