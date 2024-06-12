@@ -14,12 +14,12 @@ module.exports = [
           title: 'Welcome',
           icon: 'okds-finance-bank',
           children: [
-            '/users/welcome/about-xlayer',
+            '/users/welcome/about-x-layer',
             {
               title: 'Move funds to X Layer',
-              path: '/users/welcome/move-funds-to-x-layer',
+              path: '/users/move-your-funds/move-funds-to-x-layer',
               children: [
-                  '/users/welcome/set-up-wallets'
+                  '/users/move-your-funds/set-up-wallets'
               ],
           }, 
         ],
@@ -75,7 +75,7 @@ module.exports = [
 
           {
             title:'Setup nodes',
-            path: 'developer/setup-zknode/setup',
+            path: '/developer/setup-zknode/setup',
             children: [
               '/developer/setup-zknode/setup-local-zknode',
               '/developer/setup-zknode/setup-production-zknode'
@@ -83,20 +83,20 @@ module.exports = [
           },
           {
             title: 'Deploying contract',
-            path: '/developer/smart-contract/deploying-contract',
+            path: '/developer/deploy-a-smart-contract/deploying-contract',
             children: [
-              '/developer/smart-contract/deploy-with-truffle',
-              '/developer/smart-contract/deploy-with-hardhat',
-              '/developer/smart-contract/deploy-with-foundry',
+              '/developer/deploy-a-smart-contract/deploy-with-truffle',
+              '/developer/deploy-a-smart-contract/deploy-with-hardhat',
+              '/developer/deploy-a-smart-contract/deploy-with-foundry',
               ],
           },
           {
             title: 'Verifying contract',
-            path: '/developer/smart-contract/verifying-contract',
+            path: '/developer/verify-a-smart-contract/verifying-contract',
             children: [
-              '/developer/smart-contract/manual-verification',
-              '/developer/smart-contract/verify-with-hardhat',
-              '/developer/smart-contract/verify-with-foundry',
+              '/developer/verify-a-smart-contract/verifying-contract',
+              '/developer/verify-a-smart-contract/verify-with-hardhat',
+              '/developer/verify-a-smart-contract/verify-with-foundry',
               ],
            },
             '/developer/rpc-endpoints/rpc-endpoints',
