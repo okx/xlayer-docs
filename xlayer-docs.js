@@ -100,6 +100,7 @@ module.exports = [
               ],
            },
             '/developer/rpc-endpoints/rpc-endpoints',
+            '/developer/websockets-endpoints/websocket-endpoints',
             '/developer/gas-station/setup',
         {
           title:'Guides ',
