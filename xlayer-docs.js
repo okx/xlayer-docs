@@ -106,20 +106,20 @@ module.exports = [
           title:'Guides ',
           icon:'okx-defi-okbc-resources',
           children:[
-            '/developer/guides/xlayer-architecture',
-            '/developer/guides/xlayer-protocol/state-management',
+            '/developer/guides/x-layer-protocol/x-layer-architecture',
+            '/developer/guides/x-layer-protocol/state-management',
               {
                 title: 'Transactions',
-                path: '/developer/guides/xlayer-protocol/transactions',
+                path: '/developer/guides/x-layer-protocol/transactions',
                 children: [
-                  '/developer/guides/xlayer-protocol/transactions-n-data-flow',
-                  '/developer/guides/xlayer-protocol/transactions-batching',
-                  '/developer/guides/xlayer-protocol/batch-sequencing',
-                  '/developer/guides/xlayer-protocol/batch-aggregation',
-                  '/developer/guides/xlayer-protocol/transaction-validation',
+                  '/developer/guides/x-layer-protocol/transactions-n-data-flow',
+                  '/developer/guides/x-layer-protocol/transactions-batching',
+                  '/developer/guides/x-layer-protocol/batch-sequencing',
+                  '/developer/guides/x-layer-protocol/batch-aggregation',
+                  '/developer/guides/x-layer-protocol/transaction-validation',
                   ],
               },
-              '/developer/learn-more/xlayer-protocol/incentive-model'
+              '/developer/learn-more/x-layer-protocol/incentive-model'
             ]
           },
         {
@@ -128,7 +128,7 @@ module.exports = [
           children:[
             {
               title:'Account abstraction',
-              path:'/developer/tools/account-abstraction',
+              path:'/developer/tools/account-abstraction-overview',
               children: [
                 '/developer/tools/account-abstraction/particle-network',
                 '/developer/tools/account-abstraction/safe',
@@ -136,14 +136,14 @@ module.exports = [
             },
             {
               title:'Block explorers',
-              path:'/developer/tools/block-explorers',
+              path:'/developer/tools/block-explorers-overview',
               children: [
                 '/developer/tools/block-explorers/l2scan-explorer',
               ]
             },
             {
               title:'Cross-chain',
-              path:'/developer/tools/cross-chain',
+              path:'/developer/tools/cross-chain-overview',
               children: [
                 '/developer/tools/cross-chain/layer-zero',
                 '/developer/tools/cross-chain/wormhole',
@@ -152,7 +152,7 @@ module.exports = [
             },
             {
               title:'Data indexers',
-              path:'/developer/tools/data-indexers',
+              path:'/developer/tools/data-indexers-overview',
               children: [
                 '/developer/tools/data-indexers/the-graph',
                 '/developer/tools/data-indexers/envio',
@@ -163,7 +163,7 @@ module.exports = [
             },
             {
               title:'Developer tools',
-              path:'/developer/tools/dev-tooling',
+              path:'/developer/tools/dev-tooling-overview',
               children: [
                 '/developer/tools/dev-tooling/sentio',
                 '/developer/tools/dev-tooling/thirdweb'
@@ -171,7 +171,7 @@ module.exports = [
             },
             {
               title:'Node providers',
-              path:'/developer/tools/node-providers',
+              path:'/developer/tools/node-providers-overview',
               children: [
                 '/developer/tools/node-providers/zan',
                 '/developer/tools/node-providers/ankr',
@@ -179,7 +179,7 @@ module.exports = [
             },
             {
               title:'Oracles',
-              path:'/developer/tools/oracles',
+              path:'/developer/tools/oracles-overview',
               children: [
                 '/developer/tools/oracles/api3',
                 '/developer/tools/oracles/band-protocol',
@@ -190,7 +190,7 @@ module.exports = [
             },
             {
               title:'User onboarding',
-              path: '/developer/tools/user-onboarding',
+              path: '/developer/tools/user-onboarding-overview',
               children: [
                 '/developer/tools/user-onboarding/privy',
               ]
@@ -201,17 +201,17 @@ module.exports = [
         },
       ],
       },
-  ],
-  {
-    title: 'Academy',
-    basePath: ['/academy'],
-    children: [
+    ],
+    {
+      title: 'Academy',
+      basePath: ['/academy'],
+      children: [
         {
-        title: 'Learn',
-        icon: 'okds-finance-bank',
-        children: [
-          '/academy/getting-started/start-learning',
-          '/academy/gettingstarted/erc-20-tokens',
+          title: 'Learn',
+          icon: 'okds-finance-bank',
+          children: [
+            '/academy/getting-started/start-learning',
+            '/academy/gettingstarted/erc-20-tokens',
           ],
         },
         {
