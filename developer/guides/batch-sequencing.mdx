@@ -62,7 +62,6 @@ Where:
 
 As shown in the diagram above, each accumulated input hash ensures the integrity of the current batch’s data (i.e., `transactions`, `timestamp`, and `globalExitRoot`, as well as the order in which they were sequenced.)
 
-<Tip title="Note">Any change in the batch chain that causes all future accumulated input hashes to be incorrect, would indicate a lack of integrity in the resulting layer 2 state.</Tip>
 
 The batch sequence is added to the `sequencedBatches` mapping using the following `SequencedBatchData` struct only after the validity of all batches in a sequence has been verified and the accumulated hash of each batch has been computed.
 ```solidity
@@ -85,7 +84,6 @@ To minimize costly storage operations on layer 1, **storage slots** are primaril
 - last batch of the current sequence as a mapping key
 These entries also include the accumulated hash of the last batch in the current sequence and a timestamp.
 
-<Tip title="Note">Only the accumulated hash of the final batch in the sequence is stored; the others are computed on-demand to reach the last one.</Tip>
 
 Batch indices provide additional information about the number of batches in the sequence and their positions. The timestamp marks when the sequence occurred.
 The Data Availability of layer 2 transactions is ensured because the data for each batch can be reconstructed from the calldata of the sequencing transaction, which is not part of the contract storage but is recorded in the layer 1 state.

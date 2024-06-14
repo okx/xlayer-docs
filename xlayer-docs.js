@@ -106,20 +106,20 @@ module.exports = [
           title:'Guides ',
           icon:'okx-defi-okbc-resources',
           children:[
-            '/developer/guides/x-layer-protocol/x-layer-architecture',
-            '/developer/guides/x-layer-protocol/state-management',
+            '/developer/guides/x-layer-architecture',
+            '/developer/guides/state-management',
               {
                 title: 'Transactions',
-                path: '/developer/guides/x-layer-protocol/transactions',
+                path: '/developer/guides/transactions',
                 children: [
-                  '/developer/guides/x-layer-protocol/transactions-n-data-flow',
-                  '/developer/guides/x-layer-protocol/transactions-batching',
-                  '/developer/guides/x-layer-protocol/batch-sequencing',
-                  '/developer/guides/x-layer-protocol/batch-aggregation',
-                  '/developer/guides/x-layer-protocol/transaction-validation',
+                  '/developer/guides/transactions-n-data-flow',
+                  '/developer/guides/transactions-batching',
+                  '/developer/guides/batch-sequencing',
+                  '/developer/guides/batch-aggregation',
+                  '/developer/guides/transaction-validation',
                   ],
               },
-              '/developer/learn-more/x-layer-protocol/incentive-model'
+              '/developer/guides/incentive-model',
             ]
           },
         {
