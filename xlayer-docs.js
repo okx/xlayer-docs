@@ -104,7 +104,7 @@ module.exports = [
             '/developer/gas-station/setup',
         {
           title:'Guides ',
-          icon:'okx-defi-okbc-resources',
+          path: 'developer/guides/overview',
           children:[
             '/developer/guides/x-layer-architecture',
             '/developer/guides/state-management',
@@ -124,7 +124,7 @@ module.exports = [
           },
         {
           title:'Tooling and infrastructure',
-          icon: 'okx-defi-okbc-resources',
+          path: '/developer/tools/overview',
           children:[
             {
               title:'Account abstraction',
@@ -201,39 +201,41 @@ module.exports = [
         },
       ],
       },
-    ],
-    {
-      title: 'Academy',
-      basePath: ['/academy'],
-      children: [
-        {
-          title: 'Learn',
-          icon: 'okds-finance-bank',
-          children: [
-            '/academy/getting-started/start-learning',
-            '/academy/gettingstarted/erc-20-tokens',
+      {
+        title: 'Academy',
+        basePath: ['/academy'],
+        children: [
+          {
+            title: 'Learn',
+            icon: 'okds-finance-bank',
+            children: [
+              '/academy/getting-started/start-learning',
+              '/academy/gettingstarted/erc-20-tokens',
+            ],
+          },
+          {
+            title:'Learn solidity',
+            icon:'okds-guide',
+            children: [
+              '/academy/learn-solidity/introduction-to-solidity',
+              '/academy/learn-solidity/gas-fees',
+              '/academy/learn-solidity/contract-size-limit',
+              '/academy/learn-solidity/stack-limit',
+              '/academy/learn-solidity/permanence',
+              '/academy/learn-solidity/update-frequency',
+            ],
+          },
+          {
+            title: 'Try remix',
+            icon: 'okds-guide',
+            children: [
+              '/academy/try-remix/remix-overview',
+              '/academy/try-remix/features',
+              '/academy/try-remix/tutorial-guide'
           ],
-        },
-        {
-          title:'Learn solidity',
-          icon:'okds-guide',
-          children: [
-            '/academy/learn-solidity/introduction-to-solidity',
-            '/academy/learn-solidity/gas-fees',
-            '/academy/learn-solidity/contract-size-limit',
-            '/academy/learn-solidity/stack-limit',
-            '/academy/learn-solidity/permanence',
-            '/academy/learn-solidity/update-frequency',
-          ],
-        },
-        {
-          title: 'Try remix',
-          icon: 'okds-guide',
-          children: [
-            '/academy/try-remix/remix-overview',
-            '/academy/try-remix/features',
-            '/academy/try-remix/tutorial-guide'
+          },
         ],
-        },
-      ],
-    }
+      },
+  
+    ]
+
