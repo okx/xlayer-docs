@@ -19,7 +19,10 @@ module.exports = [
               title: 'Move funds to X Layer',
               path: '/users/move-your-funds/move-funds-to-x-layer',
               children: [
-                  '/users/move-your-funds/set-up-wallets'
+                  '/users/move-your-funds/set-up-wallets',
+                  '/users/move-your-funds/fund-your-account',
+                  '/users/move-your-funds/get-testnet-tokens',
+                  'users/move-your-funds/bridge-funds-to-xlayer',
               ],
           }, 
         ],
@@ -223,7 +226,7 @@ module.exports = [
             icon: 'okds-finance-bank',
             children: [
               '/academy/getting-started/start-learning',
-              '/academy/gettingstarted/erc-20-tokens',
+              '/academy/getting-started/erc-20-tokens',
             ],
           },
           {
