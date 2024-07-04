@@ -102,12 +102,18 @@ module.exports = [
             '/developer/rpc-endpoints/rpc-endpoints',
             '/developer/websockets-endpoints/websocket-endpoints',
             '/developer/gas-station/setup',
+          ]
+        },
         {
           title:'Guides ',
-          path: 'developer/guides/overview',
+          icon:'okx-defi-okbc-resources',
           children:[
-            '/developer/guides/x-layer-architecture',
-            '/developer/guides/state-management',
+            {
+              title:'Developer guides',
+              path: '/developer/guides/overview',
+              children: [
+                '/developer/guides/x-layer-architecture',
+                '/developer/guides/state-management',
               {
                 title: 'Transactions',
                 path: '/developer/guides/transactions',
@@ -120,12 +126,19 @@ module.exports = [
                   ],
               },
               '/developer/guides/incentive-model',
-            ]
-          },
+
+              ],
+            }, 
+            ],
+        },
         {
-          title:'Tooling and infrastructure',
-          path: '/developer/tools/overview',
+          titles: 'Tooling and infrastructure',
+          icon: 'okx-defi-okbc-resources',
           children:[
+            {
+            title:'Tools',
+            path: '/developer/tools/overview',
+            children:[
             {
               title:'Account abstraction',
               path:'/developer/tools/account-abstraction-overview',
