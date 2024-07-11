@@ -84,24 +84,6 @@ module.exports = [
               '/developer/setup-zknode/setup-production-zknode'
             ],
           },
-          {
-            title: 'Deploying contract',
-            path: '/developer/deploy-a-smart-contract/deploying-contract',
-            children: [
-              '/developer/deploy-a-smart-contract/deploy-with-truffle',
-              '/developer/deploy-a-smart-contract/deploy-with-hardhat',
-              '/developer/deploy-a-smart-contract/deploy-with-foundry',
-              ],
-          },
-          {
-            title: 'Verifying contract',
-            path: '/developer/verify-a-smart-contract/verifying-contract',
-            children: [
-              '/developer/verify-a-smart-contract/verifying-contract',
-              '/developer/verify-a-smart-contract/verify-with-hardhat',
-              '/developer/verify-a-smart-contract/verify-with-foundry',
-              ],
-           },
             '/developer/rpc-endpoints/rpc-endpoints',
             '/developer/websockets-endpoints/websocket-endpoints',
             '/developer/gas-station/setup',
@@ -135,7 +117,7 @@ module.exports = [
             ],
         },
         {
-          titles: 'Tooling and infrastructure',
+          title: 'Tooling and infrastructure',
           icon: 'okx-defi-okbc-resources',
           children:[
             {
