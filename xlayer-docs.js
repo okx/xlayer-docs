@@ -69,9 +69,12 @@ module.exports = [
 
           {
             title:'Receive and bridge testnet OKB tokens',
-            path: '/developer/bridge/get-testnet-okb-from-faucet',
+            path: '/developer/bridge/overview',
             children: [
-              '/developer/bridge/bridge-testnet-okb',
+              '/developer/bridge/get-testnet-okb-from-faucet',
+              '/developer/bridge/bridge-testnet-assets',
+              '/developer/bridge/flow-of-assets',
+              'developer/bridge/bridging-usdc-workflow',
             ],
           },
 
