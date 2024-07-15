@@ -1,124 +1,44 @@
-# Bridge (testnet)
+# Get testnet tokens
 
-## Bridging assets from Sepolia to X Layer testnet
-You can follow this step-by-step guide to learn how to bridge assets from Ethereum Sepolia testnet to X Layer testnet.
-1. Enter the [X Layer bridge testnet page](https://www.okx.com/xlayer/bridge-test "X Layer bridge testnet page"), then select **Sepolia** (left) and **X Layer testnet** (right) as the two bridging directions, as shown below:
+There are currently two ways for users and developers to receive OKB testnet tokens on X Layer.
+- Use the X Layer official testnet faucet (max of 0.2 OKB) [here](https://www.okx.com/xlayer/faucet "faucet").
+- [Mint on Sepolia testnet](https://www.okx.com/xlayer/faucet/sepoliafaucet "sepolia faucet") and bridge the tokens to X Layer using the [testnet bridge](https://www.okx.com/xlayer/bridge-test "testnet bridge") (no limit to amount of OKB).
 
-![X Layer bridge](./img/xlayer-bridge.png)
+In this guide, we will show the steps on how to receive OKB testnet.
 
-2. Click the **Connect wallet** button to connect your wallet:
+## X Layer official testnet faucet
+The X Layer [testnet faucet](https://www.okx.com/xlayer/faucet "faucet") is an official tool provided by the X Layer team for developers to claim test tokens. Developers and users can use X Layer testnet faucet to obtain:
+- Testnet OKB tokens 
+- Other ERC-20 tokens
 
-![Connect wallet X Layer bridge](./img/connect-wallet-xlayer-bridge.png)
+<Tip title="Note">
+Please note that on the X Layer testnet, each user can only claim 0.2 OKB per day.
+</Tip>
 
-3. Select the token you need to bridge (ETH is used as an example here), enter the amount, then click the **Bridge** button:
+1. Head to the X Layer testnet faucet and click on the Get button for the "Get OKB from X Layer testnet" option.
 
-<Tip title="Note">Please note that you need to reserve some ETH for Sepolia network fee.</Tip>
+![testnet faucet 1](./img/testnet-faucuet-1.png)
 
-![X Layer bridge input amount](./img/xlayer-bridge-input-amount.png)
+2. Input your wallet address in the field. If you have connected a wallet plugin (EVM network), the field will automatically display your current wallet address. Next, click the Get 0.2 OKB button at the bottom.
 
-4. Check the bridge transaction details, then click the **Confirm** button:
+![testnet faucet 2](./img/testnet-faucuet-2.png)
 
-![X Layer bridge confirm transaction](./img/xlayer-bridge-confirm-transaction.png)
+## Mint via Sepolia and bridge testnet OKB
 
-5. Double check the transaction again in your wallet. Please wait a few moments for your transaction to be processed:
+Users and developers can also mint testnet OKB on the Sepolia testnet and use the official X Layer [bridge](https://www.okx.com/xlayer/bridge-test "testnet bridge") to bridge OKB. You can also bridge other testnet tokens from Sepolia to the X Layer testnet. To simplify the minting process of testnet OKB on Sepolia testnet, we have also provided the interface to do so through our X Layer testnet faucet [here](https://www.okx.com/xlayer/faucet "faucet").
 
-![Transaction confirm popup](./img/transaction-confirm-popup.png)
+<Tip title="Note">
+Please ensure that your wallet contains enough ETH (Sepolia ETH) for gas fees on the Sepolia network. You can also use the X Layer bridge to bridge ETH to the X Layer testnet.
+</Tip>
 
-6. Your pending transactions will now appear towards the bottom of your screen. You can also click the **View all transactions** button to view all of the bridge transactions you have made thus far:
+1. Go to the X Layer testnet faucet official website and click the Get button for the "Mint OKB on Sepolia" option.
 
-![X Layer bridge pending transaction](./img/xlayer-bridge-pending-transaction.png)
+![testnet faucet 3](./img/testnet-faucuet-3.png)
 
-## Bridging assets from X Layer testnet to Sepolia
-You can follow this step-by-step guide to learn how to bridge assets from X Layer testnet to Ethereum Sepolia testnet.
-1. Enter the [X Layer bridge testnet page](https://www.okx.com/xlayer/bridge-test "X Layer bridge testnet page"), then select **X Layer testnet*** (left) and **Sepolia** (right) as the two bridging directions, as shown below:
+2. Connect your wallet plugin and switch your wallet network to Sepolia. If you have insufficient ETH, you can click the Get Sepolia ETH button to obtain ETH from a third-party faucet.
 
-![X Layer bridge to sepolia](./img/xlayer-bridge-to-sepolia.png)
+![testnet faucet 4](./img/testnet-faucuet-4.png)
 
-2. Click the **Connect wallet** button, and switch to X Layer testnet (if you have not added X Layer testnet yet, please add it first):
+3. Select the token you want to receive and enter the quantity. Then, click the Mint button at the bottom.
 
-![Connect wallet X Layer bridge to Sepolia](./img/connect-wallet-xlayer-bridge-to-sepolia.png)
-
-3. Select the token you need to bridge (OKB is used as an example here), enter the amount, then click the **Bridge** button:
-
-<Tip title="Note">Please note that you need to reserve some OKB for X Layer testnet network fee.</Tip>
-
-![X Layer bridge input amount to Sepolia](./img/xlayer-bridge-input-amount-to-sepolia.png)
-
-4. Check the bridge transaction details, then click the **Confirm** button:
-
-![X Layer bridge confirm transaction to Sepolia](./img/xlayer-bridge-confirm-transaction-to-sepolia.png)
-
-5. Double check the transaction again in your wallet. Please wait a few moments for your transaction to be processed:
-
-![Transaction confirm popup to Sepolia](./img/transaction-confirm-popup-to-sepolia.png)
-
-6. Your pending transactions will now appear towards the bottom of your screen. You can also click the **View all transactions** button to view all of the bridge transactions you have made thus far:
-
-![X Layer bridge pending transaction to Sepolia](./img/xlayer-bridge-pending-transaction-to-sepolia.png)
-
-7. Click the **Claim** button (bottom right), and switch your wallet to the Sepolia network. Confirm the transaction in your wallet, then wait for your funds to arrive:
-
-![X Layer bridge claim to Sepolia](./img/xlayer-bridge-claim-to-sepolia.png)
-
-## FAQ
-### How to clear your account activity/reset account in MetaMask？
-You should only clear your account activity when strictly necessary, most often to **resolve stuck and pending transactions**. 
-
-This function is intended primarily for developers, who may find it useful to clear an account’s activity on a test network while continuing to use the same account. 
-
-Note that clearing account activity **only affects the current network**. For example: if you’re on **X Layer testnet**, the only activity that will be cleared are your transactions on **X Layer testnet**. Transactions on other networks, such as Ethereum, will be unaffected.
-
-<Tip title="Note">Clearing your activity is irreversible, and not a common requirement for most users.*You will not lose value in your accounts*.</Tip>
-
-**To reset the account**:
-1. Click the three vertical dots in the top-right corner, and then go to **Settings** > **Advanced**.
-
-![Setting](./img/setting.png)
-
-2. Scroll down to the **Clear activity and nonce data** section and click the **Clear activity tab data** button.
-
-![Clear activity](./img/clear-activity.png)
-
-### How to reset the account in OKX wallet？
-You should only reset your account activity when strictly necessary, most often to **resolve stuck and pending transactions**.
-
-This function is intended primarily for developers, who may find it useful to clear an account’s activity on a test network while continuing to use the same account. 
-
-Note that resetting your wallet means restoring your OKX wallet to its initial state, and wiping out **all the seed phrases**, **private keys**, and **wallet data**. Once the reset is complete, **you need to reimport your existing wallet in order to continue using it**.
-
-<Tip title="Note">Before resetting your account, you need to **back up your wallet**, or you *will lose value in your accounts*. For specific operations, please refer to this [OKX Wallet guide](https://www.okx.com/help/how-do-i-manage-my-wallet-web "OKX Wallet guide").</Tip>
-
-**To rest the account**:
-1. Click the button in the top-right corner, and then go to **Settings** > **Wallet security**.
-
-![OKX wallet setting](./img/okx-wallet-setting.png)
-
-2. Click the **Reset wallet** button.
-
-![OKX wallet reset](./img/okx-wallet-reset.png)
-
-## Resources
-### X Layer mainnet info
-
-## Connecting to X Layer (Mainnet)
-You can add X Layer mainnet by inputting the following network info:
-|Properties|Network details|
-|:----|:----|
-|Network name|X Layer mainnet|
-|RPC URL|https://rpc.xlayer.tech|
-|Chain ID|196|
-|Token symbol|OKB|
-|Block explorer URL|https://www.okx.com/web3/explorer/xlayer|
-
-### X Layer testnet info
-|Properties|Network details|
-|:----|:----|
-|Network name|X Layer testnet|
-|RPC URL|https://testrpc.xlayer.tech|
-|Chain ID|195|
-|Token symbol|OKB|
-|Block explorer URL|https://www.okx.com/web3/explorer/xlayer-test|
-
-## Faucet links
-* **Sepolia ETH faucet**：https://sepoliafaucet.com/
-* **X Layer testnet faucet**：http://www.okx.com/xlayer/faucet
+![testnet faucet 5](./img/testnet-faucuet-5.png)

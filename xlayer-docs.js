@@ -1,7 +1,7 @@
 /*
  * @Author: Low Ze Sheng
  * @Date: 2024-04-12 
- * @LastEditTime: 2023-04-12 2.25pm
+ * @LastEditTime: 2023-07-15 4.16pm
  * @Description: X Layer doc structure
  */
 
@@ -21,7 +21,6 @@ module.exports = [
               children: [
                   '/users/move-your-funds/set-up-wallets',
                   '/users/move-your-funds/fund-your-account',
-                  '/users/move-your-funds/get-testnet-tokens',
                   'users/move-your-funds/bridge-funds-to-xlayer',
               ],
           }, 
