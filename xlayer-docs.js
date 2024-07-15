@@ -74,7 +74,7 @@ module.exports = [
               '/developer/bridge/get-testnet-okb-from-faucet',
               '/developer/bridge/bridge-testnet-assets',
               '/developer/bridge/flow-of-assets',
-              'developer/bridge/bridging-usdc-workflow',
+              '/developer/bridge/bridging-usdc-workflow',
             ],
           },
 
