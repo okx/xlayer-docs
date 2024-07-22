@@ -92,27 +92,27 @@ module.exports = [
           ]
         },
         {
-          title:'Guides ',
+          title:'Architecture',
           icon:'okx-defi-okbc-resources',
           children:[
             {
               title:'Developer guides',
-              path: '/developer/guides/overview',
+              path: '/developer/architecture/overview',
               children: [
-                '/developer/guides/x-layer-architecture',
-                '/developer/guides/state-management',
+                '/developer/architecture/x-layer-architecture',
+                '/developer/architecture/state-management',
               {
                 title: 'Transactions',
-                path: '/developer/guides/transactions',
+                path: '/developer/architecture/transactions',
                 children: [
-                  '/developer/guides/transactions-n-data-flow',
-                  '/developer/guides/transactions-batching',
-                  '/developer/guides/batch-sequencing',
-                  '/developer/guides/batch-aggregation',
-                  '/developer/guides/transaction-validation',
+                  '/developer/architecture/transactions-n-data-flow',
+                  '/developer/architecture/transactions-batching',
+                  '/developer/architecture/batch-sequencing',
+                  '/developer/architecture/batch-aggregation',
+                  '/developer/architecture/transaction-validation',
                   ],
               },
-              '/developer/guides/incentive-model',
+              '/developer/architecture/incentive-model',
 
               ],
             }, 
@@ -190,7 +190,7 @@ module.exports = [
             },
             {
               title:'User onboarding',
-              path: '/developer/tools/user-onboarding-overview',
+              path: '/developer/tools/user-onboarding',
               children: [
                 '/developer/tools/user-onboarding/privy',
               ]
