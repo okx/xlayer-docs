@@ -26,7 +26,10 @@ Let’s set up each of the above components!
 The Ethereum RPC Node is the first component to be deployed because ZKNode needs to synchronize blocks and transactions on layer 1. You can invoke the ETH RPC (Mainnet: Ethereum OR Testnet: Sepolia) service through any of the following methods:
 - Third-party RPC services, such as [Infura](https://www.infura.io/) or [Ankr](https://www.ankr.com/).
 - Set up your own Ethereum node. Follow the instructions provided in this [guide to set up and install Geth](https://geth.ethereum.org/docs/getting-started/installing-geth).
-
+- Set up an Erigon RPC Node here:
+  - [Mainnet](https://github.com/okx/Deploy/blob/main/mainnet/setup-erigon-rpc.md)
+  - [Testnet](https://github.com/okx/Deploy/blob/main/testnet/setup-erigon-rpc.md)
+  
 ## Installing
 Once the layer 1 RPC component is complete, we can start the ZKNode setup. This is the most straightforward way to run a ZKNode and it’s fine for most use cases. 
 Furthermore, this method is purely subjective and feel free to run this software in a different manner. For example, Docker is not required, you could simply use the Go binaries directly.
