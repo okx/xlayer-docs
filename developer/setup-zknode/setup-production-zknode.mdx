@@ -26,6 +26,10 @@ Let’s set up each of the above components!
 The Ethereum RPC Node is the first component to be deployed because ZKNode needs to synchronize blocks and transactions on layer 1. You can invoke the ETH RPC (Mainnet: Ethereum OR Testnet: Sepolia) service through any of the following methods:
 - Third-party RPC services, such as [Infura](https://www.infura.io/) or [Ankr](https://www.ankr.com/).
 - Set up your own Ethereum node. Follow the instructions provided in this [guide to set up and install Geth](https://geth.ethereum.org/docs/getting-started/installing-geth).
+- Set up an Erigon RPC Node here:
+  - [Mainnet](https://github.com/okx/Deploy/blob/main/mainnet/setup-erigon-rpc.md)
+  - [Testnet](https://github.com/okx/Deploy/blob/main/testnet/setup-erigon-rpc.md)
+
 
 ## Installing
 Once the layer 1 RPC component is complete, we can start the ZKNode setup. This is the most straightforward way to run a ZKNode and it’s fine for most use cases. 
@@ -37,10 +41,10 @@ Let’s start setting up our ZKNode:
 mkdir -p ./xlayer-node && cd ./xlayer-node
 
 # mainnet
-wget https://static.okex.org/cdn/chain/xlayer/snapshot/run_xlayer_mainnet.sh && chmod +x run_xlayer_mainnet.sh && ./run_xlayer_mainnet.sh init && cp ./mainnet/example.env ./mainnet/.env
+curl -fsSL https://raw.githubusercontent.com/okx/Deploy/main/setup/zknode/run_xlayer_mainnet.sh | bash -s init && cp ./mainnet/example.env ./mainnet/.env
 
 # testnet
-wget https://static.okex.org/cdn/chain/xlayer/snapshot/run_xlayer_testnet.sh && chmod +x run_xlayer_testnet.sh && ./run_xlayer_testnet.sh init && cp ./testnet/example.env ./testnet/.env
+curl -fsSL https://raw.githubusercontent.com/okx/Deploy/main/setup/zknode/run_xlayer_testnet.sh | bash -s init && cp ./testnet/example.env ./testnet/.env
 ```
 
 2. The example.env file must be modified according to your configurations. Edit the .env file with your favourite editor (we’ll use vim in this guide): 
