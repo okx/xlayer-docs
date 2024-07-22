@@ -37,10 +37,10 @@ Let’s start setting up our ZKNode:
 mkdir -p ./xlayer-node && cd ./xlayer-node
 
 # mainnet
-wget https://static.okex.org/cdn/chain/xlayer/snapshot/run_xlayer_mainnet.sh && chmod +x run_xlayer_mainnet.sh && ./run_xlayer_mainnet.sh init && cp ./mainnet/example.env ./mainnet/.env
+curl -fsSL https://raw.githubusercontent.com/okx/Deploy/main/setup/zknode/run_xlayer_mainnet.sh | bash -s init && cp ./mainnet/example.env ./mainnet/.env
 
 # testnet
-wget https://static.okex.org/cdn/chain/xlayer/snapshot/run_xlayer_testnet.sh && chmod +x run_xlayer_testnet.sh && ./run_xlayer_testnet.sh init && cp ./testnet/example.env ./testnet/.env
+curl -fsSL https://raw.githubusercontent.com/okx/Deploy/main/setup/zknode/run_xlayer_testnet.sh | bash -s init && cp ./testnet/example.env ./testnet/.env
 ```
 
 2. The example.env file must be modified according to your configurations. Edit the .env file with your favourite editor (we’ll use vim in this guide): 
