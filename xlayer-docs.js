@@ -43,7 +43,7 @@ module.exports = [
             path: '/developer/build-on-xlayer/network-information',
             children: [
                 '/developer/build-on-xlayer/zkevm-contracts',
-                '/developer/build-on-xlayer/safe-contracts',
+                '/developer/build-on-xlayer/safe-wallet',
               ],
           }, 
 
