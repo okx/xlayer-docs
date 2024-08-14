@@ -21,7 +21,7 @@ module.exports = [
               children: [
                   '/users/move-your-funds/set-up-wallets',
                   '/users/move-your-funds/fund-your-account',
-                  'users/move-your-funds/bridge-funds-to-xlayer',
+                  '/users/move-your-funds/bridge-funds-to-xlayer',
               ],
           }, 
         ],
