@@ -42,8 +42,10 @@ mkdir -p ./xlayer-node && cd ./xlayer-node
 
 # mainnet
 curl -fsSL https://raw.githubusercontent.com/okx/Deploy/main/setup/zknode/run_xlayer_mainnet.sh | bash -s init && cp ./mainnet/example.env ./mainnet/.env
+curl -fsSL https://raw.githubusercontent.com/okx/Deploy/main/setup/zknode/run_xlayer_mainnet.sh | bash -s init && cp ./mainnet/example.env ./mainnet/.env
 
 # testnet
+curl -fsSL https://raw.githubusercontent.com/okx/Deploy/main/setup/zknode/run_xlayer_testnet.sh | bash -s init && cp ./testnet/example.env ./testnet/.env
 curl -fsSL https://raw.githubusercontent.com/okx/Deploy/main/setup/zknode/run_xlayer_testnet.sh | bash -s init && cp ./testnet/example.env ./testnet/.env
 ```
 
