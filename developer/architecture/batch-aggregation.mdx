@@ -1,0 +1,70 @@
+# Batch aggregation
+## Aggregation summary
+Upon reaching the layer 1 (layer 1) network, after all sequenced batches have been processed, the final step involves creating a zero-knowledge (ZK) proof to validate the transactions’ legitimacy. Aggregator nodes collect the sequenced batches and deliver them to the ZKProver, which employs the fflonk protocol to produce a conclusive SNARK (Succinct Non-interactive Argument of Knowledge) proof. Subsequently, the aggregator receives a ZK-proof that is compact enough to be stored on Ethereum’s layer 1.
+
+<Tip title="Note">SNARK, which stands for Succinct Non-interactive Arguments of Knowledge, serves as the underlying verification schema for Zero-Knowledge proofs. Its primary distinguishing features include its conciseness and rapid verification capabilities.</Tip>
+
+![Consolidated state on layer 1](./img/consolidated-state-on-l1.png)
+
+Ultimately, the batches of transactions are consolidated into a final state, thereby inheriting Ethereum’s security model. This is achieved by posting and proving all transaction data back on Ethereum’s layer 1.
+
+![Off-chain execution of batches](./img/off-chain-execution-of-batches.png)
+
+As depicted in the above diagram, the off-chain execution of batches implies a transition to a new layer 2 (layer 2) state, resulting in a change to a new layer 2 state root. An aggregator generates computational integrity (CI) proof of this execution, and its on-chain verification ensures the validity of the resulting layer 2 state root.
+
+## Aggregating batches
+Once the aggregator node possesses the proof, it invokes the [ZkEVM.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/consensus/validium/PolygonValidiumEtrog.sol "ZKEVM.sol") smart contract’s `trustedVerifyBatches` function and provides the received proof. Here’s the function’s source code:
+```solidity
+function trustedVerifyBatches (
+  uint64 pendingStateNum,
+  uint64 initNumBatch,
+  uint64 finalNewBatch,
+  bytes32 newLocalExitRoot,
+  bytes32 newStateRoot,
+  uint256 [2] calldata proofA,
+  uint256 [2][2] calldata proofB,
+  uint256 [2] calldata proofC
+) public onlyTrustedAggregator
+```
+In the context of this function:
+- `pendingStateNum` represents the number of pending state transitions to be consolidated, which is set to 0 as long as the trusted aggregator is operational. This `pending state` acts as a security measure for layer 2 state consolidation by an independent aggregator.
+- `initNumBatch` is the index of the last batch in the previous aggregated sequence.
+- `finalNewBatch` is the index of the last batch in the sequence being aggregated.
+- `newLocalExitRoot`  is the root of the bridge’s layer 2 exit Merkle tree at the end of sequence execution, which is used to compute the new global exit root during sequence aggregation, allowing bridge claiming transactions to be executed successfully on layer 1.
+- `newStateRoot`  is the layer 2 state root resulting from the execution of the sequence of batches in an older layer 2 state.
+- `proof(A,B and C)` are the components of the ZK-proof.
+
+To successfully aggregate a sequence of batches, the following conditions must be met:
+- The aggregation transaction must be sent from the trusted aggregator account.
+- `initNumBatch` must correspond to an already aggregated batch, meaning it must have a layer 2 state root in the "batchNumToStateRoot" mapping.
+- `initNumBatch` must be less than or equal to the index of the last aggregated batch.
+- The sequence to be aggregated must contain at least one batch.
+- Both `initNumBatch` and `finalNewBatch` must be batches that are part of the `sequencedBatches` mapping.
+- ZK-proof of computational integrity must be successfully verified.
+
+The executor and the prover are tools used by the aggregator to execute batches of transactions and generate zk-proofs. The interaction process is as follows:
+1. Execute a sequence of transaction batches based on the current layer 2 state.
+2. Calculate the resulting layer 2 state root.
+3. Generate a ZK-proof of computational integrity for execution.
+
+The following code demonstrates how to verify the ZK-proof on layer 1:
+```solidity
+// Get snark bytes
+bytes memory snarkHashBytes = getInputSnarkBytes (
+  initNumBatch,
+  finalNewBatch,
+  newLocalExitRoot,
+  oldStateRoot,
+  newStateRoot
+);
+
+// Calculate the snark input
+uint256 inputSnark = uint256(sha256(snarkHashBytes)) % _RFIELD;
+
+// Verify proof
+require (
+  rollupVerifier.verifyProof(proofA, proofB, proofC, [inputSnark]),
+  "ZkEVM :: _verifyBatches : Invalid proof"
+);
+```
+Regarding the `inputSnark` section, please refer to the [**Transaction validation**](/developer/architecture/transaction-validation "Transaction validation") chapter for more details.

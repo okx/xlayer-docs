@@ -1,0 +1,42 @@
+# Transaction batching
+## Rollup or Validium mode
+The trusted sequencer must batch the transactions using the following `BatchData` struct specified in the [ZkEVM.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/consensus/validium/PolygonValidiumEtrog.sol "ZKEVM.sol") contract:
+```solidity
+struct BatchData {
+        bytes transactions;
+        bytes32 transactionsHash;
+        bytes32 globalExitRoot;
+        uint64 timestamp;
+        uint64 minForcedTimestamp;
+}
+```
+The trusted sequencer can choose [Rollup or Validium](https://ethereum.org/en/developers/docs/data-availability/ "Rollup or Validium") mode when invoking the `sequenceBatches` method.
+```solidity
+function sequenceBatches(
+        BatchData[] calldata batches,
+        address l2Coinbase,
+        bytes calldata signaturesAndAddrs
+)
+```
+- **Rollup**: `BatchData.transactions` data is set using the data from [transactions](#Transactions), while the `signaturesAndAddrs` field is empty.
+- **Validium**: The hash calculated based on the [transactions](#Transactions) is set as `BatchData.transactionsHash`. [Transactions](#Transactions) data is signed using the DAC private key from `DataCommittee.sol`, and the resulting signatures are set in the `signaturesAndAddrs` field.
+
+## Batch data parameters
+### Transactions
+These are byte arrays containing the concatenated batch transactions for rollup mode.
+Each transaction is encoded according to the Ethereum pre-EIP-155 or EIP-155 formats using the Recursive-Length Prefix (RLP) standard, but the signature values, `v`,` r`, and `s`, are concatenated as shown below:
+1. `EIP-155`:  `rlp(nonce, gasprice, gasLimit, to, value, data, chainid, 0, 0,)`
+2. `pre-EIP-155`:  `rlp(nonce,gasprice,gasLimit,to,value,data)`
+
+### GlobalExitRoot
+This is the **root of the bridge’s Global Exit Merkle Tree**, which will be synchronized in the layer 2 State at the start of batch execution.
+The bridge moves assets back and forth between layer 1 and layer 2. To access the assets on the destination network, you need to complete a claiming transaction.
+
+### Timestamp
+As Ethereum blocks have timestamps, each batch also has its own timestamp. 
+To make sure batches are arranged in chronological order and align with layer 1 blocks, two conditions must be met:
+1. The timestamp of a batch must be equal to or later than the timestamp of the last batch that was sequenced.
+2. A trusted sequencer can’t assign a batch with a timestamp greater than the timestamp of the layer 1 block, where the sequencing transaction is processed.
+
+### MinForcedTimestamp
+If a batch is a so-called forced batch, this parameter must be greater than zero. Censorship is countered by using forced batches. You can learn more about this in the next section - [Batch Sequencing](/developer/architecture/batch-sequencing "Batch Sequencing").
