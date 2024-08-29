@@ -76,6 +76,7 @@ module.exports = [
               '/developer/bridge/asset-transfer',
               '/developer/bridge/flow-of-assets',
               '/developer/bridge/bridging-usdc-workflow',
+              '/developer/bridge/usdc-on-x-layer',
             ],
           },
 
