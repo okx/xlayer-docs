@@ -34,25 +34,6 @@ zkevm.address-rollup: "0x5132A183E9F3CB7C848b0AAC5Ae0c4f0491B7aB2"
 zkevm.address-ger-manager: "0x580bda1e7A0CFAe92Fa7F6c20A3794F169CE3CFb"
 ```
 
-#### Recommended method to start (Using Docker)
-To avoid compatibility issues with GCC, GLIBC, and Go versions, we recommend using Docker:
-```bash
-docker build -t cdk-erigon:latest .
-docker run -it --rm \
-    -p 8545:8545 \
-    -p 30303:30303 \
-    -v "$PWD/xlayerconfig-mainnet.yaml:/home/erigon/xlayerconfig-mainnet.yaml" \
-    cdk-erigon:latest \
-    --config=/home/erigon/xlayerconfig-mainnet.yaml
-```
-
-If you prefer a manual installation, follow the steps below.
-
-#### Start Erigon Node
-```
-./build/bin/cdk-erigon --config="./xlayerconfig-mainnet.yaml"
-```
-
 ### Quick Start with Snapshot (Recommended)
 To avoid the time-consuming process of syncing from genesis, you can download the latest snapshots from our official snapshot page:
 
@@ -70,7 +51,7 @@ This page provides the latest snapshots for both X Layer mainnet and testnet. Sn
 mkdir -p /data/erigon 
 cd /data/erigon
 # Download the snapshot from the snapshot page
-# Replace with the actual download link from the snapshot page
+# Replace with the actual download link from the snapshot page, or you can directly download it from https://static.okex.org/cdn/chain/xlayer/snapshot/index.html
 wget <snapshot-url-from-snapshot-page>
 ```
 
@@ -85,21 +66,21 @@ Edit your xlayerconfig-mainnet.yaml file to point to the extracted data director
 ```
 datadir: /data/erigon/extracted-snapshot-directory
 ```
-##### Start Erigon with the snapshot data
+
+
+#### Start Erigon Node
 ```
 ./build/bin/cdk-erigon --config="./xlayerconfig-mainnet.yaml"
 ```
 
-#### Using Snapshots with Docker
-If you're using Docker, mount the extracted data directory as a volume:
-```
+#### Recommended method to start (Using Docker)
+To avoid compatibility issues with GCC, GLIBC, and Go versions, we recommend using Docker:
+```bash
+docker build -t cdk-erigon:latest .
 docker run -it --rm \
     -p 8545:8545 \
     -p 30303:30303 \
-    -v "/data/erigon/extracted-snapshot-directory:/home/erigon/data" \
     -v "$PWD/xlayerconfig-mainnet.yaml:/home/erigon/xlayerconfig-mainnet.yaml" \
     cdk-erigon:latest \
     --config=/home/erigon/xlayerconfig-mainnet.yaml
 ```
-Make sure to update your config file's datadir to point to /home/erigon/data. The rest steps are same as that outlined in the instructions above.
-
