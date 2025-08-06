@@ -67,18 +67,18 @@ module.exports = [
               ],
           },
 
-          {
-            title:'Receive and bridge testnet OKB tokens',
-            path: '/developer/bridge/overview',
-            children: [
-              '/developer/bridge/get-testnet-okb-from-faucet',
-              '/developer/bridge/bridge-testnet-assets',
-              '/developer/bridge/asset-transfer',
-              '/developer/bridge/flow-of-assets',
-              '/developer/bridge/bridging-usdc-workflow',
-              '/developer/bridge/usdc-on-x-layer',
-            ],
-          },
+          // {
+          //   title:'Receive and bridge testnet OKB tokens',
+          //   path: '/developer/bridge/overview',
+          //   children: [
+          //     '/developer/bridge/get-testnet-okb-from-faucet',
+          //     '/developer/bridge/bridge-testnet-assets',
+          //     '/developer/bridge/asset-transfer',
+          //     '/developer/bridge/flow-of-assets',
+          //     '/developer/bridge/bridging-usdc-workflow',
+          //     '/developer/bridge/usdc-on-x-layer',
+          //   ],
+          // },
 
           {
             title:'Setup nodes',
