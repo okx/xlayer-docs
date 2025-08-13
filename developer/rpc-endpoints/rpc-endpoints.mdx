@@ -227,10 +227,7 @@ Real-time notifications include transaction hash, full transaction data, receipt
 ## 2. Design
 
 ### 2.1 Overview
-Realtime APIs are designed with pending and latest tags. The tag definitions are as follows:
-- `latest` - the latest finalized block from the sequencer
-- `pending` - the current pending block that is pending finalization from the sequencer
-
+Realtime APIs are designed with `pending` and `latest` tags. See above for tag definitions.
 ### 2.2 State APIs
 State APIs also include account APIs. To use the realtime-enabled state APIs, users have to pass the "pending" tag. In the future, the realtime feature will look to support the "latest" tag (state APIs on the latest finalized block from the sequencer).
 
