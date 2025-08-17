@@ -1,6 +1,24 @@
 # RPC endpoints
 X Layer supports JSON-RPC methods that are compatible with Ethereum, and ZKEVM RPC methods for zkEVM.
+
 <Tip title="Note">There is a limit of 100 requests per second per IP address on both the mainnet and testnet.</Tip>
+
+**X Layer Mainnet Upgrade Completed: August 5th, 2025**
+
+The X Layer mainnet upgrade has been completed successfully. Please ensure you have upgraded your RPC to v0.8.0 for full compatibility.
+
+**Removed RPC Interfaces (as of v0.8.0):**
+- `zkevm_consolidatedBlockNumber`
+- `zkevm_isBlockConsolidated` 
+- `zkevm_verifiedBatchNumber`
+- `zkevm_getBatchWitness`
+- `zkevm_getBlockRangeWitness`
+- `zkevm_getProverInput`
+- `zkevm_getWitness`
+- `zkevm_isBlockVirtualized`
+- `zkevm_virtualBatchNumber`
+
+If you're still using any of these interfaces, please update your code to use the active RPC methods instead.
 
 ## Mainnet (chain-id: 0xC4, 196 in decimals)
 RPC:
@@ -26,10 +44,314 @@ curl -X POST --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id
 # testnet
 curl -X POST --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' -H "Content-Type: application/json" https://testrpc.xlayer.tech
 ```
-## JSON-RPC methods
-There are two types of RPC methods on X Layer, one is Ethereum compatible RPC, and the other one is ZKEVM RPC. Each RPC offers specific functionalities.
 
-### 1. Ethereum compatible RPC
+## 1. APIs
+
+### Realtime APIs
+
+#### Overview
+X Layer's Real-time API transforms blockchain user experience by delivering transaction confirmations in 20-30 milliseconds - that's 20-40x faster than traditional blockchain operations. By streaming pre-confirmed transactions and state data directly from the sequencer, developers can build truly responsive blockchain applications that rival traditional web experiences.
+
+#### Key Benefits
+- **Ultra-low latency**: Transaction confirmations in 20-30ms vs standard 400ms+ block times
+- **Full EVM compatibility**: Complete support for all standard Ethereum JSON-RPC calls with "pending" tag
+- **Real-time state access**: Query the latest blockchain state without waiting for block finalization
+- **Seamless integration**: Minimal code changes required - simply replace "latest" with "pending"
+- **Enhanced user experience**: Near-instant feedback for wallets, payments, and DeFi applications
+- **Superior API coverage**: Unlike competitors, supports full eth_call functionality on pending blocks
+
+#### How It Works
+
+**Traditional vs Real-time Flow**
+
+Traditional Blockchain Flow:
+1. User submits transaction → Transaction pool
+2. Wait for block to be minted (400ms+)
+3. Block propagation to RPC nodes
+4. User sees confirmation
+
+X Layer Real-time Flow:
+1. User submits transaction → Transaction pool
+2. Sequencer immediately streams transaction data + state changes
+3. RPC nodes apply changes to in-memory cache
+4. Instant confirmation (20-30ms)
+
+#### Technical Architecture
+The Real-time feature operates through two primary data streams from the sequencer:
+
+**State Data (Change-sets)**
+- Incremental state transitions from each transaction
+- Applied directly to RPC node cache without re-execution
+- Enables instant state queries on pending transactions
+
+**Non-state Data**
+- Transaction payloads and receipts
+- Internal transaction traces
+- Block headers for pending blocks
+
+#### Params
+Realtime APIs are designed with pending and latest tags. The tag definitions are as follows:
+- `latest` - the latest finalized block from the sequencer
+- `pending` - the current pending block that is pending finalization from the sequencer
+
+### State APIs
+
+| Method | Params | Usage |
+|:----|:----|:----|
+| eth_blockNumber | 1. block tag ("pending" or "latest") | Get the current realtime confirmed/pending block height<br/>- Pass the "latest" tag to get the latest finalized block height<br/>- Pass the "pending" tag to get the current pending block height that is pending finalization |
+| eth_call | 1. callObject<br/>2. block tag ("pending" or "latest")<br/>3. stateOverrides (optional) | Executes a new message call immediately without creating a new transaction on the chain<br/>- Pass the "latest" tag to use the state of the latest finalized block<br/>- Pass the "pending" tag to use the state of the current pending block that is pending finalization |
+| eth_estimateGas | 1. Call Arguments<br/>2. block tag ("pending" or "latest") | Returns an estimate of how much is needed to allow the transaction to complete<br/>- Pass the "latest" tag to use the state of the latest finalized block<br/>- Pass the "pending" tag to use the state of the current pending block that is pending finalization |
+
+### Account APIs
+
+| Method | Params | Usage |
+|:----|:----|:----|
+| eth_getBalance | 1. address<br/>2. block tag ("pending" or "latest") | Returns the latest native address balance in the realtime cache based on the given address<br/>- Pass the "latest" tag to use the state of the latest finalized block<br/>- Pass the "pending" tag to use the state of the current pending block that is pending finalization |
+| eth_getTransactionCount | 1. address<br/>2. block tag ("pending" or "latest") | Returns the latest account transaction count in the realtime cache based on the given address<br/>- Pass the "latest" tag to use the state of the latest finalized block<br/>- Pass the "pending" tag to use the state of the current pending block that is pending finalization |
+| eth_getCode | 1. address<br/>2. block tag ("pending" or "latest") | Returns the latest account code in the realtime cache based on the given address<br/>- Pass the "latest" tag to use the state of the latest finalized block<br/>- Pass the "pending" tag to use the state of the current pending block that is pending finalization |
+| eth_getStorageAt | 1. Address<br/>2. position index<br/>3. block tag ("pending" or "latest") | Returns the latest account storage state in the realtime cache based on the given address and position index<br/>- Pass the "latest" tag to use the state of the latest finalized block<br/>- Pass the "pending" tag to use the state of the current pending block that is pending finalization |
+
+### Block APIs
+
+| Method | Params | Usage |
+|:----|:----|:----|
+| eth_getBlockByHash | 1. Block hash (finalized blocks only) or Block number<br/>2. Transaction detail boolean flag | Returns the specified block based on the given block hash<br/>- Pass in fullTx to get the transaction details<br/>- Pass in "fullTx" to get the full transaction details, else only transaction hash will be returned for the transaction field |
+| eth_getBlockByNumber | 1. block number or tag<br/>2. Transaction detail boolean flag | Returns the specified block based on the block number<br/>- "pending" tag returns the block information of the current open block<br/>- "latest" tag returns the block information of the last confirmed block<br/>- Pass in "fullTx" to get the full transaction details, else only transaction hash will be returned for the transaction field |
+| eth_getBlockTransactionCountByNumber | 1. block number or tag | Returns the specified confirmed block's transaction count<br/>- Pass the "pending" tag to get pending block's transaction count<br/>- Pass the "latest" tag to get the latest confirmed block's transaction count |
+| eth_getBlockTransactionCountByHash | 1. Block hash | Returns the number of transactions in the specified block based on the given block hash |
+| eth_getBlockInternalTransactions | 1. block number or tag | Returns the internal transactions in the specified block based on the given block number |
+
+### Transaction APIs
+
+| Method | Params | Usage |
+|:----|:----|:----|
+| eth_getTransactionByHash | 1. transaction hash | Returns the transaction data based on the given transaction hash |
+| eth_getRawTransactionByHash | 1. transaction hash | Returns the raw transaction data based on the given transaction hash |
+| eth_getTransactionReceipt | 1. transaction hash | Returns the transaction receipt based on the given transaction hash |
+| eth_getInternalTransactions | 1. transaction hash | Returns the internal transaction logs based on the given transaction hash |
+
+### Node APIs
+
+| Method | Params | Usage |
+|:----|:----|:----|
+| eth_realtimeEnabled | - | Returns the status on whether the RT feature is enabled and syncing with the X Layer sequencer |
+
+Note that the old Realtime APIs have been migrated directly into the eth_* namespace APIs.
+
+#### Core Real-time API Examples
+
+All Real-time APIs use standard eth_* methods with the "pending" block tag to access real-time data.
+
+**eth_call - Smart Contract Interactions**
+
+Execute contract calls against the latest real-time state.
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "eth_call", 
+  "params": [
+    {
+      "to": "0x...",
+      "data": "0x..."
+    },
+    "pending"
+  ],
+  "id": 1
+}
+```
+
+Key Advantage: Full smart contract interaction support on pending blocks - a capability competitors like Base's flash blocks don't offer.
+
+**eth_getBalance - Real-time Account Balances**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "eth_getBalance",
+  "params": ["0x...", "pending"],
+  "id": 1
+}
+```
+
+**eth_getTransactionCount - Latest Nonce**
+
+```json
+{
+  "jsonrpc": "2.0", 
+  "method": "eth_getTransactionCount",
+  "params": ["0x...", "pending"],
+  "id": 1
+}
+```
+
+**eth_getTransactionReceipt - Instant Receipts**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "eth_getTransactionReceipt", 
+  "params": ["0x..."],
+  "id": 1
+}
+```
+
+#### Real-time Subscriptions
+
+Subscribe to live blockchain events via WebSocket connections.
+
+**Subscribe to Real-time Updates**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "eth_subscribe",
+  "params": [
+    "realtime",
+    {
+      "NewHeads": true,
+      "TransactionExtraInfo": true, 
+      "TransactionReceipt": true,
+      "TransactionInnerTxs": true
+    }
+  ],
+  "id": 1
+}
+```
+
+**Subscription Response**
+
+Real-time notifications include transaction hash, full transaction data, receipts, and internal transaction traces based on your subscription criteria.
+
+## 2. Design
+
+### 2.1 Overview
+Realtime APIs are designed with `pending` and `latest` tags. See above for tag definitions.
+### 2.2 State APIs
+State APIs also include account APIs. To use the realtime-enabled state APIs, users have to pass the "pending" tag. In the future, the realtime feature will look to support the "latest" tag (state APIs on the latest finalized block from the sequencer).
+
+#### 2.2.1 Ensuring consistency
+When users pass the "latest" tag to all state APIs, we are assured the integrity of chain-state is correct because these states are finalized on the sequencer. The realtime-enabled RPCs provide a faster and more updated chain-state, while default RPCs will reach eventual consistencies of the chain-state (slower since default RPCs are lagging behind RT-enabled RPCs).
+
+When users pass the "pending" tag to all state APIs, users know the inherent risks of using the un-finalized chain-state. Realtime-enabled RPCs provides state APIs with the pending chain-state of the last sequenced transaction or the current pending block awaiting finalization from the sequencer - the state is deemed un-finalized since that block is currently still pending finalization.
+
+### 2.3 Stateless APIs
+Stateless APIs includes block APIs and transaction APIs.
+
+#### 2.3.1 Block APIs
+All block APIs follow the pending and latest tag design. For "latest" tag or specified block hashes / numbers, these blocks are assured to be finalized by the sequencer.
+
+Realtime-enabled RPC nodes will also support "pending" tag, which will return the current pending block that is pending finalization. It will also include any transactions that have been minted by the sequencer into that pending block. Note that the block data return will not have a block hash, since the block is yet to be finalized.
+
+#### 2.3.2 Transaction APIs
+All transaction APIs on realtime-enabled RPC nodes will return transaction receipts once the sequencer includes the transaction in the current pending block. It is important to note that the realtime-enabled transaction APIs might be un-finalized, since lowest possible latency is prioritized.
+
+However, users can check if transactions are finalized through the blockHash field. Transactions that are pending finalization will have an empty block hash, while finalized transactions will have the blockHash field populated with the finalized block hash.
+
+#### 2.3.3 Ensuring stateless consistencies
+Realtime APIs for stateless APIs (mainly block and transaction APIs) ensures consistency as:
+1. Block data using the "latest" tag are guaranteed to be finalized
+2. Transaction data are guaranteed to be finalized when blockHash field is populated
+
+### 2.4 Integration Guide
+
+#### Quick Start
+
+**Step 1: Replace block tags in existing calls**
+```javascript
+// Before
+await provider.getBalance(address, "latest")
+
+// After (Real-time enabled)  
+await provider.getBalance(address, "pending")
+```
+
+**Step 2: Add real-time subscriptions**
+```javascript
+const subscription = await provider.send("eth_subscribe", [
+  "realtime",
+  { NewHeads: true, TransactionReceipt: true }
+]);
+```
+
+#### Migration Requirements
+- **Minimal changes**: Replace "latest" with "pending" in block tags
+- **Zero library changes**: Existing Ethereum client libraries work unchanged
+- **Full API support**: All standard Ethereum JSON-RPC methods supported
+
+### 2.5 Performance Benchmarks
+
+#### Transaction Confirmation Speed
+- **Real-time confirmations**: 26.6ms average
+- **Traditional confirmations**: 400ms+ block times
+- **Speed improvement**: 20-40x faster than traditional blockchain operations
+
+#### Stress Test Results
+- **Sustained TPS**: 860+ transactions per second
+- **Real-time confirmations**: 26.6ms average
+- **Zero sequencer restarts** on testnet to date
+
+### 2.6 Use Cases
+
+#### Ideal Applications
+- **Wallet applications**: Instant transaction confirmations improve user trust
+- **Payment systems**: Real-time verification for services like OKX Pay
+- **Trading platforms**: Immediate state confirmations for better UX
+- **DeFi protocols**: Fast balance and approval checks
+- **Gaming applications**: Responsive on-chain interactions
+- **Cross-chain bridges**: Quick state validation
+
+### 2.7 Risk Considerations & Mitigation
+
+#### Understanding Pending State
+When using "pending" tags, transactions are pre-confirmed but not yet finalized on-chain.
+
+**Potential Risks:**
+- **Sequencer restart**: Pending transactions may not be included (extremely rare)
+- **Chain reorganization**: Possible rollback scenarios (never occurred on testnet)
+
+**Risk Mitigation:**
+- **X Layer testnet**: Zero sequencer restarts to date
+- **No rollbacks experienced** in testing
+- **Standard blockchain finality rules** apply for critical operations
+- **Built-in consistency checks** and atomic updates
+
+### 2.8 Getting Started
+
+#### Testnet Access
+- **RPC Endpoint**: https://testnet-rpc.xlayer.tech
+- **WebSocket**: wss://testnet-rpc.xlayer.tech
+
+#### Example Implementation
+```javascript
+const { ethers } = require('ethers');
+
+// Connect with Real-time support
+const provider = new ethers.JsonRpcProvider('https://testnet-rpc.xlayer.tech');
+
+async function getRealtimeBalance(address) {
+  // Real-time balance with 20-30ms confirmation
+  const balance = await provider.send("eth_getBalance", [address, "pending"]);
+  return balance;
+}
+
+async function executeRealtimeCall(contract, data) {
+  // Contract call against latest pending state
+  const result = await provider.send("eth_call", [
+    { to: contract, data: data },
+    "pending"
+  ]);
+  return result;
+}
+```
+
+## 3. RPC Methods
+
+X Layer supports two types of RPC methods:
+1. **Ethereum compatible RPC** - Standard Ethereum JSON-RPC methods
+2. **ZKEVM RPC** - X Layer-specific zkEVM functionality
+
+### 3.1 Ethereum Compatible RPC
 Here you will find the list of all supported JSON RPC endpoints and the differences between them in comparison to the default behavior of an Ethereum node.
 If a specific endpoint is not in the list below, it means that this specific endpoint is not supported yet. 
 You can find more details in [Ethereum’s JSON-RPC doc](https://ethereum.org/en/developers/docs/apis/json-rpc/ "Ethereum's JSON-RPC doc").
@@ -79,19 +401,20 @@ You can find more details in [Ethereum’s JSON-RPC doc](https://ethereum.org/en
 |debug_traceTransaction|Debug|Returns all traces of a given transaction|
 |txpool_content|Txpool|Response is always empty|
 
-### 2. ZKEVM RPC
+### 3.2 ZKEVM RPC
+
 You can use the following RPC methods to execute specific ZKEVM functionalities:
 
-|Method name|Summary|
-|:----|:----|
-|zkevm_batchNumber|Returns the latest batch number|
-|zkevm_batchNumberByBlockNumber|Returns the batch number connected to the block|
-|zkevm_consolidatedBlockNumber|Returns the latest block number connected to the latest verified batch|
-|zkevm_getBatchByNumber|Gets a batch for a given number|
-|zkevm_isBlockVirtualized|Returns 'true' if the provided block number is already connected to a batch that was virtualized, otherwise false|
-|zkevm_isBlockConsolidated|Returns true if the provided block number is already connected to a batch that was verified, otherwise false|
-|zkevm_virtualBatchNumber|Returns the latest virtual batch number|
-|zkevm_verifiedBatchNumber|Returns the latest verified batch number|
+|Method name|Summary|Status|
+|:----|:----|:----|
+|zkevm_batchNumber|Returns the latest batch number|Active|
+|zkevm_batchNumberByBlockNumber|Returns the batch number connected to the block|Active|
+|zkevm_getBatchByNumber|Gets a batch for a given number|Active|
+|zkevm_consolidatedBlockNumber|Returns the latest block number connected to the latest verified batch|**Deprecated (v0.8.0)**|
+|zkevm_isBlockConsolidated|Returns true if the provided block number is already connected to a batch that was verified, otherwise false|**Deprecated (v0.8.0)**|
+|zkevm_isBlockVirtualized|Returns 'true' if the provided block number is already connected to a batch that was virtualized, otherwise false|**Deprecated (v0.8.0)**|
+|zkevm_verifiedBatchNumber|Returns the latest verified batch number|**Deprecated (v0.8.0)**|
+|zkevm_virtualBatchNumber|Returns the latest virtual batch number|**Deprecated (v0.8.0)**|
 
 ### zkevm_batchNumber
 Returns the latest batch number
@@ -146,7 +469,11 @@ curl -X POST --data '{
 {"jsonrpc":"2.0","id":1,"result":"0x4"}
 ```
 
-### zkevm_consolidatedBlockNumber
+### zkevm_consolidatedBlockNumber ⚠️ DEPRECATED
+:::warning[Deprecation Warning]
+This method will be removed in RPC v0.8.0. Please update your code to remove dependencies on this interface.
+:::
+
 Returns the latest block number that is connected to the latest batch verified
 
 **Parameters**
@@ -211,7 +538,11 @@ curl -X POST --data '{
 {"jsonrpc":"2.0","id":1,"result":{"number":"0x2","coinbase":"0xcec3f45ca495d89a37ff680c087df91741aa9ef6","stateRoot":"0xe683502473ee45ab47f55ea254bb8637f5324250e758e391476b15388f818617","globalExitRoot":"0xe95ee03593d34c4ff03c2e5369cf6eaef4e3e19fc66ab1c93d512fcccbc33f41","mainnetExitRoot":"0x2c352238d75ce63aa81d466c6d17aa41bc12dce33c954a10d6752f6863e42511","rollupExitRoot":"0x0000000000000000000000000000000000000000000000000000000000000000","localExitRoot":"0x0000000000000000000000000000000000000000000000000000000000000000","accInputHash":"0xb36f9860fd62baa2ecbf52ed337a0e9686bce2441909c80f541b98c88601c84c","timestamp":"0x64f5d7a1","sendSequencesTxHash":"0x77f311f450e7d1075b4c5e51e2ac727c74082eed7494d5e7d74fa40f4ff6b071","verifyBatchTxHash":"0x519da5b4a2f6ce344f749e5e553588b61b661280a9d8dfd0cc6b03cab74cb0da","transactions":["0x5e33e1eb2064e3bad97b3734b2aa25882ecd88f9f91da81d1526dbbc90a531b8"]}}
 ```
 
-### zkevm_isBlockConsolidated
+### zkevm_isBlockConsolidated ⚠️ DEPRECATED
+:::warning[Deprecation Warning]
+This method will be removed in RPC v0.8.0. Please update your code to remove dependencies on this interface.
+:::
+
 Returns `true` if the provided block number is already connected to a batch that was already verified, otherwise `false`
 
 **Parameters**
@@ -235,7 +566,11 @@ curl -X POST --data '{
 {"jsonrpc":"2.0","id":1,"result":true}
 ```
 
-### zkevm_isBlockVirtualized
+### zkevm_isBlockVirtualized ⚠️ DEPRECATED
+:::warning[Deprecation Warning]
+This method will be removed in RPC v0.8.0. Please update your code to remove dependencies on this interface.
+:::
+
 Returns `true` if the provided block number is already connected to a batch that was already virtualized, otherwise `false`
 
 **Parameters**
@@ -259,7 +594,11 @@ curl -X POST --data '{
 {"jsonrpc":"2.0","id":1,"result":true}
 ```
 
-### zkevm_verifiedBatchNumber
+### zkevm_verifiedBatchNumber ⚠️ DEPRECATED
+:::warning[Deprecation Warning]
+This method will be removed in RPC v0.8.0. Please update your code to remove dependencies on this interface.
+:::
+
 Returns the latest verified batch number
 
 **Parameters**
@@ -283,7 +622,11 @@ curl -X POST --data '{
 {"jsonrpc":"2.0","id":1,"result":"0x81"}
 ```
 
-### zkevm_virtualBatchNumber
+### zkevm_virtualBatchNumber ⚠️ DEPRECATED
+:::warning[Deprecation Warning]
+This method will be removed in RPC v0.8.0. Please update your code to remove dependencies on this interface.
+:::
+
 Returns the latest virtual batch number
 
 **Parameters**
@@ -311,3 +654,10 @@ curl -X POST --data '{
 Public RPCs may have rate limits or traffic restrictions. For dedicated free RPC URLs, consider the following providers:
 - [ZAN](https://zan.top/home "ZAN")
 - [Ankr](https://www.ankr.com/ "Ankr")
+
+## Conclusion
+
+X Layer's Real-time API delivers a world class blockchain user experience, rivaling web2-like responsiveness while maintaining full Ethereum compatibility. With confirmation times of 20-30 milliseconds and comprehensive API support, developers can build truly responsive blockchain applications that users will love.
+
+**Ready to build the future of blockchain UX? Start with X Layer Real-time API today.**
+
