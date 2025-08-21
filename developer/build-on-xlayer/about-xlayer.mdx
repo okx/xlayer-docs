@@ -105,14 +105,13 @@ There are two main actors on X Layer that earn OKB as reward and pay OKB token a
 
 ## Transactions on X Layer
 Before making any transactions on layer 2, users need to have OKB on X Layer. Per the latest OKX announcement, to obtain OKB on X Layer you should first deposit Ethereum L1 OKB to OKX Exchange and then use the "Withdraw to X Layer" one‑click swap. Over time, OKX Exchange will discontinue withdrawals of OKB back to Ethereum L1. See the announcement for details: [OKX: PP upgrade of X Layer and OKB gas optimization](https://www.okx.com/zh-hans/help/announcement-on-the-pp-upgrade-of-x-layer-and-optimisation-of-the-okb-gas).
-2. Layer 2 transactions：
-  - The user starts a transaction from their wallet (e.g., MetaMask) and sends it to a sequencer.
-  - Once the sequencer commits to adding the transaction, it becomes finalized on layer 2.
-  - At this point, the transaction is settled on layer 2, but its state has not yet propagated to L1. This state is known as the **trusted state**.
-  - The sequencer transmits the batch data to a smart contract on L1, permitting any node to synchronize its state from L1 in a secure, trustless manner. This state is referred to as the **virtual state**.
-  - The aggregator gathers pending transactions for verification and constructs a proof to attain finality on L1.
-  - After the proof undergoes validation, the user’s transactions gain finality on L1, a crucial step for actions like withdrawals. This state is called the **verified state**.
+2. Layer 2 transactions:
+  - A user sends a transaction from their wallet (e.g., MetaMask) to the network via Proxyd/RPC; the Sequencer includes it in an L2 block.
+  - Once the Sequencer commits the block, the transaction is finalized on L2 (execution and fees are enforced on L2).
+  - This L2‑final state has not yet been settled on L1. We refer to this as the **trusted (L2) state**.
+  - For cross‑chain actions (withdrawals, bridge messages), xlayer produces a certificate; `aggsender` double‑checks and submits the certificate to `agglayer`.
+  - `agglayer`/`agglayer‑prover` generates a Pessimistic Proof (PP) and submits it to the L1 verifier/bridge contract.
+  - After the PP is verified on L1, the cross‑chain operation reaches L1 finality — the **verified state** for that operation. Day‑to‑day L2 transactions do not require PP.
   
-To get a sense of the complete transaction life cycle on X Layer, we recommend you to take a look at the [Transactions and data flow](/developer/architecture/transactions-n-data-flow "Transactions and data flow") document.
 
 <Tip title="Note">For more EVM and zkEVM related questions, you can visit [Polygon’s EVM Equivalence FAQ](https://wiki.polygon.technology/docs/zkevm/faq/zkevm-eth-faq/ "Polygon’s EVM Equivalence FAQ") and [General FAQ](https://wiki.polygon.technology/docs/zkevm/faq/zkevm-general-faq/ "General FAQ") for more info.</Tip>
