@@ -55,9 +55,9 @@ For cross‑chain operations (for example, withdrawals and bridge messages), X L
 
 ## Validium vs. Rollups
 Validiums differ from rollups and sidechains because they only share a proof of validity when needed (e.g., via PP for cross‑chain), which confirms the results of the transactions with Ethereum, not the actual transaction data of the executed transactions.
-Here is how it operates: a verifier smart contract is deployed on Ethereum, and validium submits proof of validity to this contract. These proofs are zero knowledge in nature and contain transaction outcomes but not the specific transaction data.
+Here is how it operates: a verifier/bridge smart contract is deployed on Ethereum. For cross‑chain operations, the Polygon side `agglayer` submits a PP (ZK) certificate/proof to this contract on behalf of X Layer. The proof attests to the L2 state transition result but not the full transaction data.
 
-The verifier smart contract assesses the validity of the proof. If it is found to be invalid, any claim submitted by the validium bridge is rejected and not stored on Ethereum.
+The verifier contract assesses the validity of the submitted PP. If it is invalid, the claim is rejected and not stored/processed on Ethereum.
 
 ![ZKValidium vs. ZKRollup](./img/zkvalidium-vs-zkrollup.jpg)
 
