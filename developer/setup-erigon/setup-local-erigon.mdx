@@ -1,142 +1,59 @@
-# X Layer RPC Quick‑Start and Erigon Node Setup
+# Setup Local X Layer Erigon Node
+This guide helps you set up a local X Layer development environment using `xlayer-erigon` for testing smart contracts, experimenting with new code, and interacting with the network on your local machine without external dependencies.
 
-This guide helps you connect to X Layer Mainnet/Testnet in under 5 minutes and, if needed, run your own production JSON‑RPC node powered by `xlayer-erigon`. For a general overview of X Layer RPC endpoints, please refer to the following supplementary [document](https://web3.okx.com/zh-hans/xlayer/docs/developer/rpc-endpoints/rpc-endpoints "document").
+<Tip title="Note">This setup creates a local X Layer node that syncs with the live network. For a completely isolated local blockchain, consider using a testnet configuration or local L1 setup.</Tip>
 
-Because X Layer is EVM‑equivalent, it follows the Ethereum JSON‑RPC specification. Any tool that already works with Ethereum (MetaMask, Hardhat, Foundry, ethers.js, web3.js, curl) works out‑of‑the‑box once you point it at an X Layer RPC endpoint.
+After completing this tutorial, you will have:
+- A fully functional X Layer Erigon node
+- JSON-RPC endpoint for local development
+- Access to all standard Ethereum JSON-RPC methods
+- Local block explorer capabilities (optional)
 
-## What is an RPC endpoint and why you need one
-A Remote Procedure Call (RPC) lets a client invoke functions on a remote server as if they were local. A blockchain node exposes such an interface so external programs (wallets, scripts, backends, etc.) can query chain data, submit transactions over HTTP/WebSocket, and evaluate state.
+## Prerequisites
+This tutorial requires the following tools to be installed on your machine:
+- **Go 1.24+** (required to build xlayer-erigon)
+- **Git** (to clone the repository)
+- **Make** (for building the binary)
 
-## Quick‑Start: Connect & Verify
-If you only need to interact with X Layer, use the public endpoints below. To remove rate limits and gain full logs, run your own node (see “Run Your Own X Layer RPC Node”).
+Install links:
+- https://go.dev/doc/install
+- https://git-scm.com/downloads
 
-| Parameter | Mainnet | Testnet |
-| --- | --- | --- |
-| Chain-ID (dec / hex) | 196 / 0xC4 | 195 / 0xC3 |
-| Currency symbol | OKB | OKB (test faucet) |
-| Primary HTTP RPC | https://rpc.xlayer.tech | https://xlayerrpc.okx.com |
-| Alternative HTTP | https://testrpc.xlayer.tech | https://xlayertestrpc.okx.com |
-| Block Explorer | https://web3.okx.com/explorer/x-layer | https://web3.okx.com/explorer/x-layer-testnet |
+### System Requirements
 
-### Apply settings based on your scenario
+| Resource | Minimum | Recommended | Notes |
+| --- | --- | --- | --- |
+| CPU | 8 vCPU | 16+ vCPU | More cores = faster sync |
+| RAM | 16 GB | 64 GB | Higher RAM improves performance |
+| Disk | 200 GB SSD | 500+ GB SSD | Storage grows over time |
+| Network | Stable internet | High bandwidth | For L1 sync and data streaming |
 
-| Scenario | Typical Tools | Where to paste the values |
-| --- | --- | --- |
-| Wallet / dApp front‑end | MetaMask, Rabby, Rainbow, etc. | Settings -> Networks -> Add Network (paste, then click "Save/Add"; wallet auto-switches to X Layer) |
-| Dev environment / toolkit | Hardhat, Foundry, Truffle, etc. | Project config file ('hardhat.config.js', 'foundry.toml', 'truffle-config.js', etc.), then restart your tests or scripts |
-| Quick CLI / script | Curl, wget, Postman, shell scripts | Any terminal, good for a rapid health check |
+### External Requirements
+- **L1 Endpoint**: Ethereum mainnet RPC (Alchemy, Infura, or self-hosted)
+- **Genesis File**: https://raw.githubusercontent.com/okx/Deploy/main/mainnet/genesis.json
+- **Chain ID**: 196 (mainnet) / 195 (testnet)
+- **Sequencer URL**: https://rpc.xlayer.tech
+- **Data Streamer**: stream.xlayer.tech:8800
 
-### Wallet / dApp front-end example: MetaMask (Mainnet)
-```json
-{
-  "networkName": "X Layer Mainnet",
-  "rpcURL": "https://rpc.xlayer.tech",
-  "chainID": 196,
-  "currencySymbol": "OKB",
-  "blockExplorer": "https://web3.okx.com/explorer/x-layer"
-}
-```
-After pasting, hit Save. MetaMask will show the X Layer network badge and your OKB balance (if any).
+## Setup X Layer Erigon Node
+Follow these steps to clone, build, and run your local X Layer Erigon node.
 
-### Dev environment / toolkit example: Hardhat
-```js
-require("dotenv").config();
-
-module.exports = {
-  networks: {
-    xlayer: {
-      url: "https://rpc.xlayer.tech",
-      chainId: 196,
-      accounts: [process.env.PRIVATE_KEY],
-    },
-  },
-};
-```
-
-Foundry? Add this to foundry.toml:
-```toml
-[rpc_endpoints]
-xlayer = "https://rpc.xlayer.tech"
-```
-
-### 10-Second CLI smoke test (optional but recommended)
+### 1. Clone and Build
 ```bash
-curl -X POST \
-  -H "Content-Type: application/json" \
-  --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
-  https://rpc.xlayer.tech
-```
-If you get a hex block number back, the endpoint is live. If timeouts occur, please double-check the URL or any other pertaining issues.
-
----
-
-## Run Your Own X Layer RPC Node 
-Running your own node removes the currently-imposed public rate-limit of 100 requests per second per IP address (exhibited on both mainnet and testnet), and lets you inspect full log/metrics.
-Follow the below playbook to have a mainnet-ready JSon-RPC endpoint in about 15 minutes.
-
-### 1. Should you self‑host?
-
-| Self-host if you... | Stick to the public RPC if you... |
-| --- | --- |
-| - Push >50 RPS or long-running indexers<br>- Need deterministic uptime/compliance<br>- Require full logs & debug traces | - Just want to test or have a low-traffic dApp<br>- Don't want to manage infra<br>- Okay with shared-node logging |
-
-### 2. If yes, what you need for the setup
-
-| Resource | Minimum | Notes |
-| --- | --- | --- |
-| CPU | 8 vCPU |  |
-| RAM | 64 GB |  |
-| Disk | 500G SSD |  |
-| Software | OS: Linux (Ubuntu 22.04+) | Refer to [Docker](https://docs.docker.com/) · [Docs](https://github.com/okx/Deploy) (updated from xlayer GitHub docs) |
-| L1 Endpoint | L1 (Ethereum mainnet) RPC endpoint (Alchemy, Infura, self‑run geth) for L2 synchronization | Refer to [Docker](https://docs.docker.com/) · [Docs](https://github.com/okx/Deploy) |
-| Genesis File | https://raw.githubusercontent.com/okx/Deploy/main/mainnet/genesis.json |  |
-| Chain ID | 196 (0xC4) |  |
-| Sequencer URL | https://rpc.xlayer.tech/ |  |
-| Data Streamer | stream.xlayer.tech:8800 |  |
-
----
-
-## Multi‑step install & initialization (UPDATED – ERIGON SETUP)
-Reference: [Deploy/mainnet/setup-erigon-rpc.md at main · okx/Deploy](https://github.com/okx/Deploy/blob/main/mainnet/setup-erigon-rpc.md)
-
-Setup production erigon
-
-`cdk-erigon` is a fork of Erigon, optimized for syncing with the XLayer network.
-
-Minimum System Requirements
-
-- 16 GB RAM
-- 8 core CPU
-- 500 GB Storage (This will increase over time)
-
-Start Erigon RPC Node
-
-Preparation
-
-> Important: Go 1.24+ is required to build.
-
-### Build
-```bash
-# Pull source
+# Clone the xlayer-erigon repository
 git clone https://github.com/okx/xlayer-erigon.git
 cd xlayer-erigon
 
-# Optionally switch to the latest release tag from https://github.com/okx/xlayer-erigon/releases
-# Example
+# Optionally switch to the latest release tag
+# Check https://github.com/okx/xlayer-erigon/releases for latest version
 # git checkout vX.Y.Z
 
 # Build the cdk-erigon binary (output at build/bin/cdk-erigon)
 make cdk-erigon
-
-# Optional: build a Docker image
-make build-docker
 ```
 
-### Modify Config
-Create a configuration file named `xlayerconfig-mainnet.yaml` in the repo root and paste the following content. Please update the following fields before starting the node:
-
-1. `datadir` — specify your desired data directory path.
-2. `zkevm.l1-rpc-url` — provide the correct L1 RPC URL. For production environments, you should request an official RPC endpoint from your organization.
+### 2. Create Configuration File
+Create a configuration file named `xlayerconfig-local.yaml` in the repo root. Note that these `zkevm.*` keys configure PP network components:
 
 ```yaml
 datadir: /data/xlayer-erigon            # <- change to your path
@@ -167,40 +84,75 @@ http.addr: 0.0.0.0
 http.port: 8545
 ```
 
-> Security note: Binding `http.addr` to `0.0.0.0` exposes your RPC on all interfaces. In production, restrict access with a firewall/load balancer.
+<Tip title="Security Note">Binding `http.addr` to `0.0.0.0` exposes your RPC on all interfaces. In production, restrict access with a firewall.</Tip>
 
-### Start Erigon Node By binary
+### 3. Start Your Node
 ```bash
-./build/bin/cdk-erigon --config "./xlayerconfig-mainnet.yaml"
-```
-If you see the following content in your log, the startup is successful:
-```
-INFO Mapped network port                      proto=udp extport=30304 intport=30304 interface="UPNP IGDv1-IP1"
-INFO [1/16 L1Syncer] L1 Blocks processed progress (amounts): 64000/3358713 (1%)
-INFO [1/16 L1Syncer] L1 Blocks processed progress (amounts): 140000/3358713 (4%)
-INFO [1/16 L1Syncer] L1 Blocks processed progress (amounts): 222000/3358713 (6%)
+./build/bin/cdk-erigon --config "./xlayerconfig-local.yaml"
 ```
 
-### 4) Health check your node
+### 4. Verify Node is Running
 ```bash
 curl -s -X POST http://127.0.0.1:8545 \
   -H 'Content-Type: application/json' \
   --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
 ```
 
-### Tips & troubleshooting
-- If `eth_blockNumber` times out: verify port binding, firewall rules, and that the process is running.
-- Sync stalls: ensure your L1 RPC is reachable, has sufficient rate‑limit, and the `zkevm.*` addresses/IDs are exact.
-- Disk usage grows with time; plan monitoring and pruning/retention as needed.
-- To enable tracing/inspection from clients, keep `debug`/`trace` in `http.api`.
+If successful, you'll see a JSON response with the current block number. 
 
----
+## Configuration & Sync Details
+Your X Layer Erigon node will automatically sync with the live X Layer network using:
+- **L1 Sync**: Pulls batch data and state updates from Ethereum L1
+- **Data Streaming**: Receives real-time transaction data from the sequencer
+- **Pessimistic Proofs**: Validates cross-chain state transitions
 
-## Appendix: Using Testnet instead
-Replace endpoints with Testnet values and set your wallet/dev tools to chain ID `195 (0xC3)`. Public Testnet HTTP RPC: `https://xlayerrpc.okx.com` (alt: `https://xlayertestrpc.okx.com`). Explorer: `https://web3.okx.com/explorer/x-layer-testnet`.
+The node operates as a full archive node, storing complete transaction history and state.
 
-If you need a Testnet faucet for `OKB`, check the X Layer community channels for current faucet links.
+## Testing Your Setup
+Once your node is synced, you can interact with it using standard Ethereum tools:
 
----
+```bash
+# Check sync status
+curl -s -X POST http://127.0.0.1:8545 \
+  -H 'Content-Type: application/json' \
+  --data '{"jsonrpc":"2.0","method":"eth_syncing","params":[],"id":1}'
 
-If you encounter issues or need production guidance, please consult the latest `xlayer-erigon` releases and the `okx/Deploy` repository for up‑to‑date parameters.
+# Get latest block
+curl -s -X POST http://127.0.0.1:8545 \
+  -H 'Content-Type: application/json' \
+  --data '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["latest",false],"id":1}'
+
+# Check chain ID
+curl -s -X POST http://127.0.0.1:8545 \
+  -H 'Content-Type: application/json' \
+  --data '{"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":1}'
+``` 
+
+## Connecting to MetaMask
+<Tip title="Note">Make sure your Erigon node is running and synced before configuring MetaMask.</Tip>
+
+To configure MetaMask to use your local X Layer Erigon node:
+
+1. Open MetaMask and click on the network dropdown
+2. Click **Add Network** → **Add a network manually**
+3. Fill in the network details:
+    - **Network Name**: X Layer - Local Node
+    - **New RPC URL**: http://localhost:8545
+    - **Chain ID**: 196
+    - **Currency Symbol**: OKB
+    - **Block Explorer URL**: https://web3.okx.com/explorer/x-layer
+4. Click **Save**
+
+Your MetaMask will now use your local node for all X Layer transactions. You'll benefit from:
+- No rate limits
+- Full debug/trace capabilities  
+- Complete transaction logs
+- Faster response times
+
+## For Testnet
+To connect to testnet instead, update your configuration:
+- Change `zkevm.l2-chain-id` to `195`
+- Update RPC URLs to testnet endpoints
+- Use Chain ID `195` in MetaMask
+- Get testnet OKB from the faucet via OKX Exchange's "Withdraw to X Layer Testnet" feature
+
