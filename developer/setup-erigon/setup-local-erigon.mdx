@@ -80,11 +80,19 @@ Follow the below playbook to have a mainnet-ready JSon-RPC endpoint in about 15 
 | --- | --- |
 | - Push >50 RPS or long-running indexers<br>- Need deterministic uptime/compliance<br>- Require full logs & debug traces | - Just want to test or have a low-traffic dApp<br>- Don't want to manage infra<br>- Okay with shared-node logging |
 
-### Minimum system requirements
-- CPU: 8 vCPU
-- RAM: 64 GB
-- Disk: 500 GB SSD (grows over time)
-- OS: Linux (Ubuntu 22.04+ recommended)
+### 2. If yes, what you need for the setup
+
+| Resource | Minimum | Notes |
+| --- | --- | --- |
+| CPU | 8 vCPU |  |
+| RAM | 64 GB |  |
+| Disk | 500G SSD |  |
+| Software | OS: Linux (Ubuntu 22.04+) | Refer to [Docker](https://docs.docker.com/) · [Docs](https://github.com/okx/Deploy) (updated from xlayer GitHub docs) |
+| L1 Endpoint | L1 (Ethereum mainnet) RPC endpoint (Alchemy, Infura, self‑run geth) for L2 synchronization | Refer to [Docker](https://docs.docker.com/) · [Docs](https://github.com/okx/Deploy) |
+| Genesis File | https://raw.githubusercontent.com/okx/Deploy/main/mainnet/genesis.json |  |
+| Chain ID | 196 (0xC4) |  |
+| Sequencer URL | https://rpc.xlayer.tech/ |  |
+| Data Streamer | stream.xlayer.tech:8800 |  |
 
 ### External requirements
 - L1 Endpoint: An Ethereum Mainnet RPC (Alchemy/Infura/self‑hosted geth) used for L2 synchronization
