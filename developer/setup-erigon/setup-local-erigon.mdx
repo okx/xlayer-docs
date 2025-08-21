@@ -96,12 +96,26 @@ Follow the below playbook to have a mainnet-ready JSon-RPC endpoint in about 15 
 
 ---
 
-## Multi‑step install & initialization (Erigon setup)
-Reference: Deploy/mainnet/setup-erigon-rpc.md at `okx/Deploy`
+## Multi‑step install & initialization (UPDATED – ERIGON SETUP)
+Reference: [Deploy/mainnet/setup-erigon-rpc.md at main · okx/Deploy](https://github.com/okx/Deploy/blob/main/mainnet/setup-erigon-rpc.md)
+
+Setup production erigon
+
+`cdk-erigon` is a fork of Erigon, optimized for syncing with the XLayer network.
+
+Minimum System Requirements
+
+- 16 GB RAM
+- 8 core CPU
+- 500 GB Storage (This will increase over time)
+
+Start Erigon RPC Node
+
+Preparation
 
 > Important: Go 1.24+ is required to build.
 
-### 1) Clone and build
+### Build
 ```bash
 # Pull source
 git clone https://github.com/okx/xlayer-erigon.git
@@ -118,10 +132,11 @@ make cdk-erigon
 make build-docker
 ```
 
-### 2) Create mainnet config
-Create `xlayerconfig-mainnet.yaml` in the repo root and fill it as below. Update:
-- `datadir` → your data directory path
-- `zkevm.l1-rpc-url` → your L1 (Ethereum mainnet) RPC URL
+### Modify Config
+Create a configuration file named `xlayerconfig-mainnet.yaml` in the repo root and paste the following content. Please update the following fields before starting the node:
+
+1. `datadir` — specify your desired data directory path.
+2. `zkevm.l1-rpc-url` — provide the correct L1 RPC URL. For production environments, you should request an official RPC endpoint from your organization.
 
 ```yaml
 datadir: /data/xlayer-erigon            # <- change to your path
@@ -154,11 +169,11 @@ http.port: 8545
 
 > Security note: Binding `http.addr` to `0.0.0.0` exposes your RPC on all interfaces. In production, restrict access with a firewall/load balancer.
 
-### 3) Start the node (binary)
+### Start Erigon Node By binary
 ```bash
 ./build/bin/cdk-erigon --config "./xlayerconfig-mainnet.yaml"
 ```
-Successful startup logs include lines like:
+If you see the following content in your log, the startup is successful:
 ```
 INFO Mapped network port                      proto=udp extport=30304 intport=30304 interface="UPNP IGDv1-IP1"
 INFO [1/16 L1Syncer] L1 Blocks processed progress (amounts): 64000/3358713 (1%)
