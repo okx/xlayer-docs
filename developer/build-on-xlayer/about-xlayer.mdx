@@ -98,11 +98,10 @@ There are two main actors on X Layer that earn OKB as reward and pay OKB token a
 - Each sequencer is required to pay a fee in OKB tokens to have the privilege of creating and suggesting batches.
 - When a sequencer successfully proposes valid batches containing valid transactions, they are rewarded with the fees paid by transaction requestors or network users.
 
-### Aggregators
-- Aggregators/relayers observe bridge states and produce PP certificates for cross‑chain settlement.
-- Aggregators interact with `agglayer` components to generate proofs; no ZK proof is required for normal L2 transactions.
-- For each certificate committed and verified on L1, aggregators receive fees paid by the corresponding bridge flows.
-- Aggregators compete to produce and submit certificates based on their strategy and latency.
+### Aggsender & agglayer
+- `aggsender` observes L2 blocks, performs double‑check, and pushes certificates to `agglayer`.
+- `agglayer` (with `agglayer‑prover`) generates and submits PP proofs on L1; no PP is required for normal L2 transactions.
+- Fees and settlement are tied to certificates that are committed and verified on L1 via `agglayer`.
 
 ## Transactions on X Layer
 Before making any transactions on layer 2, users need to have some OKB token on X Layer to perform any layer 2 transaction. To get OKB on layer 2, users need to transfer some OKB from L1 to L2 through X Layer bridge.
