@@ -14,8 +14,9 @@ The major components of X Layer are:
 - **Mode**: Validium
 - **Data Availability**: Data Availability Committee (DAC)
 - **Consensus**: Polygon Pessimistic Consensus ([PolygonPessimisticConsensus.sol](https://github.com/okx/xlayer-contracts/blob/upstream/v9.0.0-rc.3-pp/contracts/v2/consensus/pessimistic/PolygonPessimisticConsensus.sol))
-- **Sequencer**: Trusted
-- **Gas token**: OKB
+- **Sequencer**: Trusted (with double-check for validation) 
+- **Gas token**: OKB (fixed supply at 21M post-burns/upgrades; L1 OKB phased out) 
+- **Additional Features**: Realtime streaming for ~100ms confirmations, aggSender for AggLayer interoperability, SP1 Prover for pessimistic proofs
 
 ![X Layer Architecture](./img/xlayer-architecture.jpg)
 
