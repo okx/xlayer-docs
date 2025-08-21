@@ -23,14 +23,24 @@ The major components of X Layer are:
 X Layer has migrated to the Pessimistic Proof (PP) mode introduced by Polygon. In PP mode, the L2 chain runs as an EVM validium (trusted sequencers, DAC for data availability), and PP is used only for cross‑chain settlement (e.g., withdrawals) to provide verifiable finality on L1.
 
 ## Architecture diagram and flow (PP mode)
-Below is a high‑level view of components and the cross‑chain flow in PP mode:
+Below follows the numbering in the diagram (coarse‑grained, simplified wording):
 
-1. A user deposits or initiates a bridge action on L1 (bridge contract emits events).
-2. The Bridge Service in the X Layer deployment monitors L1 contract events and prepares the corresponding L2 actions.
-3. Erigon RPCs, Pool Manager and the Erigon Sequencer handle L2 transactions/blocks. The sequencer includes the bridge claim/mint in an L2 block and writes the state to the storage backend (e.g., Postgres/SQLite).
-4. Waypoints and L2 block information are synced and indexed; proxies relay user transactions to RPCs.
-5. On the Polygon side, `agglayer` (and `agglayer-prover`) syncs L1 information, generates a PP certificate and public inputs.
-6. The certificate proof is committed to L1 (verifier/bridge contract). After verification, the cross‑chain operation (e.g., withdrawal) is finalized on L1.
+- 1.x User Tx path on L2
+  - 1.1 User sends Tx → 1.2 Proxyd relays to Erigon RPCs
+  - 1.3 RPCs route Tx to Pool Manager / other APIs
+  - 1.4 Pool Manager pushes Tx to Sequencer pool；1.5 RPCs monitor receipts
+  - 1.6 Sequencer writes Tx records to DB（Postgres）
+- 2.x Sequencing, data and DS
+  - 2.1 RPC gets Tx；2.2 Sequencer generates block
+  - 2.3 Write chain data；2.5 Write DS data；2.6 DS Relay pushes DS；2.7 DS Relay writes DS DB；2.8 RPCs push DS
+- 3.x/4.x Certificate & PP pipeline
+  - 4.1 aggSender fetches blocks；4.2 Double‑check（parser/node 两路检查）
+  - 4.3 Send certificate to agglayer；4.4 agglayer submits PP to L1
+- 5.x Contract event sync
+  - 5.1 Bridge Service syncs L2 contract events
+  - 5.2 Sync L1 contract events
+
+Outcome: execution/finality happens quickly on L2; for cross‑chain actions, a certificate + PP is produced and verified on L1 to finalize withdrawals/messages.
 
 This flow ensures fast execution on L2 while providing cryptographic settlement for cross‑chain operations without publishing full L2 data to L1.
 
