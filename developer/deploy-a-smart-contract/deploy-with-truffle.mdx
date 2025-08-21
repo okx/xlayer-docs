@@ -58,8 +58,8 @@ module.exports = {
       network_id: "*",       // Any network (default: none)
     },
     testnet: {
-      provider: () => new HDWalletProvider(mnemonic, `https://testrpc.xlayer.tech`),
-      network_id:195 ,
+      provider: () => new HDWalletProvider(mnemonic, `https://testrpc.xlayer.tech/terigon`),
+      network_id:1952,
       confirmations: 10,
       timeoutBlocks: 200,
       skipDryRun: true

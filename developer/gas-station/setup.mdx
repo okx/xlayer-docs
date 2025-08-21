@@ -3,21 +3,21 @@ X Layer gas station aims to help DApp developers by suggesting gas prices before
 It's now on the X Layer testnet, checking 1500 recent transactions for price recommendations.
 
 ## Usage
-Send a GET request to the [X Layer Gas Station endpoint](https://testrpc.xlayer.tech/gasstation "X Layer Gas Station endpoint") to get a gas price recommendation from this oracle.
+Send a GET request to the [X Layer Gas Station endpoint](https://testrpc.xlayer.tech/terigon/gasstation "X Layer Gas Station endpoint") to get a gas price recommendation from this oracle.
 
 ### cURL
 ```shell
-curl https://testrpc.xlayer.tech/gasstation
+curl https://testrpc.xlayer.tech/terigon/gasstation
 ```
 
 ### JavaScript
 ```javascript
-fetch('https://testrpc.xlayer.tech/gasstation')  .then(response => response.json())  .then(json => console.log(json))
+fetch('https://testrpc.xlayer.tech/terigon/gasstation')  .then(response => response.json())  .then(json => console.log(json))
 ```
 
 ### Python
 ```python
-import requestsrequests.get('https://testrpc.xlayer.tech/gasstation').json()
+import requestsrequests.get('https://testrpc.xlayer.tech/terigon/gasstation').json()
 ```
 
 ## Interpretation
