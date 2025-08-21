@@ -94,6 +94,8 @@ The X Layer node (based on `xlayer-erigon`) syncs with the L2 state. Trusted seq
 For bridging and cross‑domain settlement, X Layer integrates Polygon's Pessimistic Proofs. During a withdrawal or cross‑chain message, an aggregator produces a PP that attests to the L2 state at a given checkpoint. This proof is verified by the L1 bridge/verifier contract before funds/messages are released on L1. PP is not used for day‑to‑day L2 transaction execution.
 
 ## Tokenomics
+Following recent upgrades, OKB now has a fixed supply of 21M tokens after burning over 65M tokens and implementing contract upgrades that removed mint/burn functions. L1 OKB is being phased out as part of X Layer's transition to a self-contained ecosystem.
+
 There are two main actors on X Layer that earn OKB as reward and pay OKB token as Gas fee for transactions at the same time.
 ### Sequencers
 - Each sequencer is required to pay a fee in OKB tokens to have the privilege of creating and suggesting batches.
