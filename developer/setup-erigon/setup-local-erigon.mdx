@@ -26,7 +26,7 @@ If you only need to interact with X Layer, use the public endpoints below. To re
 | Dev environment / toolkit | Hardhat, Foundry, Truffle, etc. | Project config file ('hardhat.config.js', 'foundry.toml', 'truffle-config.js', etc.), then restart your tests or scripts |
 | Quick CLI / script | Curl, wget, Postman, shell scripts | Any terminal, good for a rapid health check |
 
-### Example: MetaMask (Mainnet)
+### Wallet / dApp front-end example: MetaMask (Mainnet)
 ```json
 {
   "networkName": "X Layer Mainnet",
@@ -36,8 +36,9 @@ If you only need to interact with X Layer, use the public endpoints below. To re
   "blockExplorer": "https://web3.okx.com/explorer/x-layer"
 }
 ```
+After pasting, hit Save. MetaMask will show the X Layer network badge and your OKB balance (if any).
 
-### Example: Hardhat network config
+### Dev environment / toolkit example: Hardhat
 ```js
 require("dotenv").config();
 
@@ -52,32 +53,32 @@ module.exports = {
 };
 ```
 
-### Example: Foundry endpoint
+Foundry? Add this to foundry.toml:
 ```toml
 [rpc_endpoints]
 xlayer = "https://rpc.xlayer.tech"
 ```
 
-### 10‑second CLI smoke test
+### 10-Second CLI smoke test (optional but recommended)
 ```bash
 curl -X POST \
   -H "Content-Type: application/json" \
   --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
   https://rpc.xlayer.tech
 ```
-If you get a hex block number back, the endpoint is live.
+If you get a hex block number back, the endpoint is live. If timeouts occur, please double-check the URL or any other pertaining issues.
 
 ---
 
-## Run Your Own X Layer RPC Node (xlayer‑erigon)
-Running your own node removes the public rate limit (100 requests/sec per IP on mainnet/testnet) and gives you full control over logs/metrics and debug/trace features.
+## Run Your Own X Layer RPC Node 
+Running your own node removes the currently-imposed public rate-limit of 100 requests per second per IP address (exhibited on both mainnet and testnet), and lets you inspect full log/metrics.
+Follow the below playbook to have a mainnet-ready JSon-RPC endpoint in about 15 minutes.
 
-### When should you self‑host?
-- Push >50 RPS or run long‑running indexers
-- Need deterministic uptime/compliance
-- Require full logs & `trace`/`debug` support
+### 1. Should you self‑host?
 
-Stick to public RPC if you only test or run low‑traffic dApps.
+| Self-host if you... | Stick to the public RPC if you... |
+| --- | --- |
+| - Push >50 RPS or long-running indexers<br>- Need deterministic uptime/compliance<br>- Require full logs & debug traces | - Just want to test or have a low-traffic dApp<br>- Don't want to manage infra<br>- Okay with shared-node logging |
 
 ### Minimum system requirements
 - CPU: 8 vCPU
