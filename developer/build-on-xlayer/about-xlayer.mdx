@@ -12,7 +12,7 @@ For more detailed information, you can check out the X Layer architecture below.
 The major components of X Layer are:
 - **Virtual Machine**: EVM‑equivalent
 - **Mode**: Validium
-- **Data Availability**: Data Availability Committee (DAC)
+- **Data Availability**: Off-chain storage
 - **Consensus**: Polygon Pessimistic Consensus ([PolygonPessimisticConsensus.sol](https://github.com/okx/xlayer-contracts/blob/upstream/v9.0.0-rc.3-pp/contracts/v2/consensus/pessimistic/PolygonPessimisticConsensus.sol))
 - **Sequencer**: Trusted (with double-check for validation) 
 - **Gas token**: OKB (fixed supply at 21M post-burns/upgrades; L1 OKB phased out) 
@@ -21,7 +21,7 @@ The major components of X Layer are:
 ![X Layer Architecture](./img/xlayer-architecture.jpg)
 
 ## Background
-X Layer has migrated to the Pessimistic Proof (PP) mode introduced by Polygon. In PP mode, the L2 chain runs as an EVM validium (trusted sequencers, DAC for data availability), and PP is used only for cross‑chain settlement (e.g., withdrawals) to provide verifiable finality on L1.
+X Layer has migrated to the Pessimistic Proof (PP) mode introduced by Polygon. In PP mode, the L2 chain runs as an EVM validium with trusted sequencers and off-chain data storage, and PP is used only for cross‑chain settlement (e.g., withdrawals) to provide verifiable finality on L1.
 
 ## Architecture diagram and flow (PP mode)
 Below follows the numbering in the diagram (coarse‑grained, simplified wording):
@@ -48,7 +48,7 @@ This flow ensures fast execution on L2 while providing cryptographic settlement 
 ## X Layer Validium & Pessimistic Proofs (PP)
 X Layer is built with Polygon CDK, an advanced open‑source framework designed for the rapid deployment of EVM L2 blockchains on [Ethereum](https://ethereum.org/en/ "Ethereum").
 
-X Layer adopts the validium mode with a dedicated committee of sequencers, delivering a high‑performance L2 scaling solution. Following the PP upgrade on August 5, 2025, X Layer now achieves up to 5,000 TPS with negligible gas fees through seamless AggLayer integration, while maintaining full interoperability with other Polygon chains.
+X Layer adopts the validium mode with trusted sequencers, delivering a high‑performance L2 scaling solution. Following the PP upgrade on August 5, 2025, X Layer now achieves up to 5,000 TPS with negligible gas fees through seamless AggLayer integration, while maintaining full interoperability with other Polygon chains.
 
 Since transaction data is not stored on the Ethereum mainnet, it is both executed and stored off‑chain, which massively enhances scalability. This validium approach reduces L1 gas storage costs and transaction fees for users, while providing enhanced privacy and user experience. The PP system further optimizes security by using pessimistic proofs that assume potentially malicious chain behavior, ensuring robust cross‑chain settlement.
 
@@ -72,16 +72,10 @@ X Layer uses a PoE‑based consensus on L2. Transactions are executed by the EVM
 ![Consensus Contract Flow](./img/consensus-contract-flow.png)
 
 ## Data Availability
-X Layer operates in validium mode, where it integrates a secure data availability layer managed by a DAC. Below are the functionalities of DAC:
-- Verifies the availability of data associated with specific blockchain blocks
-- Ensures data robustness and computational efficiency of X Layer
-
-### Advantages of the DAC provided by Polygon CDK
-The DAC primarily provides:
-- Lower transaction fees: less computations leads to lower fees
-- State privacy: maintaining a secure state change record to ensure data integrity
-
-<Tip title="Note">Check out [Ethereum Foundation’s Data availibilty](https://ethereum.org/en/developers/docs/data-availability/ "Ethereum Foundation’s Data Availibilty") and [Polygon CDK’s Data availability](https://ethereum.org/en/developers/docs/data-availability/ "Polygon CDK’s Data Availability") for more info on DAC.</Tip>
+X Layer operates in validium mode with off-chain data storage, which provides:
+- Lower transaction fees: reduced on-chain data storage costs
+- Enhanced scalability: not bounded by L1 data publication limits
+- State privacy: transaction data stored off-chain while maintaining security through PP proofs
 
 ## X Layer node
 The X Layer node (based on `xlayer-erigon`) syncs with the L2 state. Trusted sequencers are responsible for managing L2 state and batching, while cross‑chain finality is handled by PP.
