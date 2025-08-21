@@ -19,9 +19,12 @@ If you only need to interact with X Layer, use the public endpoints below. To re
 | Block Explorer | https://web3.okx.com/explorer/x-layer | https://web3.okx.com/explorer/x-layer-testnet |
 
 ### Apply settings based on your scenario
-- Wallet / dApp front‑end (MetaMask, Rabby): Settings → Networks → Add Network (paste values) → Save
-- Dev environment (Hardhat, Foundry, Truffle): Add to project config and restart your tests/scripts
-- CLI scripts (Curl/wget/Postman/shell-scripts): Point the command at the RPC URL
+
+| Scenario | Typical Tools | Where to paste the values |
+| --- | --- | --- |
+| Wallet / dApp front‑end | MetaMask, Rabby, Rainbow, etc. | Settings -> Networks -> Add Network (paste, then click "Save/Add"; wallet auto-switches to X Layer) |
+| Dev environment / toolkit | Hardhat, Foundry, Truffle, etc. | Project config file ('hardhat.config.js', 'foundry.toml', 'truffle-config.js', etc.), then restart your tests or scripts |
+| Quick CLI / script | Curl, wget, Postman, shell scripts | Any terminal, good for a rapid health check |
 
 ### Example: MetaMask (Mainnet)
 ```json
