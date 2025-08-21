@@ -8,11 +8,11 @@ RPC:
 - https://rpc.xlayer.tech
 - https://xlayerrpc.okx.com
 
-## Testnet (chain-id: 0xC3, 195 in decimals)
+## Testnet (chain-id: 0x7A0, 1952 in decimals)
 RPC:
-- ChainID: 195
-- https://testrpc.xlayer.tech
-- https://xlayertestrpc.okx.com
+- ChainID: 1952
+- https://testrpc.xlayer.tech/terigon
+- https://xlayertestrpc.okx.com/terigon
 
 ## Prerequisite readings
 Before you begin using RPC endpoints on X Layer, it’s important to read the relevant articles for guidance:
@@ -24,7 +24,7 @@ To start the HTTP JSON-RPC, curl method is recommended:
 # mainnet
 curl -X POST --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' -H "Content-Type: application/json" https://rpc.xlayer.tech
 # testnet
-curl -X POST --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' -H "Content-Type: application/json" https://testrpc.xlayer.tech
+curl -X POST --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' -H "Content-Type: application/json" https://testrpc.xlayer.tech/terigon
 ```
 ## JSON-RPC methods
 There are two types of RPC methods on X Layer, one is Ethereum compatible RPC, and the other one is ZKEVM RPC. Each RPC offers specific functionalities.
@@ -110,7 +110,7 @@ curl -X POST --data '{
     "method": "zkevm_batchNumber",
     "params": [],
     "id": 1
-}' -H "Content-Type: application/json" https://xlayertestrpc.okx.com/
+}' -H "Content-Type: application/json" https://xlayertestrpc.okx.com/terigon/
 ```
 ```json
 // Response
@@ -139,7 +139,7 @@ curl -X POST --data '{
     "method": "zkevm_batchNumberByBlockNumber",
     "params": ["0x2"],
     "id": 1
-}' -H "Content-Type: application/json" https://xlayertestrpc.okx.com/
+}' -H "Content-Type: application/json" https://xlayertestrpc.okx.com/terigon/
 ```
 ```json
 // Response
@@ -163,7 +163,7 @@ curl -X POST --data '{
     "method": "zkevm_consolidatedBlockNumber",
     "params": [],
     "id": 1
-}' -H "Content-Type: application/json" https://xlayertestrpc.okx.com/
+}' -H "Content-Type: application/json" https://xlayertestrpc.okx.com/terigon/
 ```
 ```json
 // Response
@@ -204,7 +204,7 @@ curl -X POST --data '{
     "method": "zkevm_getBatchByNumber",
     "params": ["0x2"],
     "id": 1
-}' -H "Content-Type: application/json" https://xlayertestrpc.okx.com/
+}' -H "Content-Type: application/json" https://xlayertestrpc.okx.com/terigon/
 ```
 ```json
 // Response
@@ -228,7 +228,7 @@ curl -X POST --data '{
     "method": "zkevm_isBlockConsolidated",
     "params": ["0x1"],
     "id": 1
-}' -H "Content-Type: application/json" https://xlayertestrpc.okx.com/
+}' -H "Content-Type: application/json" https://xlayertestrpc.okx.com/terigon/
 ```
 ```json
 // Response
@@ -252,7 +252,7 @@ curl -X POST --data '{
     "method": "zkevm_isBlockVirtualized",
     "params": ["0x12"],
     "id": 1
-}' -H "Content-Type: application/json" https://xlayertestrpc.okx.com/
+}' -H "Content-Type: application/json" https://xlayertestrpc.okx.com/terigon/
 ```
 ```json
 // Response
@@ -276,7 +276,7 @@ curl -X POST --data '{
     "method": "zkevm_verifiedBatchNumber",
     "params": [],
     "id": 1
-}' -H "Content-Type: application/json" https://xlayertestrpc.okx.com/
+}' -H "Content-Type: application/json" https://xlayertestrpc.okx.com/terigon/
 ```
 ```json
 // Response
@@ -300,7 +300,7 @@ curl -X POST --data '{
     "method": "zkevm_virtualBatchNumber",
     "params": [],
     "id": 1
-}' -H "Content-Type: application/json" https://xlayertestrpc.okx.com/
+}' -H "Content-Type: application/json" https://xlayertestrpc.okx.com/terigon/
 ```
 ```json
 // Response
