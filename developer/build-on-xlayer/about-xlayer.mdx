@@ -2,9 +2,9 @@
 
 X Layer is a cutting-edge Ethereum layer 2 (L2) network built by OKX and Polygon using Polygon's CDK. It offers full compatibility with the Ethereum Virtual Machine (EVM), enabling developers to deploy existing Ethereum applications and develop new, innovative projects at a fraction of the cost compared to doing so on Ethereum. X Layer also enables users to use dapps at significantly lower gas fees and faster speed compared to Ethereum.
 
-X Layer's underlying architecture is an EVM validium with Pessimistic Proof (PP) based cross‑chain finality. Transactions on X Layer are executed and validated by the EVM; ZK proofs are not used to secure intra‑L2 transactions. Instead, Polygon's PP system is only used when bridging/cross‑chain to provide verifiable finality on L1 or other domains. This architecture is a close sibling of rollups, but it offers the following advantages over rollups:
+X Layer's underlying architecture is an EVM validium with Pessimistic Proof (PP) based cross‑chain finality. Transactions on X Layer are executed and validated by the EVM; ZK proofs are not used to secure intra‑L2 transactions. Instead, Polygon's PP system is only used when bridging/cross‑chain to provide verifiable finality on L1 or other domains. This differs from rollups (ZK or OP), and offers the following benefits:
 - **Significantly lower fees**, since they don't consume expensive Ethereum gas, i.e., blockspace to store transaction data.
-- **Significantly higher scalability**, since rollups’ throughput is bounded by the amount of transaction data that can be published to Ethereum.
+- **Significantly higher scalability**, since validium throughput is not bounded by the L1 data publication limit used by rollups.
 
 For more detailed information, you can check out the X Layer architecture below.
 
