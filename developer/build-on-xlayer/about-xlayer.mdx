@@ -62,9 +62,9 @@ The verifier contract assesses the validity of the submitted PP. If it is invali
 ![ZKValidium vs. ZKRollup](./img/zkvalidium-vs-zkrollup.jpg)
 
 ## Consensus & finality
-X Layer uses a PoE‑based consensus on L2. Transactions are executed by the EVM and finalized on L2 by the trusted sequencer set. Cross‑chain最终性由 Polygon 侧的 `agglayer` 子系统完成：xlayer 生成并存储证书数据（metadata/epochs 等），`aggsender` 同步并提交证书到 `agglayer`，随后由 `agglayer`/`agglayer‑prover` 在 L1 提交 PP 证明。两类关键流程分别是：**L2 交易出块与数据写入** 和 **跨链证书 + PP 提交**。参与者包括 **Sequencer** 与 **aggsender/agglayer** 链路。
+X Layer uses a PoE‑based consensus on L2. Transactions are executed by the EVM and finalized on L2 by the trusted sequencer set. Cross‑chain finality is handled by the Polygon‑side `agglayer` subsystem: xlayer generates and stores certificate data (metadata/epochs), `aggsender` syncs and submits certificates to `agglayer`, and `agglayer`/`agglayer‑prover` submits PP proofs on L1. The two key flows are: **L2 block production & data writes** and **cross‑chain certificate + PP submission**. Participants include **Sequencer** and the **aggsender/agglayer** pipeline.
 
-**Sequencer**: responsible for batching transactions on L2, producing blocks, and writing chain/DS data.
+**Sequencer**: responsible for batching transactions on L2, producing blocks, and writing chain data.
 
 **aggsender/agglayer**: `aggsender` fetches blocks/certificates from the node side, performs double‑check, and syncs the certificate to `agglayer`; `agglayer` (with `agglayer‑prover`) submits PP proofs on L1 to complete cross‑chain settlement.
 
