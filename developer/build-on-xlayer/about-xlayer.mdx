@@ -48,9 +48,9 @@ This flow ensures fast execution on L2 while providing cryptographic settlement 
 ## X Layer Validium & Pessimistic Proofs (PP)
 X Layer is built with Polygon CDK, an advanced open‑source framework designed for the rapid deployment of EVM L2 blockchains on [Ethereum](https://ethereum.org/en/ "Ethereum").
 
-X Layer adopts the validium mode and implements a dedicated committee of sequencers, delivering a high‑performance L2 scaling solution that maintains interoperability with other Polygon chains.
+X Layer adopts the validium mode with a dedicated committee of sequencers, delivering a high‑performance L2 scaling solution. Following the PP upgrade on August 5, 2025, X Layer now achieves up to 5,000 TPS with negligible gas fees through seamless AggLayer integration, while maintaining full interoperability with other Polygon chains.
 
-Since transaction data is not stored on the Ethereum mainnet, it is both executed and stored off‑chain, which massively enhances scalability. Validium reduces L1 gas storage costs, hence reducing transaction costs for users on L2, with a prominent enhancement in user privacy and user experience.
+Since transaction data is not stored on the Ethereum mainnet, it is both executed and stored off‑chain, which massively enhances scalability. This validium approach reduces L1 gas storage costs and transaction fees for users, while providing enhanced privacy and user experience. The PP system further optimizes security by using pessimistic proofs that assume potentially malicious chain behavior, ensuring robust cross‑chain settlement.
 
 For cross‑chain operations (for example, withdrawals and bridge messages), X Layer leverages Polygon's Pessimistic Proof (PP). PP produces a succinct proof that the claimed state transition is valid with respect to L2, enabling secure settlement on L1 without publishing full L2 transaction data.
 
