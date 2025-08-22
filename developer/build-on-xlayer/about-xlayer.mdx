@@ -26,7 +26,7 @@ Starting from the user deposit on L1:
   - 1.2 Bridge Service syncs L1 contract events (listen/ingest)
   - 1.3 Bridge Service writes to DB and sends an L2 claim/mint Tx via Proxyd → Erigon RPCs
   - 1.4 RPCs route Tx to Pool Manager; Pool Manager pushes Tx to the Sequencer pool
-  - 1.5 The Sequencer includes the Tx in a block and writes receipts/records to Postgres
+  - 1.5 The Sequencer includes the Tx in a block
   - 1.6 RPCs expose the updated balance/status to users
 - 2.x L2 user Tx & withdrawal (L2 → L1)
   - 2.1 User sends an L2 withdraw Tx via Proxyd; RPCs forward to Pool Manager/Sequencer
