@@ -75,7 +75,6 @@ The X Layer node (based on `xlayer-erigon`) syncs with the L2 state. Trusted seq
 For bridging and cross‑domain settlement, X Layer integrates Polygon's Pessimistic Proofs. During a withdrawal or cross‑chain message, an aggregator produces a PP that attests to the L2 state at a given checkpoint. This proof is verified by the L1 bridge/verifier contract before funds/messages are released on L1. PP is not used for day‑to‑day L2 transaction execution.
 
 ## Transactions on X Layer
-Before making any transactions on layer 2, users need to have OKB on X Layer. Per the latest OKX announcement, to obtain OKB on X Layer you should first deposit Ethereum L1 OKB to OKX Exchange and then use the "Withdraw to X Layer" one‑click swap. Over time, OKX Exchange will discontinue withdrawals of OKB back to Ethereum L1. See the announcement for details: [Announcement on the PP Upgrade of X Layer and Optimisation of the OKB Gas‑Token Economic Model](https://www.okx.com/help/announcement-on-the-pp-upgrade-of-x-layer-and-optimisation-of-the-okb-gas).
 2. Layer 2 transactions:
   - A user sends a transaction from their wallet (e.g., MetaMask) to the network via Proxyd/RPC; the Sequencer includes it in an L2 block.
   - Once the Sequencer commits the block, the transaction is finalized on L2 (execution and fees are enforced on L2).
