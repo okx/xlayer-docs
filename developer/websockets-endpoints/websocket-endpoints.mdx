@@ -1,5 +1,4 @@
 # Websocket endpoints
-X Layer supports Websocket methods that are compatible with Ethereum, and ZKEVM RPC methods for ZKEVM.
 
 The WebSockets (WSS) communication protocol enables two-way communication between a client and a server over a single TCP connection. The communication protocol maintains a network connection between the two parties, allowing for real-time, low-latency communication. WebSockets allow for ongoing, bidirectional communication unlike HTTP, which is a request-response protocol.
 
@@ -8,10 +7,6 @@ WSS:
 - wss://xlayerws.okx.com
 - wss://ws.xlayer.tech
 
-## Testnet (chain-id: 0xC3, 195 in decimals)
-WSS:
-- wss://xlayertestws.okx.com
-- wss://testws.xlayer.tech
 
 ## Websocket methods
 Subscription methods are available for WebSocket connections only, and allow you to wait for events instead of polling for them. For example, DApps can subscribe to logs and receive notifications when a specific event occurs.
@@ -88,15 +83,3 @@ Cancel the specified subscription by calling `eth_unsubscribe`. Returns a Boolea
 {"jsonrpc":"","id":1,"result":true}
 ```
 
-### Others
-It also supports Ethereum compatible and ZKEVM [RPC methods](/developer/build-on-xlayer/rpc-endpoints "RPC methods") with websocket.
-
-**Example**
-```shell
-# call eth_gasPrice method 
-> {"jsonrpc":"2.0","method":"eth_gasPrice","params":[],"id":73}
-```
-```json
-// Response
-{"jsonrpc":"2.0","id":73,"result":"0x1db0c8c80"}
-```

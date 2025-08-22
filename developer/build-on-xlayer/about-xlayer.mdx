@@ -10,7 +10,7 @@ For more detailed information, you can check out the X Layer architecture below.
 The major components of X Layer are:
 - **Virtual Machine**: EVM‑equivalent
 - **Consensus**: Polygon Pessimistic Consensus ([PolygonPessimisticConsensus.sol](https://github.com/okx/xlayer-contracts/blob/upstream/v9.0.0-rc.3-pp/contracts/v2/consensus/pessimistic/PolygonPessimisticConsensus.sol))
-- **Sequencer**: Trusted (with double-check for validation) 
+- **Sequencer**: Trusted 
 - **Gas token**: OKB (fixed supply at 21M post-burns/upgrades; L1 OKB phased out) 
 - **Additional Features**: AggSender for AggLayer interoperability, SP1 Prover for pessimistic proofs
 
@@ -71,10 +71,10 @@ The X Layer node (based on `xlayer-erigon`) syncs with the L2 state. Trusted seq
 For bridging and cross‑domain settlement, X Layer integrates Polygon's Pessimistic Proofs. During a withdrawal or cross‑chain message, an aggregator produces a PP that attests to the L2 state at a given checkpoint. This proof is verified by the L1 bridge/verifier contract before funds/messages are released on L1. PP is not used for day‑to‑day L2 transaction execution.
 
 ## Transactions on X Layer
-2. Layer 2 transactions:
+Layer 2 transactions:
   - A user sends a transaction from their wallet to the network via Proxyd/RPC; the Sequencer includes it in an L2 block.
   - Once the Sequencer commits the block, the transaction is finalized on L2 (execution and fees are enforced on L2).
-  - For cross‑chain actions (withdrawals, bridge messages), xlayer produces a certificate; `aggsender` double‑checks and submits the certificate to `agglayer`.
+  - For cross‑chain actions (withdrawals, bridge messages), xlayer produces a certificate; `aggsender` submits the certificate to `agglayer`.
   - `agglayer`/`agglayer‑prover` generates a Pessimistic Proof (PP) and submits it to the L1 verifier/bridge contract.
   - After the PP is verified on L1, the cross‑chain operation reaches L1 finality. Day‑to‑day L2 transactions do not require PP.
   
