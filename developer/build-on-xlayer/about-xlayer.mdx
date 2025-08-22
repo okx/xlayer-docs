@@ -53,7 +53,7 @@ X Layer is built with Polygon CDK, an open‑source framework for EVM L2s on [Et
 A verifier/bridge smart contract is deployed on Ethereum. For cross‑chain operations, the Polygon‑side `agglayer` submits a PP (ZK) certificate/proof to this contract on behalf of X Layer. The proof attests to the L2 state transition result but not the full transaction data. The verifier contract checks the validity of the submitted PP; invalid submissions are rejected and not processed on Ethereum.
 
 ## Consensus & finality
-X Layer uses a PoE‑based consensus on L2. Transactions are executed by the EVM and finalized on L2 by the trusted sequencer set. Cross‑chain finality is handled by the Polygon‑side `agglayer` subsystem: xlayer generates and stores certificate data (metadata/epochs), `aggsender` syncs and submits certificates to `agglayer`, and `agglayer`/`agglayer‑prover` submits PP proofs on L1. The two key flows are: **L2 block production & data writes** and **cross‑chain certificate + PP submission**. Participants include **Sequencer** and the **aggsender/agglayer** pipeline.
+Transactions are executed by the EVM and finalized on L2 by the trusted sequencer set. Cross‑chain finality is handled by the Polygon‑side `agglayer` subsystem: xlayer generates and stores certificate data (metadata/epochs), `aggsender` syncs and submits certificates to `agglayer`, and `agglayer`/`agglayer‑prover` submits PP proofs on L1. The two key flows are: **L2 block production & data writes** and **cross‑chain certificate + PP submission**. Participants include **Sequencer** and the **aggsender/agglayer** pipeline.
 
 **Sequencer**: responsible for batching transactions on L2, producing blocks, and writing chain data.
 
