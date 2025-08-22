@@ -58,7 +58,6 @@ Transactions are executed by the EVM and finalized on L2 by the trusted sequence
 
 **aggsender/agglayer**: `aggsender` fetches blocks/certificates from the node side, performs double‑check, and syncs the certificate to `agglayer`; `agglayer` (with `agglayer‑prover`) submits PP proofs on L1 to complete cross‑chain settlement.
 
-![Consensus Contract Flow](./img/consensus-contract-flow.png)
 
 ## Data model and settlement
 X Layer stores transaction data and state off‑chain and uses PP only to settle cross‑chain operations on L1. This design keeps fees low and throughput high while still providing verifiable finality for bridge operations via proofs. 
