@@ -80,5 +80,5 @@ For bridging and cross‑domain settlement, X Layer integrates Polygon's Pessimi
   - Once the Sequencer commits the block, the transaction is finalized on L2 (execution and fees are enforced on L2).
   - For cross‑chain actions (withdrawals, bridge messages), xlayer produces a certificate; `aggsender` double‑checks and submits the certificate to `agglayer`.
   - `agglayer`/`agglayer‑prover` generates a Pessimistic Proof (PP) and submits it to the L1 verifier/bridge contract.
-  - After the PP is verified on L1, the cross‑chain operation reaches L1 finality — the **verified state** for that operation. Day‑to‑day L2 transactions do not require PP.
+  - After the PP is verified on L1, the cross‑chain operation reaches L1 finality. Day‑to‑day L2 transactions do not require PP.
   
