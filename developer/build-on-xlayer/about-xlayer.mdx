@@ -1,6 +1,6 @@
 # X Layer overview
 
-X Layer is a cutting-edge Ethereum layer 2 (L2) network built by OKX and Polygon using Polygon's CDK. Following the PP upgrade completed on August 5, 2025, it now supports throughput of up to 5,000 TPS with negligible gas fees. It offers full compatibility with the Ethereum Virtual Machine (EVM), enabling developers to deploy existing Ethereum applications and develop new, innovative projects at a fraction of the cost compared to doing so on Ethereum. X Layer also enables users to use dapps at significantly lower gas fees and faster speed compared to Ethereum, with Realtime features providing ~100 ms transaction confirmations on testnet for DeFi/payments/RWA applications.
+X Layer is a cutting-edge Ethereum layer 2 (L2) network built by OKX and Polygon using Polygon's CDK. Following the PP upgrade completed on August 5, 2025, it now supports throughput of up to 5,000 TPS with negligible gas fees. It offers full compatibility with the Ethereum Virtual Machine (EVM), enabling developers to deploy existing Ethereum applications and develop new, innovative projects at a fraction of the cost compared to doing so on Ethereum. X Layer also enables users to use dapps at significantly lower gas fees and faster speed compared to Ethereum.
 
 X Layer executes and validates transactions on an EVM, with state and data maintained off‑chain. Routine L2 execution is EVM‑native; Polygon’s Pessimistic Proof (PP) is invoked only for bridging/cross‑domain settlement to provide verifiable finality on L1 or other domains. This contrasts with ZK/OP rollups where L1 data publication is part of the base protocol.
 
@@ -12,7 +12,7 @@ The major components of X Layer are:
 - **Consensus**: Polygon Pessimistic Consensus ([PolygonPessimisticConsensus.sol](https://github.com/okx/xlayer-contracts/blob/upstream/v9.0.0-rc.3-pp/contracts/v2/consensus/pessimistic/PolygonPessimisticConsensus.sol))
 - **Sequencer**: Trusted (with double-check for validation) 
 - **Gas token**: OKB (fixed supply at 21M post-burns/upgrades; L1 OKB phased out) 
-- **Additional Features**: Realtime streaming for ~100ms confirmations, aggSender for AggLayer interoperability, SP1 Prover for pessimistic proofs
+- **Additional Features**: AggSender for AggLayer interoperability, SP1 Prover for pessimistic proofs
 
 ![X Layer Architecture](./img/xlayer-architecture.jpg)
 
