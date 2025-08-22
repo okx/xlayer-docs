@@ -7,28 +7,6 @@
 
 module.exports = [
     {
-      title: 'Users',
-      basePath: ['/users'],
-      children: [
-        {
-          title: 'Welcome',
-          icon: 'okds-finance-bank',
-          children: [
-            '/users/welcome/about-x-layer',
-            {
-              title: 'Move funds to X Layer',
-              path: '/users/move-your-funds/move-funds-to-x-layer',
-              children: [
-                  '/users/move-your-funds/set-up-wallets',
-                  '/users/move-your-funds/fund-your-account',
-                  '/users/move-your-funds/bridge-funds-to-xlayer',
-              ],
-          }, 
-        ],
-        },
-      ],
-    },
-    {
       title: 'Developers',
       basePath: ['/developer'],
       children: [
