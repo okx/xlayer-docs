@@ -89,10 +89,7 @@ module.exports = [
                 '/developer/tools/account-abstraction/safe',
               ],
             },
-            {
-              title:'Block explorers',
-              path:'/developer/tools/block-explorers-overview',
-            },
+              '/developer/tools/block-explorers-overview',
             {
               title:'Cross-chain',
               path:'/developer/tools/cross-chain-overview',
