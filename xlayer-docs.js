@@ -33,6 +33,7 @@ module.exports = [
             title:'Network information and contracts',
             path: '/developer/build-on-xlayer/network-information',
             children: [
+                '/developer/build-on-xlayer/contracts',
                 '/developer/build-on-xlayer/safe-wallet',
               ],
           }, 
