@@ -5,4 +5,4 @@ X Layer aims to connect the OKX and Ethereum communities to allow anyone to take
 
 In this documentations, you will be guided through 3 main sections:
 - **[Getting Started](https://web3.okx.com/zh-hans/xlayer/docs/developer/build-on-xlayer/about-xlayer "Getting Started")**: introduction and user guide of X Layer
-- **[Developer](https://www.okx.com/xlayer/docs/developer/build-on-xlayer/quickstart "Developer")**: guide to build on X Layer and our product(s)
+
