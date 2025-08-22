@@ -68,58 +68,21 @@ module.exports = [
           },
 
           {
-            title:'Receive and bridge testnet OKB tokens',
+            title:'Overview',
             path: '/developer/bridge/overview',
             children: [
               '/developer/bridge/get-testnet-okb-from-faucet',
-              '/developer/bridge/bridge-testnet-assets',
-              '/developer/bridge/asset-transfer',
-              '/developer/bridge/flow-of-assets',
-              '/developer/bridge/bridging-usdc-workflow',
               '/developer/bridge/usdc-on-x-layer',
             ],
           },
 
-          {
-            title:'Setup nodes',
-            path: '/developer/setup-zknode/setup',
-            children: [
-              '/developer/setup-zknode/setup-local-zknode',
-              '/developer/setup-zknode/setup-production-zknode'
-            ],
-          },
+            '/developer/setup-rpc/setup-rpc',
             '/developer/rpc-endpoints/rpc-endpoints',
             '/developer/websockets-endpoints/websocket-endpoints',
             '/developer/gas-station/setup',
           ]
         },
-        {
-          title:'Architecture',
-          icon:'okx-defi-okbc-resources',
-          children:[
-            {
-              title:'Developer guides',
-              path: '/developer/architecture/overview',
-              children: [
-                '/developer/architecture/x-layer-architecture',
-                '/developer/architecture/state-management',
-              {
-                title: 'Transactions',
-                path: '/developer/architecture/transactions',
-                children: [
-                  '/developer/architecture/transactions-n-data-flow',
-                  '/developer/architecture/transactions-batching',
-                  '/developer/architecture/batch-sequencing',
-                  '/developer/architecture/batch-aggregation',
-                  '/developer/architecture/transaction-validation',
-                  ],
-              },
-              '/developer/architecture/incentive-model',
 
-              ],
-            }, 
-            ],
-        },
         {
           title: 'Tooling and infrastructure',
           icon: 'okx-defi-okbc-resources',
@@ -148,7 +111,6 @@ module.exports = [
               path:'/developer/tools/cross-chain-overview',
               children: [
                 '/developer/tools/cross-chain/layer-zero',
-                '/developer/tools/cross-chain/wormhole',
                 '/developer/tools/cross-chain/connext',
               ]
             },
@@ -217,6 +179,7 @@ module.exports = [
           },
           {
             title:'Learn solidity',
+
             icon:'okds-guide',
             children: [
               '/academy/learn-solidity/introduction-to-solidity',
