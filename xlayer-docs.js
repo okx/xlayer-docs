@@ -92,9 +92,6 @@ module.exports = [
             {
               title:'Block explorers',
               path:'/developer/tools/block-explorers-overview',
-              children: [
-                '/developer/tools/block-explorers/l2scan-explorer',
-              ]
             },
             {
               title:'Cross-chain',
@@ -109,8 +106,6 @@ module.exports = [
               path:'/developer/tools/data-indexers-overview',
               children: [
                 '/developer/tools/data-indexers/the-graph',
-                '/developer/tools/data-indexers/envio',
-                '/developer/tools/data-indexers/goldsky',
                 '/developer/tools/data-indexers/subquery',
                 '/developer/tools/data-indexers/subsquid',
               ]
@@ -119,7 +114,6 @@ module.exports = [
               title:'Developer tools',
               path:'/developer/tools/dev-tooling-overview',
               children: [
-                '/developer/tools/dev-tooling/sentio',
                 '/developer/tools/dev-tooling/thirdweb'
               ]
             },
@@ -136,10 +130,8 @@ module.exports = [
               path:'/developer/tools/oracles-overview',
               children: [
                 '/developer/tools/oracles/api3',
-                '/developer/tools/oracles/band-protocol',
                 '/developer/tools/oracles/supraoracles',
                 '/developer/tools/oracles/redstone',
-                '/developer/tools/oracles/umbrella',
               ]
             },
             {
