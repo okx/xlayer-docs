@@ -30,7 +30,7 @@ Starting from the user deposit on L1:
   - 1.6 RPCs expose the updated balance/status to users
 - 2.x L2 user Tx & withdrawal (L2 → L1)
   - 2.1 User sends an L2 withdraw Tx via Proxyd; RPCs forward to Pool Manager/Sequencer
-  - 2.2 Sequencer generates blocks and writes chain data/Tx records (Postgres)
+  - 2.2 Sequencer generates blocks
   - 2.3 L2BridgeSyncer / L1InfoTreeSyncer persist chain data and L1 info tree updates for PP
 - 3.x Certificate & PP settlement on L1
   - 3.1 aggsender fetches blocks/epochs, stores certificate metadata (sqlite), and performs double‑check
