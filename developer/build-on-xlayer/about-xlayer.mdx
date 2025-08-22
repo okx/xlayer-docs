@@ -78,7 +78,6 @@ For bridging and cross‑domain settlement, X Layer integrates Polygon's Pessimi
 2. Layer 2 transactions:
   - A user sends a transaction from their wallet to the network via Proxyd/RPC; the Sequencer includes it in an L2 block.
   - Once the Sequencer commits the block, the transaction is finalized on L2 (execution and fees are enforced on L2).
-  - This L2‑final state has not yet been settled on L1. We refer to this as the **trusted (L2) state**.
   - For cross‑chain actions (withdrawals, bridge messages), xlayer produces a certificate; `aggsender` double‑checks and submits the certificate to `agglayer`.
   - `agglayer`/`agglayer‑prover` generates a Pessimistic Proof (PP) and submits it to the L1 verifier/bridge contract.
   - After the PP is verified on L1, the cross‑chain operation reaches L1 finality — the **verified state** for that operation. Day‑to‑day L2 transactions do not require PP.
