@@ -6,6 +6,19 @@
  */
 
 module.exports = [
+  {
+    title: 'Users',
+    basePath: ['/users'],
+    children: [
+      {
+        title: 'Welcome',
+        icon: 'okds-finance-bank',
+        children: [
+          '/users/welcome/about-x-layer',
+      ],
+      },
+    ],
+  },
     {
       title: 'Developers',
       basePath: ['/developer'],
@@ -20,7 +33,6 @@ module.exports = [
             title:'Network information and contracts',
             path: '/developer/build-on-xlayer/network-information',
             children: [
-                '/developer/build-on-xlayer/zkevm-contracts',
                 '/developer/build-on-xlayer/safe-wallet',
               ],
           }, 
