@@ -2,7 +2,7 @@
 
 X Layer is a cutting-edge Ethereum layer 2 (L2) network built by OKX and Polygon using Polygon's CDK. Following the PP upgrade completed on August 5, 2025, it now supports throughput of up to 5,000 TPS with negligible gas fees. It offers full compatibility with the Ethereum Virtual Machine (EVM), enabling developers to deploy existing Ethereum applications and develop new, innovative projects at a fraction of the cost compared to doing so on Ethereum. X Layer also enables users to use dapps at significantly lower gas fees and faster speed compared to Ethereum, with Realtime features providing ~100 ms transaction confirmations on testnet for DeFi/payments/RWA applications.
 
-X Layer executes and validates transactions on an EVM with state and data stored off‑chain. There is no DAC and no ZK proof used for intra‑L2 execution. Polygon’s Pessimistic Proof (PP) is invoked only for bridging/cross‑domain settlement to provide verifiable finality on L1 or other domains. This differs from ZK/OP rollups where L1 data publication is part of the base protocol.
+X Layer executes and validates transactions on an EVM, with state and data maintained off‑chain. Routine L2 execution is EVM‑native; Polygon’s Pessimistic Proof (PP) is invoked only for bridging/cross‑domain settlement to provide verifiable finality on L1 or other domains. This contrasts with ZK/OP rollups where L1 data publication is part of the base protocol.
 
 For more detailed information, you can check out the X Layer architecture below.
 
@@ -20,7 +20,7 @@ The major components of X Layer are:
 X Layer has migrated to the Pessimistic Proof (PP) mode introduced by Polygon. In this mode, L2 runs with trusted sequencers and off‑chain state/data storage; PP is used only for cross‑chain settlement (e.g., withdrawals) to provide verifiable finality on L1.
 
 ## Architecture diagram and flow (PP mode)
-Below follows the numbering in the diagram (coarse‑grained, simplified wording), starting from the user deposit on L1:
+Below follows the numbering in the diagram, starting from the user deposit on L1:
 
 - 1.x L1 deposit → credit on L2 (bridge in)
   - 1.1 User deposits asset on L1 bridge contract
@@ -62,7 +62,7 @@ X Layer uses a PoE‑based consensus on L2. Transactions are executed by the EVM
 ![Consensus Contract Flow](./img/consensus-contract-flow.png)
 
 ## Data model and settlement
-X Layer stores transaction data and state off‑chain and uses PP only to settle cross‑chain operations on L1. This design keeps fees low and throughput high while still providing verifiable finality for bridge operations via proofs. There is no DAC and no ZK proof used for intra‑L2 execution.
+X Layer stores transaction data and state off‑chain and uses PP only to settle cross‑chain operations on L1. This design keeps fees low and throughput high while still providing verifiable finality for bridge operations via proofs. 
 
 ## X Layer node
 The X Layer node (based on `xlayer-erigon`) syncs with the L2 state. Trusted sequencers are responsible for managing L2 state and batching, while cross‑chain finality is handled by PP.
