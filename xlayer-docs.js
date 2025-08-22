@@ -69,7 +69,6 @@ module.exports = [
             '/developer/setup-rpc/setup-rpc',
             '/developer/rpc-endpoints/rpc-endpoints',
             '/developer/websockets-endpoints/websocket-endpoints',
-            '/developer/gas-station/setup',
           ]
         },
 
