@@ -74,19 +74,6 @@ The X Layer node (based on `xlayer-erigon`) syncs with the L2 state. Trusted seq
 ## Pessimistic Proofs (PP) for cross‑chain
 For bridging and cross‑domain settlement, X Layer integrates Polygon's Pessimistic Proofs. During a withdrawal or cross‑chain message, an aggregator produces a PP that attests to the L2 state at a given checkpoint. This proof is verified by the L1 bridge/verifier contract before funds/messages are released on L1. PP is not used for day‑to‑day L2 transaction execution.
 
-## Tokenomics
-Following recent upgrades, OKB now has a fixed supply of 21M tokens after burning over 65M tokens and implementing contract upgrades that removed mint/burn functions. L1 OKB is being phased out as part of X Layer's transition to a self-contained ecosystem.
-
-There are two main actors on X Layer that earn OKB as reward and pay OKB token as Gas fee for transactions at the same time.
-### Sequencers
-- Each sequencer is required to pay a fee in OKB tokens to have the privilege of creating and suggesting batches.
-- When a sequencer successfully proposes valid batches containing valid transactions, they are rewarded with the fees paid by transaction requestors or network users.
-
-### Aggsender & agglayer
-- `aggsender` observes L2 blocks, performs double‑check, and pushes certificates to `agglayer`.
-- `agglayer` (with `agglayer‑prover`) generates and submits PP proofs on L1; no PP is required for normal L2 transactions.
-- Fees and settlement are tied to certificates that are committed and verified on L1 via `agglayer`.
-
 ## Transactions on X Layer
 Before making any transactions on layer 2, users need to have OKB on X Layer. Per the latest OKX announcement, to obtain OKB on X Layer you should first deposit Ethereum L1 OKB to OKX Exchange and then use the "Withdraw to X Layer" one‑click swap. Over time, OKX Exchange will discontinue withdrawals of OKB back to Ethereum L1. See the announcement for details: [Announcement on the PP Upgrade of X Layer and Optimisation of the OKB Gas‑Token Economic Model](https://www.okx.com/help/announcement-on-the-pp-upgrade-of-x-layer-and-optimisation-of-the-okb-gas).
 2. Layer 2 transactions:
