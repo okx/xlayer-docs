@@ -2,9 +2,7 @@
 
 X Layer is a cutting-edge Ethereum layer 2 (L2) network built by OKX and Polygon using Polygon's CDK. Following the PP upgrade completed on August 5, 2025, it now supports throughput of up to 5,000 TPS with negligible gas fees. It offers full compatibility with the Ethereum Virtual Machine (EVM), enabling developers to deploy existing Ethereum applications and develop new, innovative projects at a fraction of the cost compared to doing so on Ethereum. X Layer also enables users to use dapps at significantly lower gas fees and faster speed compared to Ethereum, with Realtime features providing ~100 ms transaction confirmations on testnet for DeFi/payments/RWA applications.
 
-X Layer's underlying architecture is an EVM validium with Pessimistic Proof (PP) based cross‑chain finality. Transactions on X Layer are executed and validated by the EVM; ZK proofs are not used to secure intra‑L2 transactions. Instead, Polygon's PP system is only used when bridging/cross‑chain to provide verifiable finality on L1 or other domains. This differs from rollups (ZK or OP), and offers the following benefits:
-- **Significantly lower fees**, since they don't consume expensive Ethereum gas, i.e., blockspace to store transaction data.
-- **Significantly higher scalability**, since validium throughput is not bounded by the L1 data publication limit used by rollups.
+X Layer executes and validates transactions on an EVM with state and data stored off‑chain. There is no DAC and no ZK proof used for intra‑L2 execution. Polygon’s Pessimistic Proof (PP) is invoked only for bridging/cross‑domain settlement to provide verifiable finality on L1 or other domains. This differs from ZK/OP rollups where L1 data publication is part of the base protocol.
 
 For more detailed information, you can check out the X Layer architecture below.
 
@@ -19,7 +17,7 @@ The major components of X Layer are:
 ![X Layer Architecture](./img/xlayer-architecture.jpg)
 
 ## Background
-X Layer has migrated to the Pessimistic Proof (PP) mode introduced by Polygon. In PP mode, the L2 chain runs as an EVM validium with trusted sequencers and off-chain data storage, and PP is used only for cross‑chain settlement (e.g., withdrawals) to provide verifiable finality on L1.
+X Layer has migrated to the Pessimistic Proof (PP) mode introduced by Polygon. In this mode, L2 runs with trusted sequencers and off‑chain state/data storage; PP is used only for cross‑chain settlement (e.g., withdrawals) to provide verifiable finality on L1.
 
 ## Architecture diagram and flow (PP mode)
 Below follows the numbering in the diagram (coarse‑grained, simplified wording), starting from the user deposit on L1:
@@ -48,22 +46,11 @@ Outcome: execution/finality happens quickly on L2; for cross‑chain actions, a 
 
 This flow ensures fast execution on L2 while providing cryptographic settlement for cross‑chain operations without publishing full L2 data to L1.
 
-## X Layer Validium & Pessimistic Proofs (PP)
-X Layer is built with Polygon CDK, an advanced open‑source framework designed for the rapid deployment of EVM L2 blockchains on [Ethereum](https://ethereum.org/en/ "Ethereum").
+## Pessimistic Proofs (PP) overview
+X Layer is built with Polygon CDK, an open‑source framework for EVM L2s on [Ethereum](https://ethereum.org/en/ "Ethereum"). For cross‑chain operations (e.g., withdrawals and bridge messages), X Layer leverages Polygon's Pessimistic Proof (PP). PP produces a succinct proof that the claimed state transition is valid with respect to L2, enabling secure settlement on L1 without publishing full L2 transaction data.
 
-X Layer adopts the validium mode with trusted sequencers, delivering a high‑performance L2 scaling solution. Following the PP upgrade on August 5, 2025, X Layer now achieves up to 5,000 TPS with negligible gas fees through seamless AggLayer integration, while maintaining full interoperability with other Polygon chains.
-
-Since transaction data is not stored on the Ethereum mainnet, it is both executed and stored off‑chain, which massively enhances scalability. This validium approach reduces L1 gas storage costs and transaction fees for users, while providing enhanced privacy and user experience. The PP system further optimizes security by using pessimistic proofs that assume potentially malicious chain behavior, ensuring robust cross‑chain settlement.
-
-For cross‑chain operations (for example, withdrawals and bridge messages), X Layer leverages Polygon's Pessimistic Proof (PP). PP produces a succinct proof that the claimed state transition is valid with respect to L2, enabling secure settlement on L1 without publishing full L2 transaction data.
-
-## Validium vs. Rollups
-Validiums differ from rollups and sidechains because they only share a proof of validity when needed (e.g., via PP for cross‑chain), which confirms the results of the transactions with Ethereum, not the actual transaction data of the executed transactions.
-Here is how it operates: a verifier/bridge smart contract is deployed on Ethereum. For cross‑chain operations, the Polygon side `agglayer` submits a PP (ZK) certificate/proof to this contract on behalf of X Layer. The proof attests to the L2 state transition result but not the full transaction data.
-
-The verifier contract assesses the validity of the submitted PP. If it is invalid, the claim is rejected and not stored/processed on Ethereum.
-
-![ZKValidium vs. ZKRollup](./img/zkvalidium-vs-zkrollup.jpg)
+## How L1 settlement works
+A verifier/bridge smart contract is deployed on Ethereum. For cross‑chain operations, the Polygon‑side `agglayer` submits a PP (ZK) certificate/proof to this contract on behalf of X Layer. The proof attests to the L2 state transition result but not the full transaction data. The verifier contract checks the validity of the submitted PP; invalid submissions are rejected and not processed on Ethereum.
 
 ## Consensus & finality
 X Layer uses a PoE‑based consensus on L2. Transactions are executed by the EVM and finalized on L2 by the trusted sequencer set. Cross‑chain finality is handled by the Polygon‑side `agglayer` subsystem: xlayer generates and stores certificate data (metadata/epochs), `aggsender` syncs and submits certificates to `agglayer`, and `agglayer`/`agglayer‑prover` submits PP proofs on L1. The two key flows are: **L2 block production & data writes** and **cross‑chain certificate + PP submission**. Participants include **Sequencer** and the **aggsender/agglayer** pipeline.
@@ -74,11 +61,8 @@ X Layer uses a PoE‑based consensus on L2. Transactions are executed by the EVM
 
 ![Consensus Contract Flow](./img/consensus-contract-flow.png)
 
-## Data Availability
-X Layer operates in validium mode with off-chain data storage, which provides:
-- Lower transaction fees: reduced on-chain data storage costs
-- Enhanced scalability: not bounded by L1 data publication limits
-- State privacy: transaction data stored off-chain while maintaining security through PP proofs
+## Data model and settlement
+X Layer stores transaction data and state off‑chain and uses PP only to settle cross‑chain operations on L1. This design keeps fees low and throughput high while still providing verifiable finality for bridge operations via proofs. There is no DAC and no ZK proof used for intra‑L2 execution.
 
 ## X Layer node
 The X Layer node (based on `xlayer-erigon`) syncs with the L2 state. Trusted sequencers are responsible for managing L2 state and batching, while cross‑chain finality is handled by PP.
