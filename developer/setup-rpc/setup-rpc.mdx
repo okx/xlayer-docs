@@ -107,6 +107,7 @@ INFO[07-26|10:25:33.960] [1/16 L1Syncer] L1 Blocks processed progress (amounts):
 ```
 
 ### Preload the files into the OS page cache
+Preloading the node's data directory into the OS page cache reduces cold disk I/O during state reads and block execution. By warming frequently accessed files and key ranges in memory, it can improve block synchronization efficiency and execution speed, enhance overall node and RPC performance.
 #### Compile vmtouch
 ```bash
 git clone https://github.com/okx/vmtouch.git
