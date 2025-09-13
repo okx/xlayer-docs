@@ -6,7 +6,7 @@ xlayer-erigon is a fork of Erigon, optimized for syncing with the X Layer networ
 
 ### Minimum System Requirements
 
-- 128 GB RAM
+- 64 GB RAM
 
 - 8 core CPU
 
@@ -106,15 +106,3 @@ INFO[07-26|10:25:23.963] [1/16 L1Syncer] L1 Blocks processed progress (amounts):
 INFO[07-26|10:25:33.960] [1/16 L1Syncer] L1 Blocks processed progress (amounts): 222000/3358713 (6%) 
 ```
 
-### Preload the files into the OS page cache
-#### Compile vmtouch
-```bash
-git clone https://github.com/okx/vmtouch.git
-cd vmtouch
-make
-sudo make install
-```
-#### Map disk files into memory
-```bash
-vmtouch -vt ${your-data-dir}
-```
