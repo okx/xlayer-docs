@@ -67,7 +67,15 @@ module.exports = [
             ],
           },
 
-            '/developer/setup-rpc/setup-rpc',
+          {
+            title:'Setup RPC',
+            path: '/developer/setup-rpc/overview',
+            children: [
+              '/developer/setup-rpc/setup-rpc',
+              '/developer/setup-rpc/setup-testnet-rpc',
+            ],
+          },
+
             '/developer/rpc-endpoints/rpc-endpoints',
             '/developer/websockets-endpoints/websocket-endpoints',
           ]
