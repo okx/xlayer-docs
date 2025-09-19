@@ -4,7 +4,7 @@ xlayer-erigon is a fork of Erigon, optimized for syncing with the X Layer networ
 
 
 
-### Minimum System Requirements
+## Minimum System Requirements
 
 - 128 GB RAM
 
@@ -14,17 +14,17 @@ xlayer-erigon is a fork of Erigon, optimized for syncing with the X Layer networ
 
 
 
-### Start RPC Node
+## Start RPC Node
 
 
 
-#### Preparation
+### Preparation
 
 ***Important: A Golang environment with version 1.24 or above is required.***
 
 
 
-#### Build
+### Build
 
 ```bash
 # Pull the code from GitHub，
@@ -48,7 +48,7 @@ make build-docker
 ```
 
 
-#### Modfiy Config
+### Modfiy Config
 
 Create a configuration file named `xlayerconfig-mainnet.yaml` in the root directory of the project. Then, paste the following content into the file.
 **Please note:** There are two fields that need to be updated:
@@ -90,24 +90,7 @@ http.addr: 0.0.0.0
 http.port: 8545
 ```
 
-### How to use snapshot (optional)
-Use a snapshot to speed up the initial sync.
-
-1. Download: Get the latest mainnet snapshot from [here](https://static.okex.org/cdn/chain/xlayer/snapshot/index.html "snapshot"). The file name usually looks like `xlayer-erigon-mainnet-snap-YYYYMMDDHHMM.tar.gz`.
-2. Prepare directory: Make sure the path you set in `datadir` exists and has enough free space. If the directory is not empty, back up or clean it first to avoid mixing with old data.
-3. Extract to `datadir`:
-```bash
-mkdir -p ${your-data-dir}
-tar -xzf xlayer-erigon-mainnet-snap-*.tar.gz -C ${your-data-dir}
-# After extraction, ${your-data-dir} becomes your node data directory
-```
-4. Start the node using the command below. The client will continue syncing from the snapshot state.
-
-Notes:
-- Do not set `datadir` to the compressed file path. It must point to the directory created after extraction.
-- If you are using Docker, mount `${your-data-dir}` into the container as the data volume.
-
-#### Start Erigon Node By binary
+### Start Erigon Node By binary
 
 To start the node, run the binary located at `./build/bin/cdk-erigon`.
 Use the `--config` flag to specify the path to the configuration file you want to use.
@@ -141,16 +124,17 @@ Notes:
 - Do not set `datadir` to the compressed file path. It must point to the directory created after extraction.
 - If you are using Docker, mount `${your-data-dir}` into the container as the data volume.
 
-### Preload the files into the OS page cache
+
+## Preload the files into the OS page cache
 Preloading the node's data into the OS page cache reduces cold disk I/O during state reads and block execution. By warming frequently accessed files and key ranges in memory, it can improve block synchronization efficiency and execution speed, enhance overall node and RPC performance.
-#### Compile vmtouch
+### Compile vmtouch
 ```bash
 git clone https://github.com/okx/vmtouch.git
 cd vmtouch
 make
 sudo make install
 ```
-#### Map disk files into memory
+### Map disk files into memory
 ```bash
 vmtouch -vt ${your-data-dir}
 ```
