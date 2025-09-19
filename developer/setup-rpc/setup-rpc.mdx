@@ -90,23 +90,6 @@ http.addr: 0.0.0.0
 http.port: 8545
 ```
 
-## How to use snapshot (optional)
-Use a snapshot to speed up the initial sync.
-
-1. Download: Get the latest mainnet snapshot from [here](https://static.okex.org/cdn/chain/xlayer/snapshot/index.html "snapshot"). The file name usually looks like `xlayer-erigon-mainnet-snap-YYYYMMDDHHMM.tar.gz`.
-2. Prepare directory: Make sure the path you set in `datadir` exists and has enough free space. If the directory is not empty, back up or clean it first to avoid mixing with old data.
-3. Extract to `datadir`:
-```bash
-mkdir -p ${your-data-dir}
-tar -xzf xlayer-erigon-mainnet-snap-*.tar.gz -C ${your-data-dir}
-# After extraction, ${your-data-dir} becomes your node data directory
-```
-4. Start the node using the command below. The client will continue syncing from the snapshot state.
-
-Notes:
-- Do not set `datadir` to the compressed file path. It must point to the directory created after extraction.
-- If you are using Docker, mount `${your-data-dir}` into the container as the data volume.
-
 ### Start Erigon Node By binary
 
 To start the node, run the binary located at `./build/bin/cdk-erigon`.
@@ -119,12 +102,12 @@ Use the `--config` flag to specify the path to the configuration file you want t
 # If you see the following content in your log, the startup is successful：
 
 INFO[07-26|10:25:05.503] Mapped network port                      proto=udp extport=30304 intport=30304 interface="UPNP IGDv1-IP1"
-INFO[07-26|10:25:13.963] [1/16 L1Syncer] L1 Blocks processed progress (amounts): 64000/3358713 (1%) 
-INFO[07-26|10:25:23.963] [1/16 L1Syncer] L1 Blocks processed progress (amounts): 140000/3358713 (4%) 
-INFO[07-26|10:25:33.960] [1/16 L1Syncer] L1 Blocks processed progress (amounts): 222000/3358713 (6%) 
+INFO[07-26|10:25:13.963] [1/16 L1Syncer] L1 Blocks processed progress (amounts): 64000/3358713 (1%)
+INFO[07-26|10:25:23.963] [1/16 L1Syncer] L1 Blocks processed progress (amounts): 140000/3358713 (4%)
+INFO[07-26|10:25:33.960] [1/16 L1Syncer] L1 Blocks processed progress (amounts): 222000/3358713 (6%)
 ```
 
-## How to use snapshot (optional)
+### How to use snapshot (optional)
 Use a snapshot to speed up the initial sync.
 
 1. Download: Get the latest mainnet snapshot from [here](https://static.okex.org/cdn/chain/xlayer/snapshot/index.html "snapshot"). The file name usually looks like `xlayer-erigon-mainnet-snap-YYYYMMDDHHMM.tar.gz`.
@@ -140,6 +123,7 @@ tar -xzf xlayer-erigon-mainnet-snap-*.tar.gz -C ${your-data-dir}
 Notes:
 - Do not set `datadir` to the compressed file path. It must point to the directory created after extraction.
 - If you are using Docker, mount `${your-data-dir}` into the container as the data volume.
+
 
 ## Preload the files into the OS page cache
 Preloading the node's data into the OS page cache reduces cold disk I/O during state reads and block execution. By warming frequently accessed files and key ranges in memory, it can improve block synchronization efficiency and execution speed, enhance overall node and RPC performance.
@@ -154,4 +138,3 @@ sudo make install
 ```bash
 vmtouch -vt ${your-data-dir}
 ```
-
