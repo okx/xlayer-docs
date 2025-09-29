@@ -134,6 +134,7 @@ module.exports = [
               title:'Oracles',
               path:'/developer/tools/oracles-overview',
               children: [
+                '/developer/tools/oracles/chainlink',
                 '/developer/tools/oracles/api3',
                 '/developer/tools/oracles/supraoracles',
                 '/developer/tools/oracles/redstone',
