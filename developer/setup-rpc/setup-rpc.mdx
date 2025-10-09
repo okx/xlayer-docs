@@ -56,7 +56,7 @@ Create a configuration file named `xlayerconfig-mainnet.yaml` in the root direct
 1. `datadir` — specify your desired data directory path. Set this to the extracted snapshot directory.
 2. `zkevm.l1_rpc_url` — provide the correct L1 RPC URL.For production environments, you should request an official RPC endpoint from your organization.
 
-```bash
+```yaml
 # Place the extracted snapshot data into this directory
 datadir: ${your-data-dir}
 chain: xlayer-mainnet
@@ -79,6 +79,10 @@ zkevm.l1-block-range: 2000
 zkevm.l1-query-delay: 1000
 zkevm.datastream-version: 3
 
+# Enable standalone SMT DB (optional; set true if using separate/sharded SMT DB)
+# highlight-next-line
+zkevm.standalone-smt-db: true
+
 zkevm.increment-tree-always: false
 zkevm.rebuild-tree-after: 10000000
 
@@ -94,6 +98,7 @@ http.port: 8545
 Use a snapshot to speed up the initial sync.
 
 1. Download: Get the latest mainnet snapshot from [here](https://static.okex.org/cdn/chain/xlayer/snapshot/index.html "snapshot"). The file name usually looks like `xlayer-erigon-mainnet-snap-YYYYMMDDHHMM.tar.gz`.
+    - If your config enables `zkevm.standalone-smt-db: true`, download the "Standalone SMT DB" snapshot; otherwise download the default (non-standalone) snapshot. The snapshot type must match your `datadir` layout to avoid startup failures or forced database rebuilds.
 2. Prepare directory: Make sure the path you set in `datadir` exists and has enough free space. If the directory is not empty, back up or clean it first to avoid mixing with old data.
 3. Extract and set `datadir` (use the extracted directory as `datadir`):
 ```bash
