@@ -9,8 +9,8 @@ For more detailed information, you can check out the X Layer architecture below.
 ## X Layer architecture
 The major components of X Layer are:
 - **Virtual Machine**: EVM‑equivalent
-- **Sequencer**: Trusted 
-- **Gas token**: OKB (fixed supply at 21M post-burns/upgrades; L1 OKB phased out) 
+- **Sequencer**: Trusted (implemented by op-node in sequencer mode, coordinating with op-geth via Engine API)
+- **Gas token**: OKB (fixed supply at 21M post-burns/upgrades; L1 OKB phased out)
 
 
 ## Background
@@ -21,10 +21,10 @@ Starting from the user deposit on L1:
 
 - 1.x L1 deposit → credit on L2 (bridge in)
   - 1.1 User deposits assets on L1 bridge contract (OptimismPortal)
-  - 1.2 op-node monitors L1 contract events and derives deposit transactions
-  - 1.3 op-node includes deposit transaction in L2 block via Engine API
-  - 1.4 op-geth executes the deposit and credits user account
-  - 1.5 The Sequencer continues producing L2 blocks
+  - 1.2 op-node (sequencer) monitors L1 contract events and derives deposit transactions
+  - 1.3 op-node (sequencer) includes deposit transaction in L2 block via Engine API
+  - 1.4 op-geth (execution engine) executes the deposit and credits user account
+  - 1.5 op-node (sequencer) continues producing L2 blocks every 2 seconds
   - 1.6 RPC nodes expose the updated balance/status to users
 - 2.x L2 user Tx & withdrawal (L2 → L1)
   - 2.1 User initiates withdrawal on L2; op-geth processes the transaction
