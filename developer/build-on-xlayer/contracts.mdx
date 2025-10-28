@@ -1,25 +1,59 @@
 # Contracts
 
 ## X Layer contracts
-These smart contracts facilitate operation on Ethereum Mainnet and Sepolia Testnet. 
-### Ethereum Layer 1
-|Name|Detail|Mainnet address| Testnet address| 
-|:----|:--|:--|:--|
-|[PolygonPessimisticConsensus.sol](https://github.com/okx/xlayer-contracts/blob/upstream/v9.0.0-rc.3-pp/contracts/v2/consensus/pessimistic/PolygonPessimisticConsensus.sol "PolygonPessimisticConsensus.sol")|Pessimistic Proof consensus smart contract|[0x2B0ee28D4D51bC9aDde5E58E295873F61F4a0507](https://etherscan.io/address/0x2B0ee28D4D51bC9aDde5E58E295873F61F4a0507 "0x2B0ee28D4D51bC9aDde5E58E295873F61F4a0507")|[0x01469dACfDDA885D68Ff0f8628F2629c14F95a20](https://sepolia.etherscan.io/address/0x01469dACfDDA885D68Ff0f8628F2629c14F95a20 "0x01469dACfDDA885D68Ff0f8628F2629c14F95a20")|
-|[RollupManagerAddress.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/PolygonRollupManager.sol "RollupManagerAddress.sol")|Rollup manager smart contract|[0x5132a183e9f3cb7c848b0aac5ae0c4f0491b7ab2](https://etherscan.io/address/0x5132a183e9f3cb7c848b0aac5ae0c4f0491b7ab2 "0x5132a183e9f3cb7c848b0aac5ae0c4f0491b7ab2")|[0x6662621411A8DACC3cA7049C8BddABaa9a999ce3](https://sepolia.etherscan.io/address/0x6662621411A8DACC3cA7049C8BddABaa9a999ce3 "0x6662621411A8DACC3cA7049C8BddABaa9a999ce3")|
-|[ZkEVMBridge.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/PolygonZkEVMBridgeV2.sol "ZkEVMBridge.sol")|Bridge smart contract| [0x2a3DD3EB832aF982ec71669E178424b10Dca2EDe](https://etherscan.io/address/0x2a3DD3EB832aF982ec71669E178424b10Dca2EDe "0x2a3DD3EB832aF982ec71669E178424b10Dca2EDe")|[0x7a4Ee6f9F0aB037fE771FC36D39C1E19bcc0Fdb5](https://sepolia.etherscan.io/address/0x7a4Ee6f9F0aB037fE771FC36D39C1E19bcc0Fdb5 "0x7a4Ee6f9F0aB037fE771FC36D39C1E19bcc0Fdb5")|
-|[ZkEVMGlobalExitRoot.sol](https://github.com/okx/xlayer-contracts/blob/release/v0.3.0/contracts/v2/PolygonZkEVMGlobalExitRootV2.sol "ZkEVMGlobalExitRoot.sol")|Global exit root manager smart contract|[0x580bda1e7A0CFAe92Fa7F6c20A3794F169CE3CFb](https://etherscan.io/address/0x580bda1e7A0CFAe92Fa7F6c20A3794F169CE3CFb "0x580bda1e7A0CFAe92Fa7F6c20A3794F169CE3CFb")|[0x66E61bA00F58b857A9DD2C500F3aBc424A46BD20](https://sepolia.etherscan.io/address/0x66E61bA00F58b857A9DD2C500F3aBc424A46BD20 "0x66E61bA00F58b857A9DD2C500F3aBc424A46BD20")|
-|OKBContract.sol|OKB smart contract|[0x75231f58b43240c9718dd58b4967c5114342a86c](https://etherscan.io/address/0x75231f58b43240c9718dd58b4967c5114342a86c "0x75231f58b43240c9718dd58b4967c5114342a86c")|[0x3F4B6664338F23d2397c953f2AB4Ce8031663f80](https://sepolia.etherscan.io/address/0x3F4B6664338F23d2397c953f2AB4Ce8031663f80 "0x3F4B6664338F23d2397c953f2AB4Ce8031663f80")|
+These smart contracts facilitate operation on Ethereum Mainnet and Sepolia Testnet.
 
-### X Layer Layer 2
-|Name|Detail|Mainnet address| Testnet address| 
+### Ethereum Layer 1
+
+|Name|Detail|Mainnet address|Testnet address|
 |:----|:--|:--|:--|
-|[ZkEVMBridge.sol](https://github.com/okx/xlayer-contracts/blob/v0.3.1/contracts/v2/PolygonZkEVMBridgeV2.sol "ZkEVMBridge.sol")|Bridge smart contract|[0x2a3DD3EB832aF982ec71669E178424b10Dca2EDe](https://www.okx.com/web3/explorer/xlayer/address/0x2a3DD3EB832aF982ec71669E178424b10Dca2EDe "0x2a3DD3EB832aF982ec71669E178424b10Dca2EDe")|[0x7a4Ee6f9F0aB037fE771FC36D39C1E19bcc0Fdb5](https://www.okx.com/web3/explorer/xlayer-test/address/0x7a4Ee6f9F0aB037fE771FC36D39C1E19bcc0Fdb5 "0x7a4Ee6f9F0aB037fE771FC36D39C1E19bcc0Fdb5")|
-|[ZkEVMGlobalExitRootL2.sol](https://github.com/okx/xlayer-contracts/blob/v0.3.1/contracts/v2/PolygonZkEVMGlobalExitRootV2.sol "ZkEVMGlobalExitRootL2.sol")|Global exit root manager smart contract|[0xa40d5f56745a118d0906a34e69aec8c0db1cb8fa](https://www.okx.com/web3/explorer/xlayer/address/0xa40d5f56745a118d0906a34e69aec8c0db1cb8fa "0xa40d5f56745a118d0906a34e69aec8c0db1cb8fa")|[0xa40d5f56745a118d0906a34e69aec8c0db1cb8fa](https://www.okx.com/web3/explorer/xlayer-test/address/0xa40d5f56745a118d0906a34e69aec8c0db1cb8fa "0xa40d5f56745a118d0906a34e69aec8c0db1cb8fa")|
+|OptimismPortal|Core infrastructure contract for Optimism Rollup, handles deposits and withdrawals between L1 and L2, calls L1CrossDomainMessenger and DisputeGameFactory|[0x64057ad1ddac804d0d26a7275b193d9daca19993](https://etherscan.io/address/0x64057ad1ddac804d0d26a7275b193d9daca19993)|TBD|
+|SystemConfig|Manages OP Stack network configuration, stores network parameters and other contract addresses|[0x5065809af286321a05fbf85713b5d5de7c8f0433](https://etherscan.io/address/0x5065809af286321a05fbf85713b5d5de7c8f0433)|TBD|
+|L1CrossDomainMessenger|High-level message passing interface between L1 and L2|[0xf94b553f3602a03931e5d10cab343c0968d793e3](https://etherscan.io/address/0xf94b553f3602a03931e5d10cab343c0968d793e3)|TBD|
+|L1StandardBridge|Handles ETH and ERC20 token transfers between L1 and L2|[0xaecf995abf9e7ede7ae0ce65e60622c9ed84823a](https://etherscan.io/address/0xaecf995abf9e7ede7ae0ce65e60622c9ed84823a)|TBD|
+|L1ERC721Bridge|Handles ERC721 NFT transfers between L1 and L2|[0x85d37236f063c687d056b3604cbee4b60d124858](https://etherscan.io/address/0x85d37236f063c687d056b3604cbee4b60d124858)|TBD|
+|DisputeGameFactory|Deploys dispute game instances to resolve state disputes|[0x9d4c8faeaddddeee1ed0c92dabad815c2484f675](https://etherscan.io/address/0x9d4c8faeaddddeee1ed0c92dabad815c2484f675)|TBD|
+|FaultDisputeGame|Resolves disputes about L2 state through interactive fault proofs|Not deployed (0x0000...)|TBD|
+|PermissionedDisputeGame|Dispute game with permission restrictions for authorized challengers|[0xeeda796a23bc98726e47934ca9b54fdda5a608e8](https://etherscan.io/address/0xeeda796a23bc98726e47934ca9b54fdda5a608e8)|TBD|
+|AnchorStateRegistry|Stores the latest anchored state for each dispute game type|[0x000590bb65ab1864a7ad46d6b957cc9a4f2c149d](https://etherscan.io/address/0x000590bb65ab1864a7ad46d6b957cc9a4f2c149d)|TBD|
+|DelayedWETH|Manages participant bonds during dispute periods with withdrawal delays|[0x1b8a252a71bc8997d3871af420895b5845212fc6](https://etherscan.io/address/0x1b8a252a71bc8997d3871af420895b5845212fc6)|TBD|
+|MIPS|MIPS32 virtual machine for executing fault proofs|[0x305d1c0eed9a0291686f3bfdf1f5e54aaeef80e4](https://etherscan.io/address/0x305d1c0eed9a0291686f3bfdf1f5e54aaeef80e4)|TBD|
+|PreimageOracle|Maps hashes to their corresponding preimages for fault proof verification|[0x1fb8cdfc6831fc866ed9c51af8817da5c287add3](https://etherscan.io/address/0x1fb8cdfc6831fc866ed9c51af8817da5c287add3)|TBD|
+|OptimismMintableERC20Factory|Creates ERC20 token contracts that can be minted on L2|[0x62e1aaeba9a8aa4654980653db4b21fc82c61c15](https://etherscan.io/address/0x62e1aaeba9a8aa4654980653db4b21fc82c61c15)|TBD|
+|SuperchainConfig|Manages superchain global configuration values|[0x6a95d7aac3d41761426761af031c5034b7b347d4](https://etherscan.io/address/0x6a95d7aac3d41761426761af031c5034b7b347d4)|TBD|
+|ProtocolVersions|Manages superchain protocol version information|[0xc1fb115d8249a7e6b27c8bc6914cab7edf0b0f7e](https://etherscan.io/address/0xc1fb115d8249a7e6b27c8bc6914cab7edf0b0f7e)|TBD|
+|AddressManager|Legacy contract for managing string name to address registry, required by L1CrossDomainMessenger|[0xe88cfa9d4a4fae1413914bad9796a72d13d035b9](https://etherscan.io/address/0xe88cfa9d4a4fae1413914bad9796a72d13d035b9)|TBD|
+
+### X Layer Layer 2 (Predeploys)
+
+|Name|Detail|L2 Address|
+|:----|:--|:--|
+|L2CrossDomainMessenger|L2 side cross-domain message passing interface|0x4200000000000000000000000000000000000007|
+|L2StandardBridge|L2 side standard bridge contract for token transfers|0x4200000000000000000000000000000000000010|
+|L2ToL1MessagePasser|Stores messages sent from L2 to L1 (with customGasToken support)|0x4200000000000000000000000000000000000016|
+|L2ERC721Bridge|L2 side ERC721 bridge contract for NFT transfers|0x4200000000000000000000000000000000000014|
+|L1Block|Provides access to latest known L1 block information|0x4200000000000000000000000000000000000015|
+|GasPriceOracle|Provides L1 fee calculation and offline gas estimation|0x420000000000000000000000000000000000000F|
+|BeaconBlockRoot|Provides access to L1 beacon block roots (EIP-4788)|0x000F3df6D732807Ef1319fB7B8bB8522d0Beac02|
+|OptimismMintableERC20Factory|L2 side ERC20 token factory|0x4200000000000000000000000000000000000012|
+|OptimismMintableERC721Factory|L2 side ERC721 token factory|0x4200000000000000000000000000000000000017|
+|WETH9|Standard WETH implementation (with customGasToken support)|0x4200000000000000000000000000000000000006|
+|GovernanceToken|OP governance token|0x4200000000000000000000000000000000000042|
+|SequencerFeeVault|Collects sequencer fees|0x4200000000000000000000000000000000000011|
+|BaseFeeVault|Collects L2 base fees|0x4200000000000000000000000000000000000019|
+|L1FeeVault|Collects L1 fee portion|0x420000000000000000000000000000000000001a|
+|SchemaRegistry|Global authentication schema for Ethereum Attestation Service|0x4200000000000000000000000000000000000020|
+|EAS|Ethereum Attestation Service|0x4200000000000000000000000000000000000021|
+|ProxyAdmin|Owner of all predeploy proxy contracts|0x4200000000000000000000000000000000000018|
+
+### Token Addresses
+
+|Name|Detail|Mainnet address|Testnet address|
+|:----|:--|:--|:--|
 |[WOKB](https://www.okx.com/web3/explorer/xlayer/address/0xe538905cf8410324e03a5a23c1c177a474d59b2b "WOKB")|WOKB Token Address|[0xe538905cf8410324e03a5a23c1c177a474d59b2b](https://www.okx.com/web3/explorer/xlayer/address/0xe538905cf8410324e03a5a23c1c177a474d59b2b "0xe538905cf8410324e03a5a23c1c177a474d59b2b")|-|
 |[WETH](https://www.okx.com/web3/explorer/xlayer/token/0x5a77f1443d16ee5761d310e38b62f77f726bc71c "WETH")|WETH Token Address|[0x5a77f1443d16ee5761d310e38b62f77f726bc71c](https://www.okx.com/web3/explorer/xlayer/address/0x5a77f1443d16ee5761d310e38b62f77f726bc71c "0x5a77f1443d16ee5761d310e38b62f77f726bc71c")|[0xBec7859BC3d0603BeC454F7194173E36BF2Aa5C8](https://www.okx.com/web3/explorer/xlayer-test/address/0xBec7859BC3d0603BeC454F7194173E36BF2Aa5C8 "0xBec7859BC3d0603BeC454F7194173E36BF2Aa5C8")|
 |[USDT](https://www.okx.com/web3/explorer/xlayer/address/0x1e4a5963abfd975d8c9021ce480b42188849d41d "USDT")|USDT Token Address|[0x1e4a5963abfd975d8c9021ce480b42188849d41d](https://www.okx.com/web3/explorer/xlayer/address/0x1e4a5963abfd975d8c9021ce480b42188849d41d "0x1e4a5963abfd975d8c9021ce480b42188849d41d")|-|
 |[USDC](https://www.okx.com/web3/explorer/xlayer/address/0x74b7f16337b8972027f6196a17a631ac6de26d22 "USDC")|USDC Token Address|[0x74b7F16337b8972027F6196A17a631aC6dE26d22](https://www.okx.com/web3/explorer/xlayer/address/0x74b7f16337b8972027f6196a17a631ac6de26d22 "0x74b7F16337b8972027F6196A17a631aC6dE26d22")|-|
 |[USDC.e](https://www.okx.com/web3/explorer/xlayer/address/0xA8CE8aee21bC2A48a5EF670afCc9274C7bbbC035 "USDC.e")|USDC.e Token Address|[0xA8CE8aee21bC2A48a5EF670afCc9274C7bbbC035](https://www.okx.com/web3/explorer/xlayer/address/0xA8CE8aee21bC2A48a5EF670afCc9274C7bbbC035 "0xA8CE8aee21bC2A48a5EF670afCc9274C7bbbC035")|-|
 |[WBTC](https://www.okx.com/web3/explorer/xlayer/address/0xea034fb02eb1808c2cc3adbc15f447b93cbe08e1 "WBTC")|WBTC Token Address|[0xEA034fb02eB1808C2cc3adbC15f447B93CbE08e1](https://www.okx.com/web3/explorer/xlayer/address/0xea034fb02eb1808c2cc3adbc15f447b93cbe08e1 "0xEA034fb02eB1808C2cc3adbC15f447B93CbE08e1")|-|
-|[DAI](https://www.okx.com/web3/explorer/xlayer/address/0xc5015b9d9161dca7e18e32f6f25c4ad850731fd4 "DAI")|DAI Token Address|[0xC5015b9d9161Dca7e18e32f6f25C4aD850731Fd4](https://www.okx.com/web3/explorer/xlayer/address/0xc5015b9d9161dca7e18e32f6f25c4ad850731fd4)
+|[DAI](https://www.okx.com/web3/explorer/xlayer/address/0xc5015b9d9161dca7e18e32f6f25c4ad850731fd4 "DAI")|DAI Token Address|[0xC5015b9d9161Dca7e18e32f6f25C4aD850731Fd4](https://www.okx.com/web3/explorer/xlayer/address/0xc5015b9d9161dca7e18e32f6f25c4ad850731fd4 "0xC5015b9d9161Dca7e18e32f6f25C4aD850731Fd4")|-|
