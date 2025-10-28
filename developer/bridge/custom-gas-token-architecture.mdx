@@ -1,0 +1,58 @@
+# Custom Gas Token Architecture
+
+## X Layer Custom Gas Token Architecture
+
+X Layer uses OKB as its native gas token, which means the bridging architecture differs from standard OP Stack chains:
+
+- ❌ ETH bridging is NOT supported (no depositETH or withdrawETH functions)
+- ✅ Only ERC-20 token bridging is supported (including OKB as an ERC-20 token)
+- ✅ All bridging operations use the standard ERC-20 bridging mechanism
+
+This design ensures that OKB serves as the primary gas and value token on X Layer, while ETH can only exist as a wrapped/bridged ERC-20 token if needed.
+
+## Procedure of bridging OKB from L1 to L2
+
+### Overview
+
+- **Scope**: This section documents the permissioned OKB L1→L2 workflow; see Custom Gas Token Architecture section above for CGT assumptions.
+- **Governance**: Only allowlisted L1 accounts may initiate bridging. Retail users bridge via OKX deposit/withdrawal; institutional addresses can be temporarily allowlisted by the Owner.
+- **Supply discipline**: Each L2 mint is 1:1 with a prior L1 burn (auditable). A preminted dOKB pool on L1 acts as a carrier for portal deposits; sequencer/op‑node remain unchanged.
+- **Interfaces**: DepositedOKBAdapter (L1) + OptimismPortal2.depositERC20Transaction → OKB mint on L2 upon derived deposit.
+- **Guarantees**: Total supply invariance across L1+L2; standard bridge events for indexers; operational controls for allowlist/keys/rescue.
+
+### Actors & prerequisites
+
+- **Owner (Asset Ops)**: Controls allowlist and rescue functions.
+- **Allowlisted L1 addresses**: Authorized to initiate OKB bridging (e.g., OKX custodial wallets; optionally approved large clients).
+- **User flow**: Retail users typically deposit L1 OKB into OKX and withdraw to X Layer; large clients can be temporarily allowlisted.
+
+### Contracts (L1)
+
+- **OKB (ERC‑20 with bridge trigger)**:
+  - `triggerBridge()`: Burns the caller's OKB balance (emits Transfer(from, 0x0, amount) and SupplyDecreased).
+
+- **DepositedOKBAdapter (dOKB Adapter)**:
+  - Holds an initially pre‑minted pool of dOKB equal to outstanding L1 OKB (premint at deployment ensures the hard cap is respected).
+  - Manages an allowlist; only allowlisted addresses can call deposit.
+  - On deposit: transfers OKB from user, calls OKB.triggerBridge() to burn, then approves and calls the portal to deposit dOKB.
+
+- **OptimismPortal2 (extended)**:
+  - Adds `depositERC20Transaction(...)` to carry an ERC‑20 token amount across the bridge event, to be interpreted on L2 as mint OKB.
+
+### Contract (L2)
+
+- **OKB (ERC‑20 on X Layer)**:
+  - Mints to the recipient when an eligible L1 deposit event is derived by the rollup.
+
+### End‑to‑end flow (L1 → L2)
+
+1. Owner adds the user (or OKX custodial address) to the adapter allowlist.
+2. User approves the adapter to spend `amount` OKB on L1.
+3. Allowlisted user calls `DepositedOKBAdapter.deposit(to, amount)`.
+4. Adapter pulls `amount` OKB from the user: `OKB.transferFrom(user, adapter, amount)`.
+5. Adapter burns its OKB by calling `OKB.triggerBridge()` (L1 supply decreases by `amount`).
+6. Adapter approves the portal to pull `amount` dOKB from its premint pool.
+7. Adapter calls `OptimismPortal2.depositERC20Transaction(to, amount, /*gasLimit*/ 100_000, /*isCreation*/ false, "")`.
+   - Portal moves `amount` dOKB from adapter to portal and emits `TransactionDeposited`.
+8. op‑node derives the deposit on L2; the L2 OKB contract mints `amount` OKB to `to`.
+
