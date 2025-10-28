@@ -1,141 +1,149 @@
-# Setup mainnet RPC
+# X Layer Setup RPC overview
 
-xlayer-erigon is a fork of Erigon, optimized for syncing with the X Layer network.
+This guide will help you quickly deploy an X Layer self-hosted RPC node, providing complete L2 blockchain data access services.
 
+## Migration from Legacy Mainnet/Testnet
 
+If you were previously running nodes on the legacy X Layer mainnet/testnet, please note:
 
-## Minimum System Requirements
+- **Data migration**: Previous blockchain data is incompatible with current version
+- **Configuration changes**: Updated bootnodes, network parameters, and configuration files
+- **Fresh deployment required**: You'll need to deploy a completely new node instance
 
-- 128 GB RAM
+## System Requirements
 
-- 8 core CPU
+- **Operating System**: Linux (Ubuntu 20.04+ recommended)
+- **Memory**: Minimum 8GB, recommended 16GB+
+- **Storage**: Minimum 100GB SSD, recommended 500GB+
+- **Network**: Stable internet connection
+- **Docker**: Docker 20.10+ and Docker Compose 2.0+
 
-- 700 GB Storage ( IOPS > 40000 for AWS or IOPS > 100000 for Aliyun required )
+## Quick Deployment
 
+### Option 1: One-Click Installation (Recommended)
 
-
-## Start RPC Node
-
-
-
-### Preparation
-
-***Important: A Golang environment with version 1.24 or above is required.***
-
-
-
-### Build
-
-```bash
-# Pull the code from GitHub，
-git clone https://github.com/okx/xlayer-erigon.git
-
-# If you are not aware of the latest version, you can use the following Github address to obtain the latest version：
-https://github.com/okx/xlayer-erigon/releases
-
-# Enter the xlayer-erigon directory
-cd xlayer-erigon
-
-# Then based on https://github.com/okx/xlayer-erigon/releases Switch to the corresponding branch based on the latest version found on
-git checkout ${latest_release}
-
-# Build the project. This process takes about 1 minute. After completion, the binary file will be located in the build/bin directory of the project, and the binary file name is: cdk-erigon.
-make cdk-erigon
-
-# If you want to generate an image, you can use the following methods：
-make build-docker
+The easiest way to deploy your X Layer RPC node with minimal configuration:
 
 ```
-
-
-### Modfiy Config
-
-Create a configuration file named `xlayerconfig-mainnet.yaml` in the root directory of the project. Then, paste the following content into the file.
-**Please note:** There are two fields that need to be updated:
-
-1. `datadir` — specify your desired data directory path. Set this to the extracted snapshot directory.
-2. `zkevm.l1_rpc_url` — provide the correct L1 RPC URL.For production environments, you should request an official RPC endpoint from your organization.
-
-```bash
-# Place the extracted snapshot data into this directory
-datadir: ${your-data-dir}
-chain: xlayer-mainnet
-http: true
-private.api.addr: localhost:9091
-zkevm.l2-chain-id: 196
-zkevm.l2-sequencer-rpc-url: https://rpc.xlayer.tech
-zkevm.l2-datastreamer-url: stream.xlayer.tech:8800
-zkevm.l1-rpc-url: ${your-l1-rpc-url}
-zkevm.l1-chain-id: 1
-
-zkevm.address-sequencer: "0xAF9d27ffe4d51eD54AC8eEc78f2785D7E11E5ab1"
-zkevm.address-zkevm: "0x2B0ee28D4D51bC9aDde5E58E295873F61F4a0507"
-zkevm.address-rollup: "0x5132A183E9F3CB7C848b0AAC5Ae0c4f0491B7aB2"
-zkevm.address-ger-manager: "0x580bda1e7A0CFAe92Fa7F6c20A3794F169CE3CFb"
-
-zkevm.l1-rollup-id: 3
-zkevm.l1-first-block: 19218658
-zkevm.l1-block-range: 2000
-zkevm.l1-query-delay: 1000
-zkevm.datastream-version: 3
-
-zkevm.increment-tree-always: false
-zkevm.rebuild-tree-after: 10000000
-
-zkevm.get-logs-timeout: 86400s
-zkevm.get-logs-retries: 72
-
-http.api: [eth, debug, net, trace, web3, erigon, zkevm]
-http.addr: 0.0.0.0
-http.port: 8545
+# One-command installation and setup
+curl -fsSL https://raw.githubusercontent.com/okx/xlayer-toolkit/main/scripts/rpc-setup/one-click-setup.sh | bash
 ```
 
-### How to use snapshot (optional)
-Use a snapshot to speed up the initial sync.
+This script will:
 
-1. Download: Get the latest mainnet snapshot from [here](https://static.okex.org/cdn/chain/xlayer/snapshot/index.html "snapshot"). The file name usually looks like `xlayer-erigon-mainnet-snap-YYYYMMDDHHMM.tar.gz`.
-2. Prepare directory: Make sure the path you set in `datadir` exists and has enough free space. If the directory is not empty, back up or clean it first to avoid mixing with old data.
-3. Extract and set `datadir` (use the extracted directory as `datadir`):
-```bash
-tar -xzf xlayer-erigon-mainnet-snap-*.tar.gz
-# Identify the extracted top-level directory and set `datadir` to that directory
+- ✅ Automatically detect your system requirements
+- ✅ Download the latest configuration files
+- ✅ Prompt you for required parameters interactively
+- ✅ Generate all necessary configuration files
+- ✅ Start the RPC node services
+- ✅ Verify the installation and show connection details
+
+#### Interactive prompts will ask for:
+
+- Network type: `testnet` or `mainnet` (currently only testnet is supported)
+- L1 RPC URL - Ethereum L1 RPC endpoint
+- L1 Beacon URL - Ethereum L1 Beacon chain endpoint
+- Optional: Custom port mappings
+- Optional: Data directory location
+
+#### After installation, your RPC node will be available at:
+
+- HTTP RPC: `http://localhost:8123`
+- WebSocket: `ws://localhost:8546`
+
+### Option 2: Manual Setup (Advanced Users)
+
+For users who need custom configurations or want to understand the setup process:
+
+**Note**: Currently only testnet is supported. Mainnet support will be available in future releases.
+
+#### 1. Environment Setup
+
 ```
-4. Start the node using the command below. The client will continue syncing from the snapshot state.
+# Clone the project
+git clone https://github.com/okx/xlayer-toolkit.git
+cd xlayer-toolkit
+git checkout main
+cd scripts/rpc-setup
 
-Notes:
-- `${your-data-dir}` must be the snapshot data directory itself (no extra parent level). Do not set it to the path of the compressed file.
-- If you are using Docker, mount `${your-data-dir}` into the container as the data volume.
-
-
-### Start Erigon Node By binary
-
-To start the node, run the binary located at `./build/bin/cdk-erigon`.
-Use the `--config` flag to specify the path to the configuration file you want to use.
-
-```bash
-./build/bin/cdk-erigon --config="./xlayerconfig-mainnet.yaml"
-
-
-# If you see the following content in your log, the startup is successful：
-
-INFO[07-26|10:25:05.503] Mapped network port                      proto=udp extport=30304 intport=30304 interface="UPNP IGDv1-IP1"
-INFO[07-26|10:25:13.963] [1/16 L1Syncer] L1 Blocks processed progress (amounts): 64000/3358713 (1%)
-INFO[07-26|10:25:23.963] [1/16 L1Syncer] L1 Blocks processed progress (amounts): 140000/3358713 (4%)
-INFO[07-26|10:25:33.960] [1/16 L1Syncer] L1 Blocks processed progress (amounts): 222000/3358713 (6%)
+# Configure environment variables
+cp env.example .env
 ```
 
+#### 2. Configuration
 
+Edit the `.env` file with necessary parameters:
 
-## Preload the files into the OS page cache
-Preloading the node's data into the OS page cache reduces cold disk I/O during state reads and block execution. By warming frequently accessed files and key ranges in memory, it can improve block synchronization efficiency and execution speed, enhance overall node and RPC performance.
-### Compile vmtouch
-```bash
-git clone https://github.com/okx/vmtouch.git
-cd vmtouch
-make
-sudo make install
 ```
-### Map disk files into memory
-```bash
-vmtouch -vt ${your-data-dir}
+L1_RPC_URL={your-l1-url}
+L1_BEACON_URL={your-l1-beacon-url}
+
+# Bootnode Configuration (Here for new testnet)
+OP_NODE_BOOTNODE=enode://eaae9fe2fc758add65f44cfe4918e898e16b223294db8f0ddcbcab2773e75b47a68e8c7fb9f58a2628b77ec28309140490ccc9490e216bf1349e16bd20b8f13a@52.77.225.158:30303
+OP_GETH_BOOTNODE=enode://2104d54a7fbd58a4085900035a3628f1e162833c901400d490ccc94de4d16ba6f1374fbc5976e15b05e1d2867aa3af1e49f72e0dcaf4cf1309d8ccc84ed1e8fc@52.77.225.158:9003
+
+# Docker Images
+OP_STACK_IMAGE_TAG=xlayer/op-stack:release-testnet
+OP_GETH_IMAGE_TAG=xlayer/op-geth:release-testnet
 ```
+
+**Configuration Notes:**
+
+- **Docker Images**: Choose the appropriate image tags based on your target network:
+  - **Testnet**: `xlayer/op-stack:release-testnet` and `xlayer/op-geth:release-testnet`
+  - **Mainnet**: `xlayer/op-stack:release` and `xlayer/op-geth:release`
+
+- **Bootnode Configuration**: The default values are configured for testnet. Mainnet bootnode addresses will be provided later.
+
+- **L1 Network URLs**: Configure `L1_BEACON_URL` and `L1_RPC_URL` according to your target network (mainnet or testnet).
+
+#### 3. Start Services
+
+```
+# Init data (for testnet)
+./init.sh testnet
+
+# Start all services (for testnet)
+./start.sh testnet
+```
+
+The above scripts will automatically:
+
+- ✅ Download genesis file and initialize geth with it
+- ✅ Check environment variables
+- ✅ Create necessary directories
+- ✅ Generate JWT secret
+- ✅ Start Docker services
+- ✅ Display service information and management commands
+
+#### 4. Service Management
+
+**Stop services (preserves data):**
+
+```
+./stop.sh
+```
+
+**Complete environment reset (removes all data):**
+
+```
+# Stop services and remove data
+./stop.sh
+rm -rf ./data
+
+# Re-initialize and start
+./init.sh testnet
+./start.sh testnet
+```
+
+**Note**: The `stop.sh` script stops services but preserves blockchain data. For a complete reset, you need to manually remove the `data` directory before re-initializing.
+
+## Service Ports
+
+|Service|Port|Protocol|Purpose|
+|:----|:----|:----|:----|
+|op-geth RPC|8123|HTTP|JSON-RPC API|
+|op-geth WebSocket|8546|WebSocket|WebSocket API|
+|op-node RPC|9545|HTTP|Consensus layer API|
+|op-geth P2P|30303|TCP/UDP|P2P network|
+|op-node P2P|9223|TCP/UDP|P2P network|
