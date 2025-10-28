@@ -64,8 +64,7 @@ module.exports = [
             children: [
               '/developer/bridge/get-testnet-okb-from-faucet',
               '/developer/bridge/usdc-on-x-layer',
-              '/developer/bridge/custom-gas-token-architecture',
-            ],
+              ],
           },
 
           {
