@@ -18,81 +18,27 @@ X Layer has evolved to adopt the Optimism Stack (OP Stack) framework, a battle-t
 
 ## Architecture flow (OP Stack + AggLayer mode)
 
-### L1 → L2 Bridge Flow (via AggLayer)
+Starting from the user deposit on L1:
 
-- 1.1 User deposits assets on L1 bridge contract (bridgeAsset call)
-- 1.2 L1 bridge contract emits BridgeEvent and updates GlobalExitRoot (GER)
-- 1.3 L1InfoTreeSyncer monitors L1 events and updates L1 Info Tree
-- 1.4 AggOracle fetches finalized GER from L1 and injects it into L2 GlobalExitRootManager contract
-- 1.5 User calls claimAsset on L2 (via Proxyd → op-geth RPC) with Merkle proof
-- 1.6 op-geth adds claim transaction to TxPool
-- 1.7 op-node (sequencer) triggers block building via Engine API (ForkchoiceUpdate)
-- 1.8 op-geth executes claim transaction from TxPool and credits user account
-- 1.9 op-node continues producing L2 blocks every 2 seconds
-- 1.10 RPC nodes expose updated balance/status to users
-
-### L2 → L1 Bridge Flow (via AggLayer)
-
-- 2.1 User initiates bridge withdrawal on L2 (bridgeAsset call via Proxyd → op-geth RPC)
-- 2.2 op-geth adds transaction to TxPool
-- 2.3 op-node (sequencer) triggers block building via Engine API
-- 2.4 op-geth executes bridge transaction, emits BridgeEvent, and updates Local Exit Root (LER)
-- 2.5 L2BridgeSyncer monitors L2 bridge events and updates local exit tree
-- 2.6 op-batcher collects L2 transactions and submits compressed batches to L1
-- 2.7 op-proposer periodically submits L2 state roots to L1 (every 2 minutes)
-
-### Certificate & Pessimistic Proof Settlement
-
-- 3.1 AggSender waits for epoch trigger
-- 3.2 AggSender fetches bridges/claims from L2BridgeSyncer and constructs Certificate:
-  - NetworkID: X Layer's rollup ID
-  - BridgeExits: L2→L1 bridges (updates LER)
-  - ImportedBridgeExits: L1→L2 claims with Merkle proofs
-- 3.3 AggSender signs and submits Certificate to AggLayer
-- 3.4 AggLayer coordinates ZK proof generation (via agglayer-prover)
-- 3.5 AggLayer submits proof + public inputs to L1 RollupManager contract
-- 3.6 L1 verifies proof and updates GlobalExitRoot
-- 3.7 After verification, withdrawals achieve L1 finality (Certificate status: Settled)
-
-### Continuous Synchronization
-
-- 4.1 L2BridgeSyncer continuously monitors L2 bridge/claim events
-- 4.2 L1InfoTreeSyncer continuously monitors L1 GER updates and RollupManager events
-- 4.3 AggOracle periodically injects finalized GER from L1 to L2
+- 1.x L1 deposit → credit on L2 (bridge in)
+  - 1.1 User deposits asset on L1 bridge contract
+  - 1.2 Bridge Service syncs L1 contract events (listen/ingest)
+  - 1.3 Bridge Service writes to DB and sends an L2 claim/mint Tx via RPCs
+  - 1.4 The Sequencer includes the Tx in a block
+  - 1.5 RPCs expose the updated balance/status to users
+- 2.x L2 user Tx & withdrawal (L2 → L1)
+  - 2.1 User sends an L2 withdraw Tx via RPCs
+  - 2.2 Sequencer generates blocks
+  - 2.3 L2BridgeSyncer / L1InfoTreeSyncer persist chain data and L1 info tree updates for PP
+- 3.x Certificate & PP settlement on L1
+  - 3.1 aggsender fetches blocks/epochs, stores certificate metadata (sqlite), and performs double‑check
+  - 3.2 aggsender submits the certificate to agglayer; agglayer syncs L1 info
+  - 3.3 agglayer‑prover generates the ZK proof; agglayer submits the certificate proof + public inputs to L1
+  - 3.4 After L1 verification, withdrawals/messages achieve L1 finality (PP verified)
+- 4.x Contract event sync (continuous)
+  - 4.1 Bridge Service syncs L2 contract events
+  - 4.2 Continuously sync L1 contract events
 
 Outcome: Fast execution happens on L2 with 2-second block times; for withdrawals, users wait for the 7-day challenge period to ensure security. All L2 data is published to L1, ensuring the system is fully trustless and censorship-resistant.
 
 This flow ensures immediate transaction finality on L2 for most operations while providing cryptographic security for cross-chain operations through the optimistic rollup model.
-
-## Pessimistic Proofs (PP) overview
-X Layer is built with Polygon CDK, an open‑source framework for EVM L2s on [Ethereum](https://ethereum.org/en/ "Ethereum"). For cross‑chain operations (e.g., withdrawals and bridge messages), X Layer leverages Polygon's Pessimistic Proof (PP). PP produces a succinct proof that the claimed state transition is valid with respect to L2, enabling secure settlement on L1 without publishing full L2 transaction data.
-
-## How L1 settlement works
-A verifier/bridge smart contract is deployed on Ethereum. For cross‑chain operations, the Polygon‑side `agglayer` submits a PP (ZK) certificate/proof to this contract on behalf of X Layer. The proof attests to the L2 state transition result but not the full transaction data. The verifier contract checks the validity of the submitted PP; invalid submissions are rejected and not processed on Ethereum.
-
-## Consensus & finality
-Transactions are executed by the EVM and finalized on L2 by the trusted sequencer set. Cross‑chain finality is handled by the Polygon‑side `agglayer` subsystem: xlayer generates and stores certificate data (metadata/epochs), `aggsender` syncs and submits certificates to `agglayer`, and `agglayer`/`agglayer‑prover` submits PP proofs on L1. The two key flows are: **L2 block production & data writes** and **cross‑chain certificate + PP submission**. Participants include **Sequencer** and the **aggsender/agglayer** pipeline.
-
-**Sequencer**: responsible for batching transactions on L2, producing blocks, and writing chain data.
-
-**aggsender/agglayer**: `aggsender` fetches blocks/certificates from the node side, performs double‑check, and syncs the certificate to `agglayer`; `agglayer` (with `agglayer‑prover`) submits PP proofs on L1 to complete cross‑chain settlement.
-
-
-## Data model and settlement
-X Layer stores transaction data and state off‑chain and uses PP only to settle cross‑chain operations on L1. This design keeps fees low and throughput high while still providing verifiable finality for bridge operations via proofs. 
-
-## X Layer node
-The X Layer node (based on `xlayer-erigon`) syncs with the L2 state. Trusted sequencers are responsible for managing L2 state and batching, while cross‑chain finality is handled by PP.
-
-<Tip title="Note">For node internals and configuration, see the `xlayer-erigon` repository.</Tip>
-
-## Pessimistic Proofs (PP) for cross‑chain
-For bridging and cross‑domain settlement, X Layer integrates Polygon's Pessimistic Proofs. During a withdrawal or cross‑chain message, an aggregator produces a PP that attests to the L2 state at a given checkpoint. This proof is verified by the L1 bridge/verifier contract before funds/messages are released on L1. PP is not used for day‑to‑day L2 transaction execution.
-
-## Transactions on X Layer
-Layer 2 transactions:
-  - A user sends a transaction from their wallet to the network via Proxyd/RPC; the Sequencer includes it in an L2 block.
-  - Once the Sequencer commits the block, the transaction is finalized on L2 (execution and fees are enforced on L2).
-  - For cross‑chain actions (withdrawals, bridge messages), xlayer produces a certificate; `aggsender` submits the certificate to `agglayer`.
-  - `agglayer`/`agglayer‑prover` generates a Pessimistic Proof (PP) and submits it to the L1 verifier/bridge contract.
-  - After the PP is verified on L1, the cross‑chain operation reaches L1 finality. Day‑to‑day L2 transactions do not require PP.
