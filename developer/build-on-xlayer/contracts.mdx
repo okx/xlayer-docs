@@ -10,7 +10,6 @@ These smart contracts facilitate operation on Ethereum Mainnet and Sepolia Testn
 |OptimismPortal|Core infrastructure contract for Optimism Rollup, handles deposits and withdrawals between L1 and L2, calls L1CrossDomainMessenger and DisputeGameFactory|[0x64057ad1ddac804d0d26a7275b193d9daca19993](https://etherscan.io/address/0x64057ad1ddac804d0d26a7275b193d9daca19993)|[0x1529a34331d7d85c8868fc88ec730ae56d3ec9c0](https://sepolia.etherscan.io/address/0x1529a34331d7d85c8868fc88ec730ae56d3ec9c0)|
 |SystemConfig|Manages OP Stack network configuration, stores network parameters and other contract addresses|[0x5065809af286321a05fbf85713b5d5de7c8f0433](https://etherscan.io/address/0x5065809af286321a05fbf85713b5d5de7c8f0433)|[0x06be4b4a9a28ff8eed6da09447bc5daa676efac3](https://sepolia.etherscan.io/address/0x06be4b4a9a28ff8eed6da09447bc5daa676efac3)|
 |L1CrossDomainMessenger|High-level message passing interface between L1 and L2|[0xf94b553f3602a03931e5d10cab343c0968d793e3](https://etherscan.io/address/0xf94b553f3602a03931e5d10cab343c0968d793e3)|[0xef40d5432d37b3935a11710c73f395e2c9921295](https://sepolia.etherscan.io/address/0xef40d5432d37b3935a11710c73f395e2c9921295)|
-|L1ERC721Bridge|Handles ERC721 NFT transfers between L1 and L2|[0x85d37236f063c687d056b3604cbee4b60d124858](https://etherscan.io/address/0x85d37236f063c687d056b3604cbee4b60d124858)|[0x37e7779ff8a5ddb69c20f2cdd65c880154647de1](https://sepolia.etherscan.io/address/0x37e7779ff8a5ddb69c20f2cdd65c880154647de1)|
 |DisputeGameFactory|Deploys dispute game instances to resolve state disputes|[0x9d4c8faeaddddeee1ed0c92dabad815c2484f675](https://etherscan.io/address/0x9d4c8faeaddddeee1ed0c92dabad815c2484f675)|[0x80388586ab4580936bcb409cc2dc6bc0221e1b6f](https://sepolia.etherscan.io/address/0x80388586ab4580936bcb409cc2dc6bc0221e1b6f)|
 |FaultDisputeGame|Resolves disputes about L2 state through interactive fault proofs|Not deployed (0x0000...)|Not deployed (0x0000...)|
 |PermissionedDisputeGame|Dispute game with permission restrictions for authorized challengers|[0xeeda796a23bc98726e47934ca9b54fdda5a608e8](https://etherscan.io/address/0xeeda796a23bc98726e47934ca9b54fdda5a608e8)|[0x6d5610d86dba85226146715b5c2b2adddade18c0](https://sepolia.etherscan.io/address/0x6d5610d86dba85226146715b5c2b2adddade18c0)|
@@ -28,9 +27,7 @@ These smart contracts facilitate operation on Ethereum Mainnet and Sepolia Testn
 |Name|Detail|L2 Address|
 |:----|:--|:--|
 |L2CrossDomainMessenger|L2 side cross-domain message passing interface|0x4200000000000000000000000000000000000007|
-|L2StandardBridge|L2 side standard bridge contract for token transfers|0x4200000000000000000000000000000000000010|
 |L2ToL1MessagePasser|Stores messages sent from L2 to L1 (with customGasToken support)|0x4200000000000000000000000000000000000016|
-|L2ERC721Bridge|L2 side ERC721 bridge contract for NFT transfers|0x4200000000000000000000000000000000000014|
 |L1Block|Provides access to latest known L1 block information|0x4200000000000000000000000000000000000015|
 |GasPriceOracle|Provides L1 fee calculation and offline gas estimation|0x420000000000000000000000000000000000000F|
 |BeaconBlockRoot|Provides access to L1 beacon block roots (EIP-4788)|0x000F3df6D732807Ef1319fB7B8bB8522d0Beac02|
