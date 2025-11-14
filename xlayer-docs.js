@@ -6,19 +6,6 @@
  */
 
 module.exports = [
-  {
-    title: 'Users',
-    basePath: ['/users'],
-    children: [
-      {
-        title: 'Welcome',
-        icon: 'okds-finance-bank',
-        children: [
-          '/users/welcome/about-x-layer',
-      ],
-      },
-    ],
-  },
     {
       title: 'Developers',
       basePath: ['/developer'],
@@ -45,16 +32,6 @@ module.exports = [
                 '/developer/deploy-a-smart-contract/deploy-with-hardhat',
                 '/developer/deploy-a-smart-contract/deploy-with-foundry',
                 '/developer/deploy-a-smart-contract/deploy-with-truffle'
-              ],
-          },
-
-          {
-            title:'Verify a smart contract',
-            path: '/developer/verify-a-smart-contract/verifying-contract',
-            children: [
-                '/developer/verify-a-smart-contract/manual-verification',
-                '/developer/verify-a-smart-contract/verify-with-foundry',
-                '/developer/verify-a-smart-contract/verify-with-hardhat',
               ],
           },
 
