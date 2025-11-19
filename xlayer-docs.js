@@ -6,19 +6,6 @@
  */
 
 module.exports = [
-  {
-    title: 'Users',
-    basePath: ['/users'],
-    children: [
-      {
-        title: 'Welcome',
-        icon: 'okds-finance-bank',
-        children: [
-          '/users/welcome/about-x-layer',
-      ],
-      },
-    ],
-  },
     {
       title: 'Developers',
       basePath: ['/developer'],
