@@ -4,134 +4,72 @@
 
 This guide will help you quickly deploy an X Layer self-hosted RPC node, providing complete L2 blockchain data access services.
 
-## ⚠️ Important: Migration from Legacy Mainnet /Testnet
-
-If you were previously running nodes on the legacy X Layer mainnet/ Testnet, please note:
-
-- **Data migration**: Previous blockchain data is incompatible with the current version
-- **Configuration changes**: Updated bootnodes, network parameters, and configuration files
-- **Fresh deployment required**: You'll need to deploy a completely new node instance
-
 ## 💻 System Requirements
 
-- **Operating System**: Linux (Ubuntu 20.04+ recommended)
-- **Memory**: Minimum 8GB, recommended 16GB+
-- **Storage**: Minimum 100GB SSD, recommended 500GB+
-- **Network**: Stable internet connection
-- **Docker**: Docker 20.10+ and Docker Compose 2.0+
+* **Operating System**: Linux (Ubuntu 20.04+ recommended)
+* **Memory**: Minimum 8GB, recommended 16GB+
+* **Storage**: Minimum 100GB SSD, recommended 500GB+
+* **Network**: Stable internet connection
+* **Docker**: Docker 20.10+ and Docker Compose 2.0+
 
 ## ⚡ Quick Deployment
-
-### 🎯 Option 1: One-Click Installation (Recommended)
 
 The easiest way to deploy your X Layer RPC node with minimal configuration:
 
 ```bash
-# One-click installation and setup
-curl -fsSL https://raw.githubusercontent.com/okx/xlayer-toolkit/main/scripts/rpc-setup/one-click-setup.sh -o one-click-setup.sh
-chmod +x one-click-setup.sh && ./one-click-setup.sh
+# Create your node directory and run setup
+mkdir -p /data/xlayer-mainnet && cd /data/xlayer-mainnet
+curl -fsSL https://raw.githubusercontent.com/okx/xlayer-toolkit/main/rpc-setup/one-click-setup.sh -o one-click-setup.sh
+chmod +x one-click-setup.sh
+# Run setup script (geth client)
+./one-click-setup.sh
 ```
 
 This script will:
-- ✅ Automatically detect your system requirements
-- ✅ Download the latest configuration files
-- ✅ Prompt you for required parameters interactively
-- ✅ Generate all necessary configuration files
-- ✅ Start the RPC node services
-- ✅ Verify the installation and show connection details
+
+* ✅ Automatically detect your system requirements
+* ✅ Download the latest configuration files
+* ✅ Prompt you for required parameters interactively
+* ✅ Generate all necessary configuration files
+* ✅ Start the RPC node services
+* ✅ Verify the installation and show connection details
 
 **Interactive prompts will ask for:**
-- Network type: `testnet` or `mainnet` 
 
-- L1 RPC URL - Ethereum L1 RPC endpoint
-
-- L1 Beacon URL -  Ethereum L1 Beacon RPC endpoint
-
-- Optional: Custom port mappings
-
-- Optional: Data directory location
+* Network type: `testnet` or `mainnet`
+* L1 RPC URL - Ethereum L1 RPC endpoint
+* L1 Beacon URL - Ethereum L1 Beacon RPC endpoint
+* Optional: Custom port mappings
 
 **After installation, your RPC node will be available at:**
-- HTTP RPC: `http://localhost:8545`
-- WebSocket: `ws://localhost:8546`
 
-### 🎯 Option 2: Manual Setup (Advanced Users)
+* HTTP RPC: `http://localhost:8545`
+* WebSocket: `ws://localhost:8546`
 
-For users who need custom configurations or want to understand the setup process:
-
-### 1. Environment Setup
+## 📊 Service Management
 
 ```bash
-# Clone the project
-git clone https://github.com/okx/xlayer-toolkit.git
-cd xlayer-toolkit
-git checkout main
-cd scripts/rpc-setup
-# Configure environment variables
-cp env.example .env
+# Check service status
+make status
+
+# Stop services (preserves data)
+make stop
+
+# Restart services
+make run
+
+# View logs
+docker compose logs -f
 ```
 
-### 2. Configuration
+## 📡 Service Ports
 
-Edit the `.env` file with necessary parameters:
+| Service           | Port  | Protocol  | Purpose             |
+| ----------------- | ----- | --------- | ------------------- |
+| op-geth RPC       | 8545  | HTTP      | JSON-RPC API        |
+| op-geth WebSocket | 8546  | WebSocket | WebSocket API       |
+| op-node RPC       | 9545  | HTTP      | Consensus layer API |
+| op-geth P2P       | 30303 | TCP/UDP   | P2P network         |
+| op-node P2P       | 9223  | TCP/UDP   | P2P network         |
 
-```bash
-L1_RPC_URL={your-l1-url}
-L1_BEACON_URL={your-l1-beacon-url}
-```
-
-**Configuration Notes:**
-
-- **L1 Network URLs**: Configure `L1_RPC_URL`  and  `L1_BEACON_URL` according to your target Ethereum network (mainnet or testnet).
-
-### 3. Start Services
-
-```bash
-# Init data (for mainnet)
-./init.sh mainnet
-# Start all services (for mainnet)
-./start.sh mainnet
-```
-
-The above scripts will automatically:
-- ✅ Download genesis file and initialize geth with it
-- ✅ Check environment variables
-- ✅ Create necessary directories
-- ✅ Generate JWT secret
-- ✅ Start Docker services
-- ✅ Display service information and management commands
-
-### 4. Service Management
-
-**Stop services (preserves data):**
-
-```bash
-./stop.sh
-```
-
-**Complete environment reset (removes all data):**
-
-```bash
-# Stop services and remove data (for mainnet)
-./stop.sh
-rm -rf ./data-mainnet
-# Re-initialize and start
-./init.sh mainnet
-./start.sh mainnet
-```
-
-**Note:** The `stop.sh` script stops services but preserves blockchain data. For a complete reset, you need to manually remove the `data-mainnet` directory before re-initializing.
-
-## 📊 Service Ports
-
-| Service | Port | Protocol | Purpose |
-| --- | --- | --- | --- |
-| op-geth RPC | 8545 | HTTP | JSON-RPC API |
-| op-geth WebSocket | 8546 | WebSocket | WebSocket API |
-| op-node RPC | 9545 | HTTP | Consensus layer API |
-| op-geth P2P | 30303 | TCP/UDP | P2P network |
-| op-node P2P | 9223 | TCP/UDP | P2P network |
-
----
-
-Thank you for building with X Layer 💪
+**Thank you for building with X Layer!** 💪
