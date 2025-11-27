@@ -80,7 +80,7 @@ After you set a password, Foundry will create an encrypted JSON keystore file in
 Your private key controls your assets. Never commit it to version control, share it, or expose it in plaintext.
 </Warning>
 
-## Deploy and Verify on X Layer Testnet
+## Deploy on X Layer Testnet
 
 With your environment configured, you're ready to deploy. The following steps will guide you through deploying the `Counter` contract, verifying it on the block explorer, and interacting with it directly from the command line.
 
@@ -94,7 +94,7 @@ forge create ./src/Counter.sol:Counter --rpc-url $XLAYER_TESTNET_RPC_URL --accou
 
 Foundry will ask for the password you set earlier. After a successful deployment, you'll see the deployer's address, the new contract address, and the transaction hash.
 
-### Step 2: Verify on the Block Explorer
+### Step 2: Check Your Deployment on the Block Explorer
 
 Copy the transaction hash from the previous step and paste it into the [X Layer Testnet Explorer](https://web3.okx.com/explorer/x-layer-testnet) to see the deployment transaction details. This confirms your contract is on-chain.
 
