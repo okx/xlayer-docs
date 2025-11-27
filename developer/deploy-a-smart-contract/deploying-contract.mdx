@@ -1,14 +1,125 @@
-# Deploying contract
+# Deploy Smart Contracts
 
-<CardPage
-  descriptionList={[
-    'Guide to deploy contract with Truffle',
-    'Guide to deploy contract with Hardhat',
-    'Guide to deploy contract with Foundry'
-  ]}
-  childrenList={[
-    '/developer/deploy-a-smart-contract/deploy-with-truffle',
-    '/developer/deploy-a-smart-contract/deploy-with-hardhat',
-    '/developer/deploy-a-smart-contract/deploy-with-foundry',
-  ]}
-/>
+Deploy your smart contracts on X Layer with full EVM equivalence and negligible gas fees.
+
+X Layer is built on the Optimism Stack, which means you can deploy any Ethereum smart contract without modifications. This guide walks you through deploying your first contract using Foundry, from environment setup to successful deployment.
+
+## What You'll Learn
+
+* Set up Foundry for X Layer development
+* Configure network connections and secure your private key
+* Deploy and interact with smart contracts on X Layer Testnet
+
+## Set Up Your Development Environment
+
+1. Create a new project directory
+
+```bash
+mkdir my-xlayer-project && cd my-xlayer-project
+```
+
+2. Install Foundry, a powerful framework for smart contract development
+
+```bash
+curl -L https://foundry.paradigm.xyz | bash
+foundryup
+```
+
+This installs Foundry and updates it to the latest version.
+
+3. Initialize a new Solidity project
+
+```bash
+forge init
+```
+
+Your Foundry project is now ready! You'll see a basic `Counter.sol` contract in the `src` directory - perfect for testing your first deployment.
+
+## Configure Foundry with X Layer
+
+To deploy your smart contracts to X Layer, you need two key components:
+
+1. A node connection to interact with the X Layer network
+2. A funded private key to deploy the contract
+
+Let's set up both of these:
+
+### 1. Set up your node connection
+
+1. Create a `.env` file in your project's root directory
+2. Add the X Layer network RPC URL to your `.env` file
+
+```bash
+XLAYER_RPC_URL="https://rpc.xlayer.tech"
+XLAYER_TESTNET_RPC_URL="https://testrpc.xlayer.tech"
+```
+
+3. Load your environment variables
+
+```bash
+source .env
+```
+
+<Tip title="Why X Layer Testnet?">
+Test your contracts risk-free before mainnet deployment. Get free testnet OKB from the [X Layer faucet](https://web3.okx.com/zh-hans/xlayer/docs/developer/bridge/get-testnet-okb-from-faucet) to cover gas fees. X Layer Testnet mirrors mainnet performance with 1-second block times and the same EVM equivalence.
+</Tip>
+
+### 2. Import Your Deployer Wallet
+
+To send transactions, you need to securely import the private key of the wallet you'll be deploying from. Foundry's encrypted keystore is the recommended way to handle private keys without exposing them in your code or environment variables.
+
+Run the following command. The `--interactive` flag will prompt you to safely paste your private key and set an encryption password:
+
+```bash
+cast wallet import deployer --interactive
+```
+
+After you set a password, Foundry will create an encrypted JSON keystore file in `~/.foundry/keystores`. This directory is git-ignored by default, adding another layer of security.
+
+<Warning title="Critical: Private Key Security">
+Your private key controls your assets. Never commit it to version control, share it, or expose it in plaintext.
+</Warning>
+
+## Deploy on X Layer Testnet
+
+With your environment configured, you're ready to deploy. The following steps will guide you through deploying the `Counter` contract, verifying it on the block explorer, and interacting with it directly from the command line.
+
+### Step 1: Deploy the Contract
+
+Run the `forge create` command to compile and deploy your contract. The `--account deployer` flag tells Foundry to use the encrypted keystore we just created, so you don't have to expose your private key.
+
+```bash
+forge create ./src/Counter.sol:Counter --rpc-url $XLAYER_TESTNET_RPC_URL --account deployer
+```
+
+Foundry will ask for the password you set earlier. After a successful deployment, you'll see the deployer's address, the new contract address, and the transaction hash.
+
+### Step 2: Check Your Deployment on the Block Explorer
+
+Copy the transaction hash from the previous step and paste it into the [X Layer Testnet Explorer](https://web3.okx.com/explorer/x-layer-testnet) to see the deployment transaction details. This confirms your contract is on-chain.
+
+### Step 3: Interact with the Contract
+
+Now, let's call a function on your new contract using `cast call`. This command reads data from the contract without creating a transaction.
+
+First, copy the deployed contract address from the terminal output and set it as an environment variable:
+```bash
+COUNTER_CONTRACT_ADDRESS="0x..." # Paste your contract address here
+source .env
+```
+
+Then, call the `number()` function:
+```bash
+cast call $COUNTER_CONTRACT_ADDRESS "number()(uint256)" --rpc-url $XLAYER_TESTNET_RPC_URL
+```
+
+The command will return `0x0000000000000000000000000000000000000000000000000000000000000000`, which is the default `uint256` value for the `number` state variable in our `Counter` contract.
+
+**Success! Your contract is now live and interactive on the X Layer Testnet.**
+
+
+### Go to Mainnet
+Ready for production? Switch to mainnet:
+* Use `$XLAYER_RPC_URL` instead of `$XLAYER_TESTNET_RPC_URL`
+* Fund your wallet with real OKB
+* Double-check your contract code and security
