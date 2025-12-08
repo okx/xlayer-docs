@@ -21,7 +21,6 @@ module.exports = [
             path: '/developer/build-on-xlayer/network-information',
             children: [
                 '/developer/build-on-xlayer/contracts',
-                '/developer/build-on-xlayer/safe-wallet',
               ],
           }, 
 
@@ -133,6 +132,10 @@ module.exports = [
               children: [
                 '/developer/tools/user-onboarding/privy',
               ]
+            },
+            {
+              title:'Safe Wallet',
+              path: '/developer/build-on-xlayer/safe-wallet',
             },
           ],
         },
