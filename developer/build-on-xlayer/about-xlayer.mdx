@@ -1,6 +1,12 @@
 # X Layer overview
 
-X Layer is a cutting-edge Ethereum layer 2 (L2) network built by OKX using the Optimism Stack (OP Stack) framework. Through extensive optimization and enhancement of the standard OP Stack, X Layer now supports throughput of up to 5,000 TPS with negligible gas fees. It offers full EVM equivalence (not just compatibility), enabling developers to deploy existing Ethereum applications without any modifications and develop new, innovative projects at a fraction of the cost compared to doing so on Ethereum. X Layer also enables users to interact with dapps at significantly lower gas fees and with faster transaction confirmation compared to Ethereum. X Layer leverages the battle-tested optimistic rollup architecture, where transactions are executed and sequenced on L2 with periodic batch submission to L1 Ethereum. The system assumes transactions are valid by default, with a 7-day challenge period for fraud proofs to ensure security. Unlike ZK rollups that require complex cryptographic proofs for every state transition, X Layer's optimistic approach allows for simpler and more efficient operation while maintaining the security guarantees of Ethereum. The implementation includes enterprise-grade enhancements such as the Conductor high-availability cluster for sequencer redundancy, ensuring 99.9% uptime for production environments. For more detailed information, you can check out the X Layer OP Stack architecture documentation.
+X Layer is an Ethereum Layer 2 (L2) network, built by OKX on an enhanced Optimism Stack, designed to provide developers with a superior environment for scaling applications.
+
+**Key Developer Advantages**
+- **Full EVM Equivalence:** Deploy your existing Ethereum applications without any code modifications.
+- **Exceptional Performance:** Achieve massive scalability with support for up to 5,000 TPS and negligible gas fees.
+- **Battle-Tested Security:** X Layer leverages the robust optimistic rollup architecture, inheriting the security guarantees of Ethereum, but with a simpler, more efficient operational model than ZK rollups.
+- **Enterprise-Grade Reliability:** Features like the Conductor high-availability cluster ensure sequencer redundancy, offering 99.9% uptime for your production-ready dapps.
 
 ## X Layer architecture
 The major components of X Layer are:
@@ -14,26 +20,44 @@ X Layer has evolved to adopt the Optimism Stack (OP Stack) framework, a battle-t
 
 ## Architecture flow (OP Stack + AggLayer mode)
 
-Starting from the user deposit on L1:
+**Phase 1: From L1 to L2**
 
-- 1.x L1 deposit → credit on L2 (bridge in)
-  - 1.1 User deposits asset on L1 bridge contract
-  - 1.2 Bridge Service syncs L1 contract events (listen/ingest)
-  - 1.3 Bridge Service writes to DB and sends an L2 claim/mint Tx via RPCs
-  - 1.4 The Sequencer includes the Tx in a block
-  - 1.5 RPCs expose the updated balance/status to users
-- 2.x L2 user Tx & withdrawal (L2 → L1)
-  - 2.1 User sends an L2 withdraw Tx via RPCs
-  - 2.2 Sequencer generates blocks
-  - 2.3 L2BridgeSyncer / L1InfoTreeSyncer persist chain data and L1 info tree updates for PP
-- 3.x Certificate & PP settlement on L1
-  - 3.1 aggsender fetches blocks/epochs, stores certificate metadata (sqlite), and performs double‑check
-  - 3.2 aggsender submits the certificate to agglayer; agglayer syncs L1 info
-  - 3.3 agglayer‑prover generates the ZK proof; agglayer submits the certificate proof + public inputs to L1
-  - 3.4 After L1 verification, withdrawals/messages achieve L1 finality (PP verified)
-- 4.x Contract event sync (continuous)
-  - 4.1 Bridge Service syncs L2 contract events
-  - 4.2 Continuously sync L1 contract events
+Process of bridging assets from ETH to X Layer
+
+| Step | Action | Description |
+|------|--------|-------------|
+| 1.1 | User Deposit | The user sends assets to the L1 bridge contract. |
+| 1.2 | Event Sync | The **Bridge Service** monitors (ingests) the L1 contract events. |
+| 1.3 | L2 Claim/Mint | The Bridge Service sends an L2 transaction (via RPCs) to claim/mint the asset on X Layer. |
+| 1.4 | Block Inclusion | The **Sequencer** includes this transaction in an L2 block. |
+| 1.5 | User Update | RPCs expose the updated balance/status to the user. |
+
+**Phase 2: Execution and withdrawal back to L1**
+
+Standard L2 operations and process of initiating withdrawal back to L1
+
+| Step | Action | Description |
+|------|--------|-------------|
+| 2.1 | Withdrawal Tx | The user sends an L2 withdrawal transaction via RPCs. |
+| 2.2 | Block Generation | The Sequencer continues to generate blocks (with **2-second finality**). |
+| 2.3 | Data Persistence | The `L2BridgeSyncer` and `L1InfoTreeSyncer` persist chain data and L1 info updates needed for the Proof of Pruning (PP). |
+
+**Phase 3: Cross-Chain Settlement & Proof (AggLayer)**
+
+This phase involves proving and finalizing the withdrawal on L1 using the AggLayer.
+
+| Step | Action | Description |
+|------|--------|-------------|
+| 3.1 | Certificate Prep | The `aggsender` fetches blocks, stores certificate metadata, and performs double-checks. |
+| 3.2 | Certificate Submission | The `aggsender` submits the certificate to the **AggLayer**. |
+| 3.3 | ZK Proof Generation | The `agglayer-prover` generates the ZK proof; the AggLayer submits the certificate proof and public inputs to L1. |
+| 3.4 | L1 Finality | After **L1 verification**, withdrawals and messages achieve L1 finality (PP is verified). |
+
+**Phase 4: Continuous System Synchronization**
+
+| Step | Action | Description |
+|------|--------|-------------|
+| 4.1 - 4.2 | Continuous Sync | The Bridge Service continuously synchronizes both L2 and L1 contract events to maintain state consistency. |
 
 Outcome: Fast execution happens on L2 with 2-second block times; for withdrawals, users wait for the 7-day challenge period to ensure security. All L2 data is published to L1, ensuring the system is fully trustless and censorship-resistant.
 
