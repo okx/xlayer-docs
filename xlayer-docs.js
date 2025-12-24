@@ -139,6 +139,10 @@ module.exports = [
             },
           ],
         },
+        {
+          title: 'Network Status',
+          path: 'https://status.xlayer.tech',
+        },
         ],
         },
       ],
