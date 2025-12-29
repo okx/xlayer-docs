@@ -141,7 +141,8 @@ module.exports = [
         },
         {
           title: 'Network Status',
-          path: 'https://status.xlayer.tech',
+          externalLink: 'https://status.xlayer.tech',
+          children: [],
         },
         ],
         },
