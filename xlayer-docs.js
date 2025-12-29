@@ -139,6 +139,12 @@ module.exports = [
             },
           ],
         },
+        {
+          title: 'Network Status',
+          icon: 'okx-defi-okbc-resources',
+          externalLink: 'https://status.xlayer.tech',
+          children: [],
+        },
         ],
         },
       ],
