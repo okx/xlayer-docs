@@ -2,7 +2,7 @@
 
 Using snapshots significantly reduces the initial sync time for X Layer RPC nodes. Snapshots are updated regularly and can be used with both **geth** and **reth** execution clients.
 
-> **💡 Recommended**: For most users, we recommend using the [one-click setup script](/developer/setup-rpc/setup-rpc) which automatically handles snapshot download and extraction. This page is intended for advanced users who need to manually download snapshots (e.g., for data recovery or custom setups).
+> **💡 Recommended**: For most users, we recommend using the [one-click setup script](./setup-rpc) which automatically handles snapshot download and extraction. This page is intended for advanced users who need to manually download snapshots (e.g., for data recovery or custom setups).
 
 ## 💡 Important Notes
 
@@ -15,12 +15,12 @@ Using snapshots significantly reduces the initial sync time for X Layer RPC node
 
 If you prefer to manually download and set up snapshots instead of using the one-click setup script, please choose the appropriate snapshot for your network and client from the table below.
 
-| Network | Client | Snapshot Type | Download Command (wget ...) |
+| Network | Client | Snapshot Type | Download Command |
 | ------- | ------ | ------------- | --------------------------- |
-| Mainnet | Reth   | Archive          | `wget https://static.okx.com/cdn/chain/xlayer/snapshot/$(curl -s https://static.okx.com/cdn/chain/xlayer/snapshot/reth-mainnet-latest)` |
-| Mainnet | Geth   | Archive          | `wget https://static.okx.com/cdn/chain/xlayer/snapshot/$(curl -s https://static.okx.com/cdn/chain/xlayer/snapshot/geth-mainnet-latest)` |
-| Testnet | Reth   | Archive          | `wget https://static.okx.com/cdn/chain/xlayer/snapshot/$(curl -s https://static.okx.com/cdn/chain/xlayer/snapshot/reth-testnet-latest)` |
-| Testnet | Geth   | Archive          | `wget https://static.okx.com/cdn/chain/xlayer/snapshot/$(curl -s https://static.okx.com/cdn/chain/xlayer/snapshot/geth-testnet-latest)` |
+| Mainnet | Reth | Archive | `wget https://static.okx.com/cdn/chain/xlayer/snapshot/$(curl -s https://static.okx.com/cdn/chain/xlayer/snapshot/reth-mainnet-latest)` |
+| Mainnet | Geth | Archive | `wget https://static.okx.com/cdn/chain/xlayer/snapshot/$(curl -s https://static.okx.com/cdn/chain/xlayer/snapshot/geth-mainnet-latest)` |
+| Testnet | Reth | Archive | `wget https://static.okx.com/cdn/chain/xlayer/snapshot/$(curl -s https://static.okx.com/cdn/chain/xlayer/snapshot/reth-testnet-latest)` |
+| Testnet | Geth | Archive | `wget https://static.okx.com/cdn/chain/xlayer/snapshot/$(curl -s https://static.okx.com/cdn/chain/xlayer/snapshot/geth-testnet-latest)` |
 
 ## 📋 Quick Reference
 
