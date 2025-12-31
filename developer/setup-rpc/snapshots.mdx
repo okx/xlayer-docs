@@ -1,0 +1,44 @@
+# Snapshots
+
+Using snapshots significantly reduces the initial sync time for X Layer RPC nodes. Snapshots are updated regularly and can be used with both **geth** and **reth** execution clients.
+
+> **💡 Recommended**: For most users, we recommend using the [one-click setup script](/developer/setup-rpc/setup-rpc) which automatically handles snapshot download and extraction. This page is intended for advanced users who need to manually download snapshots (e.g., for data recovery or custom setups).
+
+## 💡 Important Notes
+
+* **Disk Space**: Ensure you have at least **500GB** free space for mainnet snapshots (both for the archive and extracted data)
+* **Network Speed**: Snapshots are large files (several GB), so a stable internet connection is recommended
+* **Latest Snapshots**: The latest snapshot filenames are fetched dynamically, so you'll always get the most recent version
+* **Data Structure**: After extraction, move the chain data directories (e.g., `chaindata`, `nodes`, `segments`) directly into your data directory, not nested within another subfolder
+
+## 📥 Download Snapshots
+
+If you prefer to manually download and set up snapshots instead of using the one-click setup script, please choose the appropriate snapshot for your network and client from the table below.
+
+| Network | Client | Snapshot Type | Download Command (wget ...) |
+| ------- | ------ | ------------- | --------------------------- |
+| Mainnet | Reth   | Archive          | `wget https://static.okx.com/cdn/chain/xlayer/snapshot/$(curl -s https://static.okx.com/cdn/chain/xlayer/snapshot/reth-mainnet-latest)` |
+| Mainnet | Geth   | Archive          | `wget https://static.okx.com/cdn/chain/xlayer/snapshot/$(curl -s https://static.okx.com/cdn/chain/xlayer/snapshot/geth-mainnet-latest)` |
+| Testnet | Reth   | Archive          | `wget https://static.okx.com/cdn/chain/xlayer/snapshot/$(curl -s https://static.okx.com/cdn/chain/xlayer/snapshot/reth-testnet-latest)` |
+| Testnet | Geth   | Archive          | `wget https://static.okx.com/cdn/chain/xlayer/snapshot/$(curl -s https://static.okx.com/cdn/chain/xlayer/snapshot/geth-testnet-latest)` |
+
+## 📋 Quick Reference
+
+### Download Example
+
+```bash
+# Download mainnet geth snapshot
+wget https://static.okx.com/cdn/chain/xlayer/snapshot/$(curl -s https://static.okx.com/cdn/chain/xlayer/snapshot/geth-mainnet-latest)
+
+# Download mainnet reth snapshot
+wget https://static.okx.com/cdn/chain/xlayer/snapshot/$(curl -s https://static.okx.com/cdn/chain/xlayer/snapshot/reth-mainnet-latest)
+```
+
+### Extract Snapshot
+
+```bash
+# Extract the downloaded snapshot archive
+tar -xzvf <snapshot-filename.tar.gz>
+```
+
+**Thank you for building with X Layer!** 💪
