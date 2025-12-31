@@ -2,96 +2,43 @@
 
 Using snapshots significantly reduces the initial sync time for X Layer RPC nodes. Snapshots are updated regularly and can be used with both **geth** and **reth** execution clients.
 
-## 💡 Tips
+> **💡 Recommended**: For most users, we recommend using the [one-click setup script](./setup-rpc.mdx) which automatically handles snapshot download and extraction. This page is intended for advanced users who need to manually download snapshots (e.g., for data recovery or custom setups).
 
-* **Automated Setup**: For easier setup, use the [one-click setup script](./setup-rpc.mdx) which handles snapshot download and extraction automatically
-* **Disk Space**: Ensure you have at least **500GB** free space for mainnet snapshots
+## 💡 Important Notes
+
+* **Disk Space**: Ensure you have at least **500GB** free space for mainnet snapshots (both for the archive and extracted data)
 * **Network Speed**: Snapshots are large files (several GB), so a stable internet connection is recommended
 * **Latest Snapshots**: The latest snapshot filenames are fetched dynamically, so you'll always get the most recent version
+* **Data Structure**: After extraction, move the chain data directories (e.g., `chaindata`, `nodes`, `segments`) directly into your data directory, not nested within another subfolder
 
 ## 📥 Download Snapshots
 
-Choose the appropriate snapshot for your network and client from the table below. Use `wget` (or similar) to download it.
+If you prefer to manually download and set up snapshots instead of using the one-click setup script, please choose the appropriate snapshot for your network and client from the table below.
 
 | Network | Client | Snapshot Type | Download Command (wget ...) |
 | ------- | ------ | ------------- | --------------------------- |
-| Mainnet | Reth   | Full          | `wget https://static.okx.com/cdn/chain/xlayer/snapshot/$(curl -s https://static.okx.com/cdn/chain/xlayer/snapshot/reth-mainnet-latest)` |
-| Mainnet | Geth   | Full          | `wget https://static.okx.com/cdn/chain/xlayer/snapshot/$(curl -s https://static.okx.com/cdn/chain/xlayer/snapshot/geth-mainnet-latest)` |
-| Testnet | Reth   | Full          | Coming Soon |
-| Testnet | Geth   | Full          | Coming Soon |
+| Mainnet | Reth   | Archive          | `wget https://static.okx.com/cdn/chain/xlayer/snapshot/$(curl -s https://static.okx.com/cdn/chain/xlayer/snapshot/reth-mainnet-latest)` |
+| Mainnet | Geth   | Archive          | `wget https://static.okx.com/cdn/chain/xlayer/snapshot/$(curl -s https://static.okx.com/cdn/chain/xlayer/snapshot/geth-mainnet-latest)` |
+| Testnet | Reth   | Archive          | Coming Soon |
+| Testnet | Geth   | Archive          | Coming Soon |
 
-**Note**: Ensure you have enough free disk space to download the snapshot archive (`.tar.gz` file) **and** extract its contents. The extracted data will be significantly larger than the archive.
+## 📋 Quick Reference
 
-## 🔧 Manual Snapshot Setup
-
-If you prefer to manually download and set up snapshots instead of using the one-click setup script, follow these steps:
-
-### Step 1: Download the Snapshot
-
-Choose the appropriate snapshot for your network and client from the table above, then download it:
+### Download Example
 
 ```bash
-# Example: Download mainnet geth snapshot
+# Download mainnet geth snapshot
 wget https://static.okx.com/cdn/chain/xlayer/snapshot/$(curl -s https://static.okx.com/cdn/chain/xlayer/snapshot/geth-mainnet-latest)
+
+# Download mainnet reth snapshot
+wget https://static.okx.com/cdn/chain/xlayer/snapshot/$(curl -s https://static.okx.com/cdn/chain/xlayer/snapshot/reth-mainnet-latest)
 ```
 
-**Note**: Ensure you have enough free disk space to download the snapshot archive (`.tar.gz` file) **and** extract its contents. The extracted data will be significantly larger than the archive.
-
-### Step 2: Extract the Snapshot
-
-Extract the downloaded snapshot archive:
+### Extract Snapshot
 
 ```bash
-# Replace <snapshot-filename.tar.gz> with the actual downloaded filename
+# Extract the downloaded snapshot archive
 tar -xzvf <snapshot-filename.tar.gz>
 ```
-
-### Step 3: Prepare Data Directory
-
-Before running Docker, create the data directory that will be mapped into the Docker container:
-
-```bash
-# For geth
-mkdir -p <op-geth-data-path>
-
-# For reth
-mkdir -p <op-reth-data-path>
-```
-
-### Step 4: Move Extracted Data
-
-Move the extracted snapshot data into your data directory:
-
-```bash
-# For geth (adjust paths based on actual extraction structure)
-mv ./<extracted-folder>/* <op-geth-data-path>
-
-# For reth (adjust paths based on actual extraction structure)
-mv ./<extracted-folder>/* <op-reth-data-path>
-```
-
-The goal is to have the chain data directories (e.g., `chaindata`, `nodes`, `segments`, etc.) directly inside your data directory, not nested within another subfolder.
-
-### Step 5: Start the Node
-
-After the snapshot data is in place, start your node.
-
-```bash
-make run
-```
-
-Your node should begin syncing from the last block in the snapshot.
-
-### Step 6: Verify and Clean Up
-
-Monitor the node logs to ensure it starts syncing from the snapshot's block height:
-
-```bash
-docker compose logs -f
-```
-
-Once confirmed, you can safely delete the downloaded snapshot archive (`.tar.gz` file) to free up disk space.
-
-
 
 **Thank you for building with X Layer!** 💪
