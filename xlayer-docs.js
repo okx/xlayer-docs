@@ -59,6 +59,7 @@ module.exports = [
             children: [
               '/developer/setup-rpc/setup-rpc',
               '/developer/setup-rpc/setup-testnet-rpc',
+              '/developer/setup-rpc/snapshots',
             ],
           },
 

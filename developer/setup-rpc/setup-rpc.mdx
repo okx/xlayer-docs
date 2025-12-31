@@ -1,50 +1,81 @@
-# X Layer RPC Node Deployment Guide
+# One-click Setup
 
 ## 📋 Overview
 
-This guide will help you quickly deploy an X Layer self-hosted RPC node, providing complete L2 blockchain data access services.
+Quickly deploy an X Layer self-hosted RPC node with support for both **geth** and **reth** execution clients.
 
 ## 💻 System Requirements
 
-* **Operating System**: Linux (Ubuntu 20.04+ recommended)
-* **Memory**: Minimum 8GB, recommended 16GB+
-* **Storage**: Minimum 100GB SSD, recommended 500GB+
-* **Network**: Stable internet connection
+* **OS**: Linux (Ubuntu 20.04+ recommended)
+* **Memory**: 8GB minimum, 16GB+ recommended
+* **Storage**: 200GB SSD minimum, 500GB+ recommended
 * **Docker**: Docker 20.10+ and Docker Compose 2.0+
 
-## ⚡ Quick Deployment
+## ⚡ Quick Start
 
-The easiest way to deploy your X Layer RPC node with minimal configuration:
+### Download and Run Setup
 
 ```bash
-# Create your node directory and run setup
-mkdir -p /data/xlayer-mainnet && cd /data/xlayer-mainnet
+mkdir -p /data/xlayer-rpc && cd /data/xlayer-rpc
 curl -fsSL https://raw.githubusercontent.com/okx/xlayer-toolkit/main/rpc-setup/one-click-setup.sh -o one-click-setup.sh
 chmod +x one-click-setup.sh
-# Run setup script (geth client)
-./one-click-setup.sh
 ```
 
-This script will:
+### Choose RPC Client Type
 
-* ✅ Automatically detect your system requirements
-* ✅ Download the latest configuration files
-* ✅ Prompt you for required parameters interactively
-* ✅ Generate all necessary configuration files
-* ✅ Start the RPC node services
-* ✅ Verify the installation and show connection details
+You can specify the execution client type:
 
-**Interactive prompts will ask for:**
+```bash
+# Use geth (default)
+./one-click-setup.sh
 
-* Network type: `testnet` or `mainnet`
-* L1 RPC URL - Ethereum L1 RPC endpoint
-* L1 Beacon URL - Ethereum L1 Beacon RPC endpoint
-* Optional: Custom port mappings
+# Use reth
+./one-click-setup.sh --rpc_type=reth
+```
 
-**After installation, your RPC node will be available at:**
+### Interactive Setup
 
-* HTTP RPC: `http://localhost:8545`
-* WebSocket: `ws://localhost:8546`
+The script will prompt you for:
+
+1. **Network type**: `testnet` or `mainnet` (default: mainnet)
+2. **Sync mode**: `genesis` or `snapshot` (default: snapshot)
+- **Snapshot**: Fast sync using pre-built snapshots (recommended)
+- **Genesis**: Sync from genesis block
+3. **L1 RPC URL**: Ethereum L1 RPC endpoint
+4. **L1 Beacon URL**: Ethereum L1 Beacon chain endpoint
+5. **Ports** (optional, with defaults):
+- RPC port (default: 8545)
+- WebSocket port (default: 8546)
+- Engine API port (default: 8552)
+- Node RPC port (default: 9545)
+- P2P ports (default: 30303, 9223)
+
+### Supported Configurations
+
+| Network | Client | Snapshot | Genesis |
+|---------|--------|----------|---------|
+| Mainnet | geth   | ✅       | ✅      |
+| Mainnet | reth   | ✅       | ✅      |
+| Testnet | geth   | ✅       | ✅      |
+| Testnet | reth   | ❌       | ✅      |
+
+## 🚀 Running Multiple Instances
+
+You can run multiple RPC nodes on the same machine with different ports:
+
+```bash
+# First instance (mainnet-geth)
+cd /data/xlayer-testnet-geth
+./one-click-setup.sh --rpc_type=geth
+# Configure: mainnet, ports 8545, 8546, etc.
+
+# Second instance (mainnet-reth) - use different ports
+cd /data/xlayer-testnet-reth
+./one-click-setup.sh --rpc_type=reth
+# Configure: mainnet, ports 8547, 8548, etc.
+```
+
+Each instance uses isolated container names and networks, so they won't conflict.
 
 ## 📊 Service Management
 
@@ -55,6 +86,10 @@ make status
 # Stop services (preserves data)
 make stop
 
+# Stop specific instance
+make stop TARGET=mainnet-geth
+make stop TARGET=mainnet-reth
+
 # Restart services
 make run
 
@@ -64,12 +99,25 @@ docker compose logs -f
 
 ## 📡 Service Ports
 
-| Service           | Port  | Protocol  | Purpose             |
-| ----------------- | ----- | --------- | ------------------- |
-| op-geth RPC       | 8545  | HTTP      | JSON-RPC API        |
-| op-geth WebSocket | 8546  | WebSocket | WebSocket API       |
-| op-node RPC       | 9545  | HTTP      | Consensus layer API |
-| op-geth P2P       | 30303 | TCP/UDP   | P2P network         |
-| op-node P2P       | 9223  | TCP/UDP   | P2P network         |
+| Service           | Default Port | Protocol  | Purpose             |
+| ----------------- | ----------- | --------- | ------------------- |
+| RPC API           | 8545        | HTTP      | JSON-RPC API        |
+| WebSocket         | 8546        | WebSocket | WebSocket API       |
+| Engine API        | 8552        | HTTP      | Engine API          |
+| Op-Node RPC       | 9545        | HTTP      | Consensus layer API |
+| Execution P2P     | 30303       | TCP/UDP   | P2P network         |
+| Op-Node P2P       | 9223        | TCP/UDP   | P2P network         |
+
+All ports are configurable during setup.
+
+## 🔗 Access Your RPC Node
+
+After setup, your RPC node will be available at:
+
+* **HTTP RPC**: `http://localhost:<RPC_PORT>`
+* **WebSocket**: `ws://localhost:<WS_PORT>`
+* **Op-Node API**: `http://localhost:<NODE_RPC_PORT>`
+
+Run `make status` to see your configured ports.
 
 **Thank you for building with X Layer!** 💪
