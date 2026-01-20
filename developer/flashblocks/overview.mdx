@@ -1,0 +1,475 @@
+# Flashblocks
+
+Flashblocks delivers 200-millisecond preconfirmations on X Layer, drastically reducing wait times for transaction feedback. Perfect for applications where speed is critical.
+
+## Overview
+
+Flashblocks enables transaction pre-confirmations in ~200ms. This drastically reduces user-perceived latency. Therefore, enabling near-instantaneous user experiences for applications that require real-time interactions like gaming, high-frequency trading, and social apps.
+
+## Leveraging Flashblocks
+
+Developers can easily leverage the capabilities of flashblocks in the following ways:
+
+1. **Pending Tag Queries**: Query RPC's supported flashblocks endpoints, with the `pending` tag.
+2. **Raw Data Streaming**: Streaming new flashblocks data directly from the raw flashblocks feed.
+
+The following public endpoints can be used to test out flashblocks. These endpoints are public and may be rate-limited.
+
+| Network | URL |
+|---------|-----|
+| Mainnet | `wss://ws.xlayer.tech/flashblocks` |
+| Mainnet | `wss://xlayerws.okx.com/flashblocks` |
+| Testnet | `wss://testws.xlayer.tech/flashblocks` |
+| Testnet | `wss://xlayertestws.okx.com/flashblocks` |
+
+## Supported RPC APIs
+
+Flashblocks APIs are fully compatible with the default standards of the Ethereum JSON-RPC standards. Flashblocks APIs uses the `pending` tags for the last received flashblock chainstate, which is applied onto the pending state.
+
+### eth_blockNumber
+
+Get the current flashblocks pending block height
+
+```shell
+curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":["pending"],"id":1}'
+```
+
+**Example Response**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": "0x832437"
+}
+```
+
+### eth_call
+
+Executes a new message call immediately without creating a new transaction on the chain
+
+```shell
+curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_call","params":[{"to":"0x...","data":"0x..."},"pending"],"id":1}'
+```
+
+**Example Response**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": "0x0000000000000000000000000000000000000000000000000000000000000001"
+}
+```
+
+### eth_estimateGas
+
+Returns an estimate of how much gas is needed to allow the transaction to complete
+
+```shell
+curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_estimateGas","params":[{"to":"0x...","data":"0x..."},"pending"],"id":1}'
+```
+
+**Example Response**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": "0x5208"
+}
+```
+
+### eth_getBalance
+
+Returns the latest native address balance
+
+```shell
+curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBalance","params":["0x...","pending"],"id":1}'
+```
+
+**Example Response**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": "0x1234"
+}
+```
+
+### eth_getTransactionCount
+
+Returns the latest account transaction count based on the given address
+
+```shell
+curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getTransactionCount","params":["0x...","pending"],"id":1}'
+```
+
+**Example Response**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": "0x1b"
+}
+```
+
+### eth_getCode
+
+Returns the latest account code based on the given address
+
+```shell
+curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getCode","params":["0x...","pending"],"id":1}'
+```
+
+**Example Response**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": "0x606060..."
+}
+```
+
+### eth_getStorageAt
+
+Returns the latest account storage state based on the given address and position index
+
+```shell
+curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getStorageAt","params":["0x...","0x0","pending"],"id":1}'
+```
+
+**Example Response**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": "0x0000000000000000000000000000000000000000000000000000000000000001"
+}
+```
+
+### eth_getBlockByHash
+
+Returns the specified block based on the given block hash. Note that flashblocks and their corresponding canonical blocks share the same block number but may have different block hashes.
+
+```shell
+curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBlockByHash","params":["0x...",true],"id":1}'
+```
+
+**Example Response**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "number": "0x832437",
+    "hash": "0x...",
+    "transactions": ["0x..."]
+  }
+}
+```
+
+### eth_getBlockByNumber
+
+Returns the specified block based on the block number
+
+```shell
+curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["pending",true],"id":1}'
+```
+
+**Example Response**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "number": "0x832437",
+    "hash": "0x...",
+    "transactions": [{}]
+  }
+}
+```
+
+### eth_getBlockReceipts
+
+Returns the specified block transaction receipts based on the block number
+
+```shell
+curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBlockReceipts","params":["pending"],"id":1}'
+```
+
+**Example Response**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": [
+    {
+      "transactionHash": "0x...",
+      "transactionIndex": "0x0",
+      "status": "0x1"
+    }
+  ]
+}
+```
+
+### eth_getBlockTransactionCountByNumber
+
+Returns the specified confirmed block's transaction count
+
+```shell
+curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBlockTransactionCountByNumber","params":["pending"],"id":1}'
+```
+
+**Example Response**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": "0xa"
+}
+```
+
+### eth_getBlockTransactionCountByHash
+
+Returns the number of transactions in the specified block based on the given block hash
+
+```shell
+curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBlockTransactionCountByHash","params":["0x..."],"id":1}'
+```
+
+**Example Response**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": "0xa"
+}
+```
+
+### eth_getTransactionByHash
+
+Returns the transaction data based on the given transaction hash
+
+```shell
+curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getTransactionByHash","params":["0x..."],"id":1}'
+```
+
+**Example Response**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "hash": "0x...",
+    "nonce": "0x1",
+    "s": "0x..."
+  }
+}
+```
+
+### eth_getRawTransactionByHash
+
+Returns the raw transaction data based on the given transaction hash
+
+```shell
+curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getRawTransactionByHash","params":["0x..."],"id":1}'
+```
+
+**Example Response**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": "0xf86c018503b9aca008252089400000000000000000000000000000000000000008800de0b6b3a7640000801ba0..."
+}
+```
+
+### eth_getTransactionReceipt
+
+Returns the transaction receipt based on the given transaction hash
+
+```shell
+curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getTransactionReceipt","params":["0x..."],"id":1}'
+```
+
+**Example Response**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "transactionHash": "0x...",
+    "transactionIndex": "0x0",
+    "status": "0x1"
+  }
+}
+```
+
+### eth_getTransactionByBlockNumberAndIndex
+
+Returns the transaction data based on the given block number and block transaction index
+
+```shell
+curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getTransactionByBlockNumberAndIndex","params":["pending","0x0"],"id":1}'
+```
+
+**Example Response**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "hash": "0x...",
+    "nonce": "0x1",
+    "s": "0x..."
+  }
+}
+```
+
+### eth_getTransactionByBlockHashAndIndex
+
+Returns the transaction data based on the given block hash and block transaction index
+
+```shell
+curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getTransactionByBlockHashAndIndex","params":["0x...","0x0"],"id":1}'
+```
+
+**Example Response**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "hash": "0x...",
+    "nonce": "0x1",
+    "s": "0x..."
+  }
+}
+```
+
+## Quick Start
+
+The following libraries can work with any RPC endpoints with flashblocks enabled.
+
+### Viem
+
+```javascript
+import { createWalletClient, createPublicClient, http, defineChain } from 'viem';
+import { privateKeyToAccount } from 'viem/accounts';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+// TODO: create PR to viem
+const xlayerPreconf = defineChain({
+    id: 195,
+    name: 'X Layer Preconf',
+    nativeCurrency: { name: 'OKB', symbol: 'OKB', decimals: 18 },
+    rpcUrls: {
+        default: { http: ['https://rpc.xlayer.tech'] },
+    },
+    blockExplorers: {
+        default: { name: 'Explorer', url: 'https://www.oklink.com/xlayer-test' },
+    },
+    testnet: true,
+});
+
+const account = privateKeyToAccount(process.env.PRIVATE_KEY);
+
+const walletClient = createWalletClient({
+    account,
+    chain: xlayerPreconf,
+    transport: http('https://rpc.xlayer.tech'),
+});
+
+const publicClient = createPublicClient({
+    chain: xlayerPreconf,
+    transport: http('https://rpc.xlayer.tech'),
+});
+
+async function sendTransaction() {
+    try {
+        const submissionTime = new Date();
+        const hash = await walletClient.sendTransaction({
+            to: '0x0000000000000000000000000000000000000001',
+            value: BigInt('100000000000000'),
+        });
+
+        console.log(`Transaction submitted time: ${submissionTime.toISOString()}`);
+        console.log(`Transaction hash: ${hash}`);
+
+        let receipt = null;
+        while (!receipt) {
+            try {
+                receipt = await publicClient.getTransactionReceipt({ hash });
+            } catch (e) {
+                await new Promise(resolve => setTimeout(resolve, 10));
+            }
+        }
+
+        const confirmationTime = new Date();
+        console.log(`Transaction confirmed time: ${confirmationTime.toISOString()}`);
+        console.log(`Time difference: ${confirmationTime.getTime() - submissionTime.getTime()}ms`);
+    } catch (error) {
+        console.error('Error sending transaction:', error);
+    }
+}
+
+sendTransaction();
+// node src/ViemExample.js
+```
+
+### Ethers
+
+```javascript
+import { ethers } from 'ethers';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const provider = new ethers.JsonRpcProvider(
+    "https://rpc.xlayer.tech"
+);
+
+async function sendTransaction() {
+    try {
+        const tx = {
+            to: "0x0000000000000000000000000000000000000001",
+            value: ethers.parseEther("0.0000001"),
+        };
+
+        // Submit transaction
+        const submissionTime = new Date();
+        const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
+        const transaction = await wallet.sendTransaction(tx);
+
+        console.log(`Transaction submitted time: ${submissionTime.toISOString()}`);
+        console.log(`Transaction hash: ${transaction.hash}`);
+
+        await transaction.wait(0); // Set confirmation count to 0 for flashblocks
+        const confirmationTime = new Date();
+        console.log(`Transaction confirmed time: ${confirmationTime.toISOString()}`);
+        console.log(`Time difference: ${confirmationTime.getTime() - submissionTime.getTime()}ms`);
+    } catch (error) {
+        console.error('Error sending transaction:', error);
+    }
+}
+
+sendTransaction();
+// node src/EthersExample.js
+```
