@@ -64,6 +64,15 @@ module.exports = [
 
             '/developer/rpc-endpoints/rpc-endpoints',
             '/developer/websockets-endpoints/websocket-endpoints',
+
+          {
+            title: 'Flashblocks',
+            path: '/developer/flashblocks/overview',
+            children: [
+              '/developer/flashblocks/node-providers',
+              '/developer/flashblocks/faq',
+            ],
+          },
           ]
         },
 

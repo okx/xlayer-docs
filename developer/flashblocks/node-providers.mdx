@@ -1,0 +1,134 @@
+# Node Providers
+
+This guide explains how to set up a Flashblocks-enabled RPC node.
+
+## Quick Start
+
+### Prerequisites
+
+- Docker and Docker Compose
+- Minimum hardware requirements (System Requirements)
+- Access to a Flashblocks websocket endpoint
+
+### Setting Up
+
+View [xlayer-toolkit's README](https://github.com/okx/xlayer-toolkit) for more information.
+
+```shell
+mkdir -p /data/xlayer-mainnet && cd /data/xlayer-mainnet
+curl -fsSL https://raw.githubusercontent.com/okx/xlayer-toolkit/main/rpc-setup/one-click-setup.sh -o one-click-setup.sh
+chmod +x one-click-setup.sh
+./one-click-setup.sh --rpc_type=reth
+```
+
+## Configuration
+
+The `one-click-setup.sh` file will have interactive prompts which will be configuring flashblock-related variables. For flashblocks specific configurations, please refer below:
+
+| Variable | Value |
+|----------|-------|
+| `FLASHBLOCKS_ENABLED` | `true` |
+| `FLASHBLOCKS_URL` | `wss://xlayerws.okx.com/flashblocks` |
+
+:::note
+The RPC must be running **reth** instead of geth.
+:::
+
+## Verifying Flashblocks Functionality
+
+Nodes with Flashblocks will return preconfirmed transactions in the pending block:
+
+```shell
+curl http://localhost:8545 -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["pending",true],"id":1}'
+```
+
+## Flashblocks Websocket
+
+The public websocket API is exposed at the following endpoints and is used to stream raw flashblock data. This is the URL needed during the configuration of RPC node while setting up.
+
+| Network | URL |
+|---------|-----|
+| Mainnet | `wss://ws.xlayer.tech/flashblocks` |
+| Mainnet | `wss://xlayerws.okx.com/flashblocks` |
+| Testnet | `wss://testws.xlayer.tech/flashblocks` |
+| Testnet | `wss://xlayertestws.okx.com/flashblocks` |
+
+## Flashblocks Data
+
+Flashblock messages use delta compression:
+
+- **Index 0**: Full base and diff object (block properties + transactions)
+- **Index 1+**: diff object (new transactions in the flashblock). This reduces message size by transmitting only incremental changes.
+
+### Base + Diff Response
+
+```json
+{
+  "base": {
+    "base_fee_per_gas": "0x5f5e0ff",
+    "block_number": "0x8328ab",
+    "extra_data": "0x...",
+    "fee_recipient": "0x...",
+    "gas_limit": "0xbebc200",
+    "parent_beacon_block_root": "0x...",
+    "parent_hash": "0x...",
+    "prev_randao": "0x...",
+    "timestamp": "0x695dd9b6"
+  },
+  "diff": {
+    "blob_gas_used": "0x0",
+    "block_hash": "0x...",
+    "gas_used": "0x6c63",
+    "logs_bloom": "0x...",
+    "receipts_root": "0x...",
+    "state_root": "0x...",
+    "transactions": [],
+    "withdrawals": [],
+    "withdrawals_root": "0x..."
+  },
+  "index": 0,
+  "metadata": {
+    "block_number": 8595627,
+    "new_account_balances": {
+      "0x0000f90827f1c53a10cb7a02335b175320002935": "0x0"
+    },
+    "receipts": {
+      "0x56d542ee662d9a7e1696880346a3f2fb1ed091c15b7c6b607f64ae95e431b097": {
+        "Deposit": {}
+      }
+    }
+  },
+  "payload_id": "0x03307607ad2ba79d"
+}
+```
+
+### Diff Response
+
+```json
+{
+  "diff": {
+    "blob_gas_used": "0x0",
+    "block_hash": "0x...",
+    "gas_used": "0xbe6b",
+    "logs_bloom": "0x...",
+    "receipts_root": "0x...",
+    "state_root": "0x...",
+    "transactions": [],
+    "withdrawals": [],
+    "withdrawals_root": "0x..."
+  },
+  "index": 1,
+  "metadata": {
+    "block_number": 8595627,
+    "new_account_balances": {
+      "0x0000f90827f1c53a10cb7a02335b175320002935": "0x0"
+    },
+    "receipts": {
+      "0x30130a020af408787a9388dcf0272635fff7bc15ae118edb76d207391bb57b51": {
+        "Legacy": {}
+      }
+    }
+  },
+  "payload_id": "0x03307607ad2ba79d"
+}
+```

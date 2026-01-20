@@ -1,0 +1,29 @@
+# Flashblocks FAQ
+
+## Flashblocks Block Building
+
+### How many flashblocks per L2 block?
+
+Typically 3-5 flashblocks can be built within the X Layer's 1-second block time, each representing ~200ms intervals. The exact number depends on network conditions and transaction volume.
+
+### When will there be fewer than 5 flashblocks in each block?
+
+When the network is congested and the previous flashblock takes too long to build, the protocol automatically compensates to fit fewer flashblocks within the 1-second block window.
+
+### In what scenario will the sequencer stop producing flashblocks?
+
+In the unlikely scenario where all reth sequencers fail, the backup sequencer (without flashblocks) takes over to build blocks, then flashblocks will stop producing.
+
+### What are the implications of a reorg?
+
+This means that a transaction was streamed out as a pre-confirmed transaction, but may not actually be included in the canonical chain.
+
+### How often does a reorg occur?
+
+Reorgs occur very rarely.
+
+## Flashblocks WebSocket
+
+### What is WebSocket streaming?
+
+Raw flashblock streaming provides lower-level access to flashblock data with potentially lower latency but requires custom parsing.
