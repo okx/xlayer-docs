@@ -132,3 +132,37 @@ Flashblock messages use delta compression:
   "payload_id": "0x03307607ad2ba79d"
 }
 ```
+
+## Live Testing
+Test Flashblocks on X Layer using our public RPC endpoint with the following supported methods by running these commands in your terminal with your parameters.
+
+
+### eth_getBlockByNumber
+```shell
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["pending",true],"id":1}'
+```
+
+### eth_getTransactionReceipt
+```shell
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getTransactionReceipt","params":["0x..."],"id":1}'
+```
+### eth_getBalance
+```shell
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBalance","params":["0x...","pending"],"id":1}'
+```
+### eth_getTransactionCount
+```shell
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getTransactionCount","params":["0x...","pending"],"id":1}'
+```
+### eth_getTransactionByHash
+```shell
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getTransactionByHash","params":["0x..."],"id":1}'
+```
+### eth_call
+```shell
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_call","params":[{"to":"0x...","data":"0x..."},"pending"],"id":1}'
+```
+### eth_estimateGas
+```shell
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_estimateGas","params":[{"to":"0x...","data":"0x..."},"pending"],"id":1}'
+```
