@@ -21,6 +21,7 @@ module.exports = [
             path: '/developer/build-on-xlayer/network-information',
             children: [
                 '/developer/build-on-xlayer/contracts',
+                '/developer/build-on-xlayer/address-format',
               ],
           }, 
 
