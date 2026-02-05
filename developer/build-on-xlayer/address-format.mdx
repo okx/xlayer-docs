@@ -1,0 +1,328 @@
+# Address Format
+
+X Layer is an EVM-compatible blockchain network that supports two address formats: Standard EVM Address Format and XKO Prefix Address Format.
+
+## Supported Address Formats
+
+### Standard EVM Address Format
+- **Format**: `0x` + 40 hexadecimal characters
+- **Example**: `0x70586BeEB7b7Aa2e7966DF9c8493C6CbFd75C625`
+- **Features**:
+  - Complies with EIP-55 checksum standard (mixed case)
+  - Fully compatible with all Ethereum tools and wallets
+
+### XKO Prefix Address Format
+- **Format**: `XKO` + 40 hexadecimal characters
+- **Example**: `XKO70586BeEB7b7Aa2e7966DF9c8493C6CbFd75C625`
+- **Features**:
+  - X Layer proprietary address format
+  - Case-insensitive prefix (XKO, xko, Xko all valid)
+  - Preserves EIP-55 checksum casing
+  - Easy identification of X Layer ecosystem addresses
+
+### Address Equivalence
+
+The same account can be represented in both formats, pointing to the same on-chain account:
+
+```
+Standard EVM:  0x70586BeEB7b7Aa2e7966DF9c8493C6CbFd75C625
+XKO address:   XKO70586BeEB7b7Aa2e7966DF9c8493C6CbFd75C625
+               xko70586beeb7b7aa2e7966df9c8493c6cbfd75c625  ✓ Valid
+               Xko70586beeb7b7aa2e7966df9c8493c6cbfd75c625  ✓ Valid
+```
+
+**Invalid format examples**:
+```
+XKO0x70586BeEB7b7Aa2e7966DF9c8493C6CbFd75C625  ✗ Cannot have both XKO and 0x
+```
+
+---
+
+## XKO Prefix Address Design
+
+XKO address is essentially an alternative representation of a standard EVM address:
+
+1. **Address Core**: 40 hexadecimal characters (same as EVM address)
+2. **Prefix Replacement**: `XKO` replaces `0x` prefix
+3. **Checksum Preservation**: Maintains Keccak-256 hash-based case checksum
+4. **On-Chain Storage**: Stored as standard 20-byte address on-chain
+
+---
+
+## SDK Integration Guide
+
+X Layer provides multi-language SDKs for address format conversion, supporting:
+
+- JavaScript
+- TypeScript
+- Python
+- Go
+- Rust
+- Java
+
+### Core APIs
+
+All SDKs provide two core functions:
+
+| Function | Purpose | Input | Output |
+|----------|---------|-------|--------|
+| `toEvmAddress` | Convert to standard EVM address | `0x...` / `XKO...` / bare address | `0x` + 40 chars (EIP-55 checksum) |
+| `fromEvmAddress` | Convert to XKO address | `0x...` / bare address | `XKO` + 40 chars (preserves checksum) |
+
+Some SDKs also provide utility functions:
+
+| Function | Purpose | Available In |
+|----------|---------|--------------|
+| `isXlayerAddress` | Check if address is XKO format | Java |
+
+---
+
+### JavaScript SDK
+
+**Installation**:
+```bash
+npm install js-sha3
+```
+
+**Usage Example**:
+```javascript
+const { toEvmAddress, fromEvmAddress } = require('./multiAddress.js');
+
+// XKO to standard EVM address
+const evmAddr = toEvmAddress('XKO70586beeb7b7aa2e7966df9c8493c6cbfd75c625');
+console.log(evmAddr);
+// Output: 0x70586BeEB7b7Aa2e7966DF9c8493C6CbFd75C625
+
+// Standard EVM to XKO address
+const xkoAddr = fromEvmAddress('0x70586BeEB7b7Aa2e7966DF9c8493C6CbFd75C625');
+console.log(xkoAddr);
+// Output: XKO70586BeEB7b7Aa2e7966DF9c8493C6CbFd75C625
+
+// Supports multiple input formats
+toEvmAddress('0x70586beeb7b7aa2e7966df9c8493c6cbfd75c625');  // ✓
+toEvmAddress('70586beeb7b7aa2e7966df9c8493c6cbfd75c625');    // ✓
+toEvmAddress('XKO70586beeb7b7aa2e7966df9c8493c6cbfd75c625'); // ✓
+```
+
+**Error Handling**:
+```javascript
+try {
+  toEvmAddress('invalid');
+} catch (error) {
+  console.error(error.message);
+  // Output: Invalid address length: expected 40 hex chars, got 7
+}
+```
+
+---
+
+### TypeScript SDK
+
+**Installation**:
+```bash
+npm install js-sha3
+```
+
+**Usage Example**:
+```typescript
+import { toEvmAddress, fromEvmAddress } from './multiAddress';
+
+// Type-safe address conversion
+const evmAddr: string = toEvmAddress('XKO70586beeb7b7aa2e7966df9c8493c6cbfd75c625');
+const xkoAddr: string = fromEvmAddress('0x70586BeEB7b7Aa2e7966DF9c8493C6CbFd75C625');
+
+// Type checking
+toEvmAddress(123); // TypeScript compile error
+```
+
+---
+
+### Python SDK
+
+**Installation**:
+```bash
+pip install eth-utils
+```
+
+**Usage Example**:
+```python
+from multi_address import to_evm_address, from_evm_address
+
+# XKO to EVM
+evm_addr = to_evm_address('XKO70586beeb7b7aa2e7966df9c8493c6cbfd75c625')
+print(evm_addr)
+# Output: 0x70586BeEB7b7Aa2e7966DF9c8493C6CbFd75C625
+
+# EVM to XKO
+xko_addr = from_evm_address('0x70586BeEB7b7Aa2e7966DF9c8493C6CbFd75C625')
+print(xko_addr)
+# Output: XKO70586BeEB7b7Aa2e7966DF9c8493C6CbFd75C625
+
+# Error handling
+try:
+    to_evm_address('invalid')
+except ValueError as e:
+    print(e)
+    # Output: Invalid address length: expected 40 hex chars, got 7
+```
+
+---
+
+### Go SDK
+
+**Installation**:
+```bash
+go get golang.org/x/crypto/sha3
+```
+
+**Usage Example**:
+```go
+package main
+
+import (
+    "fmt"
+    "log"
+
+    address "your-module/multi_address"
+)
+
+func main() {
+    // XKO to EVM
+    evmAddr, err := address.ToEvmAddress("XKO70586beeb7b7aa2e7966df9c8493c6cbfd75c625")
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Println(evmAddr)
+    // Output: 0x70586BeEB7b7Aa2e7966DF9c8493C6CbFd75C625
+
+    // EVM to XKO
+    xkoAddr, err := address.FromEvmAddress("0x70586BeEB7b7Aa2e7966DF9c8493C6CbFd75C625")
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Println(xkoAddr)
+    // Output: XKO70586BeEB7b7Aa2e7966DF9c8493C6CbFd75C625
+}
+```
+
+---
+
+### Rust SDK
+
+**Add Dependency** (Cargo.toml):
+```toml
+[dependencies]
+multi_address = { path = "path/to/address/rust" }
+```
+
+**Usage Example**:
+```rust
+use multi_address::{to_evm_address, from_evm_address};
+
+fn main() {
+    // XKO to EVM
+    match to_evm_address("XKO70586beeb7b7aa2e7966df9c8493c6cbfd75c625") {
+        Ok(evm_addr) => println!("{}", evm_addr),
+        // Output: 0x70586BeEB7b7Aa2e7966DF9c8493C6CbFd75C625
+        Err(e) => eprintln!("Error: {}", e),
+    }
+
+    // EVM to XKO
+    match from_evm_address("0x70586BeEB7b7Aa2e7966DF9c8493C6CbFd75C625") {
+        Ok(xko_addr) => println!("{}", xko_addr),
+        // Output: XKO70586BeEB7b7Aa2e7966DF9c8493C6CbFd75C625
+        Err(e) => eprintln!("Error: {}", e),
+    }
+}
+```
+
+---
+
+### Java SDK
+
+**Maven Dependency**:
+```xml
+<dependency>
+  <groupId>com.okcoin</groupId>
+  <artifactId>xlayer-sdk</artifactId>
+  <version>0.2.1</version>
+</dependency>
+```
+
+**Usage Example**:
+```java
+import com.okcoin.MultiAddress;
+
+public class Example {
+    public static void main(String[] args) {
+        // XKO to EVM
+        String evmAddr = MultiAddress.toEvmAddress("XKO70586beeb7b7aa2e7966df9c8493c6cbfd75c625");
+        System.out.println(evmAddr);
+        // Output: 0x70586BeEB7b7Aa2e7966DF9c8493C6CbFd75C625
+
+        // EVM to XKO
+        String xkoAddr = MultiAddress.fromEvmAddress("0x70586BeEB7b7Aa2e7966DF9c8493C6CbFd75C625");
+        System.out.println(xkoAddr);
+        // Output: XKO70586BeEB7b7Aa2e7966DF9c8493C6CbFd75C625
+
+        // Check if XKO address
+        boolean isXko = MultiAddress.isXlayerAddress("XKO70586BeEB7b7Aa2e7966DF9c8493C6CbFd75C625");
+        System.out.println(isXko); // true
+
+        boolean isNotXko = MultiAddress.isXlayerAddress("0x70586BeEB7b7Aa2e7966DF9c8493C6CbFd75C625");
+        System.out.println(isNotXko); // false
+
+        // Error handling
+        try {
+            MultiAddress.toEvmAddress("invalid");
+        } catch (IllegalArgumentException e) {
+            System.err.println(e.getMessage());
+            // Output: Invalid address length: expected 40 hex chars, got 7
+        }
+    }
+}
+```
+
+---
+
+## Security Considerations
+
+**Important**: XKO addresses are only for off-chain interactions (UI display, etc.)
+
+In transaction RLP encoding:
+- ❌ **Cannot** use XKO format addresses
+- ✅ **Must** use standard 20-byte address format
+- The chain automatically rejects transactions containing XKO format addresses
+
+SDKs handle this conversion automatically, but if manually constructing transactions, use the standard format.
+
+---
+
+## Frequently Asked Questions (FAQ)
+
+### Q1: What's the difference between XKO and EVM addresses?
+A: They are completely equivalent on-chain, differing only in prefix. XKO addresses use `XKO` prefix, while EVM addresses use `0x` prefix.
+
+### Q2: Can I use XKO addresses directly in transactions?
+A: No. When constructing RLP-encoded transactions, you must use the standard 20-byte address. XKO format is only for off-chain interactions (RPC queries, UI display).
+
+### Q3: Is case sensitivity important?
+A: The XKO prefix is case-insensitive (XKO, xko, Xko all valid). However, the address body preserves EIP-55 checksum casing for error detection.
+
+### Q4: How do I validate address format?
+A: Use the SDK conversion functions. They will throw exceptions if the address format is invalid.
+
+---
+
+## Resources
+
+- **GitHub Repository**: [xlayer-sdk](https://github.com/okx/xlayer-sdk)
+
+## License
+
+This SDK is released under the MIT License.
+
+## Support
+
+For issues and questions:
+- GitHub Issues: [Create an issue](https://github.com/okx/xlayer-sdk/issues)
