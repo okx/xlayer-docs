@@ -7,8 +7,8 @@ This guide explains how to set up a Flashblocks-enabled RPC node.
 ### Prerequisites
 
 - Docker and Docker Compose
-- Minimum hardware requirements (System Requirements)
-- Access to a Flashblocks websocket endpoint
+- Minimum hardware requirements (see [Setup RPC](/developer/setup-rpc/setup-rpc) for details)
+- Access to a Flashblocks WebSocket endpoint
 
 ### Setting Up
 
@@ -23,7 +23,7 @@ chmod +x one-click-setup.sh
 
 ## Configuration
 
-The `one-click-setup.sh` file will have interactive prompts which will be configuring flashblock-related variables. For flashblocks specific configurations, please refer below:
+The `one-click-setup.sh` script includes interactive prompts to configure Flashblocks-related variables. For Flashblocks-specific configurations, refer to the table below:
 
 | Variable | Value |
 |----------|-------|
@@ -42,9 +42,9 @@ Nodes with Flashblocks will return preconfirmed transactions in the pending bloc
 curl http://localhost:8545 -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["pending",true],"id":1}'
 ```
 
-## Flashblocks Websocket
+## Flashblocks WebSocket
 
-The public websocket API is exposed at the following endpoints and is used to stream raw flashblock data. This is the URL needed during the configuration of RPC node while setting up.
+The public WebSocket API is exposed at the following endpoints and is used to stream raw Flashblocks data. This is the URL needed during the RPC node configuration.
 
 | Network | URL |
 |---------|-----|
@@ -57,8 +57,10 @@ The public websocket API is exposed at the following endpoints and is used to st
 
 Flashblock messages use delta compression:
 
-- **Index 0**: Full base and diff object (block properties + transactions)
-- **Index 1+**: diff object (new transactions in the flashblock). This reduces message size by transmitting only incremental changes.
+- **Index 0**: Full base and diff object (block properties + transactions).
+- **Index 1+**: Diff object only (new transactions in the flashblock).
+
+This delta compression reduces message size by transmitting only incremental changes.
 
 ### Base + Diff Response
 
@@ -134,35 +136,47 @@ Flashblock messages use delta compression:
 ```
 
 ## Live Testing
-Test Flashblocks on X Layer using our public RPC endpoint with the following supported methods by running these commands in your terminal with your parameters.
 
+Test Flashblocks on X Layer using our public RPC endpoint. Run the following commands in your terminal, replacing the placeholder values with your actual parameters.
 
 ### eth_getBlockByNumber
+
 ```shell
 curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["pending",true],"id":1}'
 ```
 
 ### eth_getTransactionReceipt
+
 ```shell
 curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getTransactionReceipt","params":["0x..."],"id":1}'
 ```
+
 ### eth_getBalance
+
 ```shell
 curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBalance","params":["0x...","pending"],"id":1}'
 ```
+
 ### eth_getTransactionCount
+
 ```shell
 curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getTransactionCount","params":["0x...","pending"],"id":1}'
 ```
+
 ### eth_getTransactionByHash
+
 ```shell
 curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getTransactionByHash","params":["0x..."],"id":1}'
 ```
+
 ### eth_call
+
 ```shell
 curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_call","params":[{"to":"0x...","data":"0x..."},"pending"],"id":1}'
 ```
+
 ### eth_estimateGas
+
 ```shell
 curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_estimateGas","params":[{"to":"0x...","data":"0x..."},"pending"],"id":1}'
 ```

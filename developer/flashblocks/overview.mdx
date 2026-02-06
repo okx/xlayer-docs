@@ -1,26 +1,25 @@
 # Flashblocks
 
-Flashblocks delivers 200-millisecond preconfirmations on X Layer, drastically reducing wait times for transaction feedback. Perfect for applications where speed is critical.
+Flashblocks delivers 200-millisecond preconfirmations on X Layer, drastically reducing wait times for transaction feedback. It is perfect for applications where speed is critical.
 
 ## Overview
 
-Flashblocks enables transaction pre-confirmations in ~200ms. This drastically reduces user-perceived latency. Therefore, enabling near-instantaneous user experiences for applications that require real-time interactions like gaming, high-frequency trading, and social apps.
+Flashblocks enables transaction pre-confirmations in ~200ms, drastically reducing user-perceived latency and enabling near-instantaneous user experiences for applications that require real-time interactions like gaming, high-frequency trading, and social apps.
 
 ## Leveraging Flashblocks
 
-Developers can easily leverage the capabilities of flashblocks in the following ways:
+Developers can easily leverage the capabilities of Flashblocks in the following ways:
 
-1. **Pending Tag Queries**: Query RPC's supported flashblocks endpoints, with the `pending` tag.
-2. **Raw Data Streaming**: Streaming new flashblocks data directly from the raw flashblocks feed.
-
+1. **Pending Tag Queries**: Query Flashblocks-enabled RPC endpoints using the `pending` tag.
+2. **Raw Data Streaming**: Stream Flashblocks data directly from the raw Flashblocks feed.
 
 ## Supported RPC APIs
 
-Flashblocks APIs are fully compatible with the default standards of the Ethereum JSON-RPC standards. Flashblocks APIs uses the `pending` tags for the last received flashblock chainstate, which is applied onto the pending state.
+Flashblocks APIs are fully compatible with the Ethereum JSON-RPC standards. Flashblocks APIs use the `pending` tag for the last received flashblock chain state, which is applied to the pending state.
 
 ### eth_blockNumber
 
-Get the current flashblocks pending block height
+Returns the current pending block height.
 
 ```shell
 curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":["pending"],"id":1}'
@@ -38,7 +37,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 
 ### eth_call
 
-Executes a new message call immediately without creating a new transaction on the chain
+Executes a new message call immediately without creating a transaction on the blockchain.
 
 ```shell
 curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_call","params":[{"to":"0x...","data":"0x..."},"pending"],"id":1}'
@@ -56,7 +55,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 
 ### eth_estimateGas
 
-Returns an estimate of how much gas is needed to allow the transaction to complete
+Returns an estimate of how much gas is needed for the transaction to complete.
 
 ```shell
 curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_estimateGas","params":[{"to":"0x...","data":"0x..."},"pending"],"id":1}'
@@ -74,7 +73,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 
 ### eth_getBalance
 
-Returns the latest native address balance
+Returns the native token balance for the given address.
 
 ```shell
 curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBalance","params":["0x...","pending"],"id":1}'
@@ -92,7 +91,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 
 ### eth_getTransactionCount
 
-Returns the latest account transaction count based on the given address
+Returns the transaction count (nonce) for the given address.
 
 ```shell
 curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getTransactionCount","params":["0x...","pending"],"id":1}'
@@ -110,7 +109,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 
 ### eth_getCode
 
-Returns the latest account code based on the given address
+Returns the contract bytecode deployed at the given address.
 
 ```shell
 curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getCode","params":["0x...","pending"],"id":1}'
@@ -128,7 +127,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 
 ### eth_getStorageAt
 
-Returns the latest account storage state based on the given address and position index
+Returns the storage value at the given position for the specified address.
 
 ```shell
 curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getStorageAt","params":["0x...","0x0","pending"],"id":1}'
@@ -168,7 +167,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 
 ### eth_getBlockByNumber
 
-Returns the specified block based on the block number
+Returns the specified block based on the block number.
 
 ```shell
 curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["pending",true],"id":1}'
@@ -190,7 +189,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 
 ### eth_getBlockReceipts
 
-Returns the specified block transaction receipts based on the block number
+Returns the transaction receipts for the specified block.
 
 ```shell
 curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBlockReceipts","params":["pending"],"id":1}'
@@ -214,7 +213,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 
 ### eth_getBlockTransactionCountByNumber
 
-Returns the specified confirmed block's transaction count
+Returns the transaction count for the specified block.
 
 ```shell
 curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBlockTransactionCountByNumber","params":["pending"],"id":1}'
@@ -232,7 +231,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 
 ### eth_getBlockTransactionCountByHash
 
-Returns the number of transactions in the specified block based on the given block hash
+Returns the number of transactions in the block with the given block hash.
 
 ```shell
 curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBlockTransactionCountByHash","params":["0x..."],"id":1}'
@@ -250,7 +249,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 
 ### eth_getTransactionByHash
 
-Returns the transaction data based on the given transaction hash
+Returns the transaction data for the given transaction hash.
 
 ```shell
 curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getTransactionByHash","params":["0x..."],"id":1}'
@@ -272,7 +271,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 
 ### eth_getRawTransactionByHash
 
-Returns the raw transaction data based on the given transaction hash
+Returns the raw transaction data for the given transaction hash.
 
 ```shell
 curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getRawTransactionByHash","params":["0x..."],"id":1}'
@@ -290,7 +289,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 
 ### eth_getTransactionReceipt
 
-Returns the transaction receipt based on the given transaction hash
+Returns the transaction receipt for the given transaction hash.
 
 ```shell
 curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getTransactionReceipt","params":["0x..."],"id":1}'
@@ -312,7 +311,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 
 ### eth_getTransactionByBlockNumberAndIndex
 
-Returns the transaction data based on the given block number and block transaction index
+Returns the transaction data for the given block number and transaction index.
 
 ```shell
 curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getTransactionByBlockNumberAndIndex","params":["pending","0x0"],"id":1}'
@@ -334,7 +333,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 
 ### eth_getTransactionByBlockHashAndIndex
 
-Returns the transaction data based on the given block hash and block transaction index
+Returns the transaction data for the given block hash and transaction index.
 
 ```shell
 curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getTransactionByBlockHashAndIndex","params":["0x...","0x0"],"id":1}'
