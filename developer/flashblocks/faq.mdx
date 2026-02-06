@@ -1,0 +1,29 @@
+# Flashblocks FAQ
+
+## Flashblocks Block Building
+
+### How many flashblocks per L2 block?
+
+Typically 3-5 flashblocks can be built within the X Layer's 1-second block time, each representing ~200ms intervals. The exact number depends on network conditions and transaction volume.
+
+### In what scenario will the sequencer stop producing flashblocks?
+
+In the unlikely scenario where all reth sequencers fail, the backup sequencer (without flashblocks) takes over to build blocks, then flashblocks will stop producing.
+
+### What are flashblock reorgs?
+
+Similar to normal blockchain reorgs, newly minted flashblocks are also susceptible to reorgs. Flashblock reorgs refer to the case where the gossiped flashblock payloads in the current pending block were not confirmed by the sequencer. When this happens, the gossiped flashblocks become invalid since a different full block was eventually minted.
+
+### What are the implications of a reorg?
+
+This means that a transaction was streamed out as a pre-confirmed transaction, but may not actually be included in the canonical chain.
+
+### How often does a reorg occur?
+
+Flashblock reorgs occur very rarely on X Layer. This is due to its multi-sequencer architecture, where flashblock builders include additional flashblock replay mechanisms that prevent reorgs from occurring. However, they may still potentially occur, and it is good practice for applications to handle reorgs appropriately.
+
+## Flashblocks WebSocket
+
+### What is WebSocket streaming?
+
+Flashblocks WebSocket is the default WebSocket subscription provided to stream raw flashblock payloads from the X Layer sequencer. It provides access to new flashblock payload data and is used for deploying Flashblocks RPC reth nodes.

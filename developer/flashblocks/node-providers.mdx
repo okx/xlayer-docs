@@ -1,0 +1,182 @@
+# Node Providers
+
+This guide explains how to set up a Flashblocks-enabled RPC node.
+
+## Quick Start
+
+### Prerequisites
+
+- Docker and Docker Compose
+- Minimum hardware requirements (see [Setup RPC](/developer/setup-rpc/setup-rpc) for details)
+- Access to a Flashblocks WebSocket endpoint
+
+### Setting Up
+
+View [xlayer-toolkit's README](https://github.com/okx/xlayer-toolkit) for more information.
+
+```shell
+mkdir -p /data/xlayer-mainnet && cd /data/xlayer-mainnet
+curl -fsSL https://raw.githubusercontent.com/okx/xlayer-toolkit/main/rpc-setup/one-click-setup.sh -o one-click-setup.sh
+chmod +x one-click-setup.sh
+./one-click-setup.sh --rpc_type=reth
+```
+
+## Configuration
+
+The `one-click-setup.sh` script includes interactive prompts to configure Flashblocks-related variables. For Flashblocks-specific configurations, refer to the table below:
+
+| Variable | Value |
+|----------|-------|
+| `FLASHBLOCKS_ENABLED` | `true` |
+| `FLASHBLOCKS_URL` | `wss://xlayerws.okx.com/flashblocks` |
+
+:::note
+The RPC must be running **reth** instead of geth.
+:::
+
+## Verifying Flashblocks Functionality
+
+Nodes with Flashblocks will return preconfirmed transactions in the pending block:
+
+```shell
+curl http://localhost:8545 -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["pending",true],"id":1}'
+```
+
+## Flashblocks WebSocket
+
+The public WebSocket API is exposed at the following endpoints and is used to stream raw Flashblocks data. This is the URL needed during the RPC node configuration.
+
+| Network | URL |
+|---------|-----|
+| Mainnet | `wss://ws.xlayer.tech/flashblocks` |
+| Mainnet | `wss://xlayerws.okx.com/flashblocks` |
+| Testnet | `wss://testws.xlayer.tech/flashblocks` |
+| Testnet | `wss://xlayertestws.okx.com/flashblocks` |
+
+## Flashblocks Data
+
+Flashblock messages use delta compression:
+
+- **Index 0**: Full base and diff object (block properties + transactions).
+- **Index 1+**: Diff object only (new transactions in the flashblock).
+
+This delta compression reduces message size by transmitting only incremental changes.
+
+### Base + Diff Response
+
+```json
+{
+  "base": {
+    "base_fee_per_gas": "0x5f5e0ff",
+    "block_number": "0x8328ab",
+    "extra_data": "0x...",
+    "fee_recipient": "0x...",
+    "gas_limit": "0xbebc200",
+    "parent_beacon_block_root": "0x...",
+    "parent_hash": "0x...",
+    "prev_randao": "0x...",
+    "timestamp": "0x695dd9b6"
+  },
+  "diff": {
+    "blob_gas_used": "0x0",
+    "block_hash": "0x...",
+    "gas_used": "0x6c63",
+    "logs_bloom": "0x...",
+    "receipts_root": "0x...",
+    "state_root": "0x...",
+    "transactions": [],
+    "withdrawals": [],
+    "withdrawals_root": "0x..."
+  },
+  "index": 0,
+  "metadata": {
+    "block_number": 8595627,
+    "new_account_balances": {
+      "0x0000f90827f1c53a10cb7a02335b175320002935": "0x0"
+    },
+    "receipts": {
+      "0x56d542ee662d9a7e1696880346a3f2fb1ed091c15b7c6b607f64ae95e431b097": {
+        "Deposit": {}
+      }
+    }
+  },
+  "payload_id": "0x03307607ad2ba79d"
+}
+```
+
+### Diff Response
+
+```json
+{
+  "diff": {
+    "blob_gas_used": "0x0",
+    "block_hash": "0x...",
+    "gas_used": "0xbe6b",
+    "logs_bloom": "0x...",
+    "receipts_root": "0x...",
+    "state_root": "0x...",
+    "transactions": [],
+    "withdrawals": [],
+    "withdrawals_root": "0x..."
+  },
+  "index": 1,
+  "metadata": {
+    "block_number": 8595627,
+    "new_account_balances": {
+      "0x0000f90827f1c53a10cb7a02335b175320002935": "0x0"
+    },
+    "receipts": {
+      "0x30130a020af408787a9388dcf0272635fff7bc15ae118edb76d207391bb57b51": {
+        "Legacy": {}
+      }
+    }
+  },
+  "payload_id": "0x03307607ad2ba79d"
+}
+```
+
+## Live Testing
+
+Test Flashblocks on X Layer using our public RPC endpoint. Run the following commands in your terminal, replacing the placeholder values with your actual parameters.
+
+### eth_getBlockByNumber
+
+```shell
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["pending",true],"id":1}'
+```
+
+### eth_getTransactionReceipt
+
+```shell
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getTransactionReceipt","params":["0x..."],"id":1}'
+```
+
+### eth_getBalance
+
+```shell
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBalance","params":["0x...","pending"],"id":1}'
+```
+
+### eth_getTransactionCount
+
+```shell
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getTransactionCount","params":["0x...","pending"],"id":1}'
+```
+
+### eth_getTransactionByHash
+
+```shell
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getTransactionByHash","params":["0x..."],"id":1}'
+```
+
+### eth_call
+
+```shell
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_call","params":[{"to":"0x...","data":"0x..."},"pending"],"id":1}'
+```
+
+### eth_estimateGas
+
+```shell
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_estimateGas","params":[{"to":"0x...","data":"0x..."},"pending"],"id":1}'
+```
