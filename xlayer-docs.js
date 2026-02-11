@@ -123,7 +123,6 @@ module.exports = [
               path:'/developer/tools/node-providers-overview',
               children: [
                 '/developer/tools/node-providers/quicknode',
-                '/developer/tools/node-providers/ankr',
                 '/developer/tools/node-providers/blockdaemon',
                 '/developer/tools/node-providers/getblock',
                 '/developer/tools/node-providers/blockpi',
