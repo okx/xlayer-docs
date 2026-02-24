@@ -22,7 +22,7 @@ Flashblocks APIs are fully compatible with the Ethereum JSON-RPC standards. Flas
 Returns the current Flashblocks pending block height.
 
 ```shell
-curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":["pending"],"id":1}'
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":["pending"],"id":1}'
 ```
 
 **Example Response**
@@ -40,7 +40,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 Executes a new message call immediately without creating a transaction on the blockchain.
 
 ```shell
-curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_call","params":[{"to":"0x...","data":"0x..."},"pending"],"id":1}'
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_call","params":[{"to":"0x...","data":"0x..."},"pending"],"id":1}'
 ```
 
 **Example Response**
@@ -58,7 +58,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 Returns an estimate of how much gas is needed for the transaction to complete.
 
 ```shell
-curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_estimateGas","params":[{"to":"0x...","data":"0x..."},"pending"],"id":1}'
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_estimateGas","params":[{"to":"0x...","data":"0x..."},"pending"],"id":1}'
 ```
 
 **Example Response**
@@ -76,7 +76,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 Returns the native token balance for the given address.
 
 ```shell
-curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBalance","params":["0x...","pending"],"id":1}'
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBalance","params":["0x...","pending"],"id":1}'
 ```
 
 **Example Response**
@@ -94,7 +94,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 Returns the transaction count (nonce) for the given address.
 
 ```shell
-curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getTransactionCount","params":["0x...","pending"],"id":1}'
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getTransactionCount","params":["0x...","pending"],"id":1}'
 ```
 
 **Example Response**
@@ -112,7 +112,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 Returns the contract bytecode deployed at the given address.
 
 ```shell
-curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getCode","params":["0x...","pending"],"id":1}'
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getCode","params":["0x...","pending"],"id":1}'
 ```
 
 **Example Response**
@@ -130,7 +130,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 Returns the storage value at the given position for the specified address.
 
 ```shell
-curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getStorageAt","params":["0x...","0x0","pending"],"id":1}'
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getStorageAt","params":["0x...","0x0","pending"],"id":1}'
 ```
 
 **Example Response**
@@ -148,7 +148,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 Returns the specified block based on the given block hash. Note that flashblocks and their corresponding canonical blocks share the same block number but may have different block hashes.
 
 ```shell
-curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBlockByHash","params":["0x...",true],"id":1}'
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBlockByHash","params":["0x...",true],"id":1}'
 ```
 
 **Example Response**
@@ -171,7 +171,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 Returns the specified block based on the block number.
 
 ```shell
-curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["pending",true],"id":1}'
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["pending",true],"id":1}'
 ```
 
 **Example Response**
@@ -194,7 +194,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 Returns the transaction receipts for the specified block.
 
 ```shell
-curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBlockReceipts","params":["pending"],"id":1}'
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBlockReceipts","params":["pending"],"id":1}'
 ```
 
 **Example Response**
@@ -219,7 +219,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 Returns the transaction count for the specified block.
 
 ```shell
-curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBlockTransactionCountByNumber","params":["pending"],"id":1}'
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBlockTransactionCountByNumber","params":["pending"],"id":1}'
 ```
 
 **Example Response**
@@ -237,7 +237,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 Returns the number of transactions in the block with the given block hash.
 
 ```shell
-curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBlockTransactionCountByHash","params":["0x..."],"id":1}'
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getBlockTransactionCountByHash","params":["0x..."],"id":1}'
 ```
 
 **Example Response**
@@ -255,7 +255,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 Returns the transaction data for the given transaction hash.
 
 ```shell
-curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getTransactionByHash","params":["0x..."],"id":1}'
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getTransactionByHash","params":["0x..."],"id":1}'
 ```
 
 **Example Response**
@@ -278,7 +278,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 Returns the raw transaction data for the given transaction hash.
 
 ```shell
-curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getRawTransactionByHash","params":["0x..."],"id":1}'
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getRawTransactionByHash","params":["0x..."],"id":1}'
 ```
 
 **Example Response**
@@ -296,7 +296,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 Returns the transaction receipt for the given transaction hash.
 
 ```shell
-curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getTransactionReceipt","params":["0x..."],"id":1}'
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getTransactionReceipt","params":["0x..."],"id":1}'
 ```
 
 **Example Response**
@@ -319,7 +319,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 Returns the transaction data for the given block number and transaction index.
 
 ```shell
-curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getTransactionByBlockNumberAndIndex","params":["pending","0x0"],"id":1}'
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getTransactionByBlockNumberAndIndex","params":["pending","0x0"],"id":1}'
 ```
 
 **Example Response**
@@ -342,7 +342,7 @@ curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"j
 Returns the transaction data for the given block hash and transaction index.
 
 ```shell
-curl https://rpc.xlayer.tech -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getTransactionByBlockHashAndIndex","params":["0x...","0x0"],"id":1}'
+curl https://rpc.xlayer.tech/flashblocks -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_getTransactionByBlockHashAndIndex","params":["0x...","0x0"],"id":1}'
 ```
 
 **Example Response**
@@ -379,7 +379,7 @@ const xlayerPreconf = defineChain({
     name: 'X Layer Preconf',
     nativeCurrency: { name: 'OKB', symbol: 'OKB', decimals: 18 },
     rpcUrls: {
-        default: { http: ['https://rpc.xlayer.tech'] },
+        default: { http: ['https://rpc.xlayer.tech/flashblocks'] },
     },
     blockExplorers: {
         default: { name: 'Explorer', url: 'https://www.oklink.com/xlayer-test' },
@@ -392,12 +392,12 @@ const account = privateKeyToAccount(process.env.PRIVATE_KEY);
 const walletClient = createWalletClient({
     account,
     chain: xlayerPreconf,
-    transport: http('https://rpc.xlayer.tech'),
+    transport: http('https://rpc.xlayer.tech/flashblocks'),
 });
 
 const publicClient = createPublicClient({
     chain: xlayerPreconf,
-    transport: http('https://rpc.xlayer.tech'),
+    transport: http('https://rpc.xlayer.tech/flashblocks'),
 });
 
 async function sendTransaction() {
@@ -441,7 +441,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const provider = new ethers.JsonRpcProvider(
-    "https://rpc.xlayer.tech"
+    "https://rpc.xlayer.tech/flashblocks"
 );
 
 async function sendTransaction() {
