@@ -1,0 +1,70 @@
+# Builder Codes
+
+Attribute onchain activity to your app or wallet with Builder Codes on X Layer.
+
+## What Are Builder Codes
+
+X Layer Builder Codes are an ERC-721 NFT collection where unique 16-character codes (e.g. "8k3m1v0q7z2c9a5x") are minted to help identify builders onchain.
+
+Each code has associated metadata. Onchain metadata primarily includes a "payout address" where each code declares where potential rewards should be sent to.
+
+> **Note:** Get your Builder Code by registering on the [OKX developer portal](https://www.okx.com/xlayer/developer). You can find your code under **Settings** → **Builder Code**.
+
+## Integration Guides
+
+- [For App Developers](/developer/builder-codes/app-developers) — Integrate Builder Codes using Wagmi or Viem
+- [For Wallet Developers](/developer/builder-codes/wallet-developers) — Implement the dataSuffix capability
+
+## Benefits
+
+- **Rewards:** If your app drives transactions, Builder Codes let X Layer automatically attribute that usage back to you, unlocking rewards as the program expands.
+- **Analytics:** Reliably track onchain usage, user acquisition, and conversion metrics in the OKX developer portal.
+- **Visibility:** Apps with Builder Codes can show up in discovery surfaces like App Leaderboards and ecosystem spotlights.
+
+## FAQ
+
+### Do I Need to Modify My Smart Contracts?
+
+No. The attribution suffix is appended to the end of transaction calldata. Smart contracts execute normally and ignore the extra data. Attribution is extracted by offchain indexers after the fact.
+
+This means:
+
+- Any existing smart contract automatically supports ERC-8021
+- No upgrades or redeployments required
+- Zero impact on contract execution
+
+### How Much Additional Gas Do Builder Codes Cost?
+
+The ERC-8021 suffix adds a negligible amount of gas to each transaction at 16 gas per non-zero byte.
+
+### Can I Use ERC-8021 with Externally Owned Accounts (EOAs)?
+
+Yes. ERC-8021 works with both EOAs and ERC-7702 smart wallets.
+
+### How Do I Verify That My Transaction Was Properly Attributed?
+
+**1. Use a Block Explorer (OKLink)**
+
+- Find your transaction hash on [OKLink](https://www.oklink.com/xlayer)
+- View the input data field
+- Verify the last 16 bytes are the `8021` repeating, and view the decoded attribution data to confirm your Builder Code is included.
+
+**2. Open Source Tools**
+
+- Use the [Builder Code Validation](https://nextjs-boilerplate-silk-gamma-760zp49dit.vercel.app/) tool
+- Enter the input data of the transaction
+- Click the **Check Attribution** button
+
+### Which Wallets Currently Support ERC-8021?
+
+**EOAs:** Transactions from EOA wallets and ERC-7702 smart wallets can include an ERC-8021 suffix when the app or client appends it.
+
+**4337 Smart Wallets:** Not supported yet, will be supported in the future.
+
+**Embedded Wallets:**
+
+- **Privy** - Embedded wallet solution with ERC-8021 capability
+
+## Additional Resources
+
+- [Official ERC-8021 Proposal](https://eip.tools/eip/8021)

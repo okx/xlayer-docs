@@ -1,0 +1,224 @@
+# Builder Codes for App Developers
+
+Integrate Builder Codes into your app using Wagmi or Viem to attribute onchain activity on X Layer.
+
+## Automatic Attribution on X Layer
+
+Once your app is registered on the [OKX developer portal](https://www.okx.com/xlayer/developer), the OKX Wallet will auto-append your Builder Code to transactions its users make in your app. This powers your onchain analytics and qualifies you for potential future rewards.
+
+## Integrating Outside the OKX Wallet
+
+If users also access your app on the web or through other clients, you'll need to integrate the `dataSuffix` parameter to capture that activity.
+
+When you register, you will receive a **Builder Code**—a 16-character random string (e.g., `8k3m1v0q7z2c9a5x`) that you'll use to generate your attribution suffix. The recommended approach is to configure `dataSuffix` at the client level, which appends your Builder Code to all transactions.
+
+> **Note:** You can find your code anytime under **Settings** → **Builder Code** in the OKX developer portal.
+
+## Quick Setup with Wagmi
+
+Requires viem version `2.45.0` or higher.
+
+1. Install the required packages:
+
+```bash
+npm i ox wagmi viem
+```
+
+2. Add the `dataSuffix` option to your Wagmi config. This automatically appends your Builder Code to all transactions.
+
+```ts
+// config.ts
+import { createConfig, http } from "wagmi";
+import { defineChain } from "viem";
+import { Attribution } from "ox/erc8021";
+
+const xlayer = defineChain({
+  id: 196,
+  name: "X Layer",
+  nativeCurrency: { name: "OKB", symbol: "OKB", decimals: 18 },
+  rpcUrls: {
+    default: { http: ["https://rpc.xlayer.tech"] },
+  },
+  blockExplorers: {
+    default: { name: "OKLink", url: "https://www.oklink.com/xlayer" },
+  },
+});
+
+// Get your Builder Code from the OKX developer portal > Settings > Builder Codes
+const DATA_SUFFIX = Attribution.toDataSuffix({
+  codes: ["YOUR-BUILDER-CODE"],
+});
+
+export const config = createConfig({
+  chains: [xlayer],
+  transports: {
+    [xlayer.id]: http(),
+  },
+  dataSuffix: DATA_SUFFIX,
+});
+```
+
+3. With the config in place, transactions sent via `useSendTransaction` and `useSendCalls` automatically include your Builder Code with no further changes. `useSendCalls` requires the connected wallet to support the `dataSuffix` capability.
+
+```tsx
+// App.tsx
+import { useSendTransaction } from "wagmi";
+import { parseEther } from "viem";
+
+function SendButton() {
+  const { sendTransaction } = useSendTransaction();
+
+  return (
+    <button
+      onClick={() =>
+        sendTransaction({
+          to: "0x70997970c51812dc3a010c7d01b50e0d17dc79c8",
+          value: parseEther("0.01"),
+        })
+      }
+    >
+      Send OKB
+    </button>
+  );
+}
+```
+
+## Quick Setup with Viem
+
+Requires viem version `2.45.0` or higher.
+
+1. Install the required packages:
+
+```bash
+npm i ox viem
+```
+
+2. Add the `dataSuffix` option when creating your wallet client.
+
+```ts
+// client.ts
+import { createWalletClient, http, defineChain } from "viem";
+import { Attribution } from "ox/erc8021";
+
+const xlayer = defineChain({
+  id: 196,
+  name: "X Layer",
+  nativeCurrency: { name: "OKB", symbol: "OKB", decimals: 18 },
+  rpcUrls: {
+    default: { http: ["https://rpc.xlayer.tech"] },
+  },
+  blockExplorers: {
+    default: { name: "OKLink", url: "https://www.oklink.com/xlayer" },
+  },
+});
+
+// Get your Builder Code from the OKX developer portal > Settings > Builder Codes
+const DATA_SUFFIX = Attribution.toDataSuffix({
+  codes: ["YOUR-BUILDER-CODE"],
+});
+
+export const walletClient = createWalletClient({
+  chain: xlayer,
+  transport: http(),
+  dataSuffix: DATA_SUFFIX,
+});
+```
+
+3. All transactions sent through this client automatically include your Builder Code.
+
+```ts
+import { parseEther } from "viem";
+import { walletClient } from "./client";
+
+const hash = await walletClient.sendTransaction({
+  to: "0x70997970c51812dc3a010c7d01b50e0d17dc79c8",
+  value: parseEther("0.01"),
+});
+```
+
+## Using Privy
+
+Privy provides a `dataSuffix` plugin that automatically appends your Builder Code to all EOA transactions (ERC-4337 smart wallet user operations will be supported in the future).
+
+See the [Privy Builder Codes integration guide](https://docs.privy.io/recipes/evm/base-builder-codes) for setup instructions. When configuring for X Layer, use chain ID `196` (mainnet) or `195` (testnet).
+
+## Per-Transaction Approach
+
+If you need to append the suffix on a per-transaction basis rather than at the client level, you can pass `dataSuffix` directly to the transaction.
+
+### useSendTransaction
+
+```tsx
+// App.tsx
+import { useSendTransaction } from "wagmi";
+import { parseEther } from "viem";
+import { Attribution } from "ox/erc8021";
+
+const DATA_SUFFIX = Attribution.toDataSuffix({
+  codes: ["YOUR-BUILDER-CODE"],
+});
+
+function App() {
+  const { sendTransaction } = useSendTransaction();
+
+  return (
+    <button
+      onClick={() =>
+        sendTransaction({
+          to: "0x70997970c51812dc3a010c7d01b50e0d17dc79c8",
+          value: parseEther("0.01"),
+          dataSuffix: DATA_SUFFIX,
+        })
+      }
+    >
+      Send OKB
+    </button>
+  );
+}
+```
+
+### useSendCalls
+
+When using `useSendCalls`, pass the suffix via the `capabilities` object. This requires the connected wallet to support the `dataSuffix` capability.
+
+```tsx
+// App.tsx
+import { useSendCalls } from "wagmi";
+import { parseEther } from "viem";
+import { Attribution } from "ox/erc8021";
+
+const DATA_SUFFIX = Attribution.toDataSuffix({
+  codes: ["YOUR-BUILDER-CODE"],
+});
+
+function App() {
+  const { sendCalls } = useSendCalls();
+
+  return (
+    <button
+      onClick={() =>
+        sendCalls({
+          calls: [
+            {
+              to: "0x70997970c51812dc3a010c7d01b50e0d17dc79c8",
+              value: parseEther("1"),
+            },
+          ],
+          capabilities: {
+            dataSuffix: {
+              value: DATA_SUFFIX,
+              optional: true,
+            },
+          },
+        })
+      }
+    >
+      Send calls
+    </button>
+  );
+}
+```
+
+## Verify Attribution
+
+> See [How Do I Verify That My Transaction Was Properly Attributed?](/developer/builder-codes/overview#how-do-i-verify-that-my-transaction-was-properly-attributed) for attribution verification steps.

@@ -74,6 +74,15 @@ module.exports = [
               '/developer/flashblocks/faq',
             ],
           },
+
+          {
+            title: 'Builder Codes',
+            path: '/developer/builder-codes/overview',
+            children: [
+              '/developer/builder-codes/app-developers',
+              '/developer/builder-codes/wallet-developers',
+            ],
+          },
           ]
         },
 
