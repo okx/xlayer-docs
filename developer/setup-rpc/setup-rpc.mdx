@@ -13,20 +13,12 @@ Quickly deploy an X Layer self-hosted RPC node with support for both **reth** an
 
 ## ⚡ Quick Start
 
-### Download and Run Setup
-
-```bash
-mkdir -p /data/xlayer-rpc && cd /data/xlayer-rpc
-curl -fsSL https://raw.githubusercontent.com/okx/xlayer-toolkit/main/rpc-setup/one-click-setup.sh -o one-click-setup.sh
-chmod +x one-click-setup.sh
-```
-
 ### Fully Automatic Setup (Recommended)
 
-Run the script and wait 5 seconds — a **mainnet reth node** with snapshot and default ports will be deployed automatically, no input required:
+Run the following command — a **mainnet reth node** with snapshot and default ports will be deployed automatically after a 5-second countdown, no input required:
 
 ```bash
-./one-click-setup.sh
+curl -sSf https://raw.githubusercontent.com/okx/xlayer-toolkit/main/rpc-setup/one-click-setup.sh | bash
 ```
 
 This is equivalent to: `mainnet` + `reth` + `snapshot` + all default ports.
@@ -35,14 +27,11 @@ This is equivalent to: `mainnet` + `reth` + `snapshot` + all default ports.
 
 Press `n` during the 5-second countdown to enter interactive mode, where you can customize network, client, ports, and more.
 
-You can also specify the execution client type via command line:
+You can also specify the execution client type:
 
 ```bash
-# Use reth (default)
-./one-click-setup.sh
-
 # Use geth
-./one-click-setup.sh --rpc_type=geth
+curl -sSf https://raw.githubusercontent.com/okx/xlayer-toolkit/main/rpc-setup/one-click-setup.sh | bash -s -- --rpc_type=geth
 ```
 
 #### Interactive Prompts
@@ -74,24 +63,6 @@ Not all sync modes are available for every client-network combination:
 | geth   | mainnet | ✅      | ✅       |
 | reth   | testnet | ❌      | ✅       |
 | geth   | testnet | ❌      | ✅       |
-
-## 🚀 Running Multiple Instances
-
-You can run multiple RPC nodes on the same machine with different ports:
-
-```bash
-# First instance (mainnet-geth)
-cd /data/xlayer-mainnet-geth
-./one-click-setup.sh --rpc_type=geth
-# Configure: mainnet, ports 8545, 8546, etc.
-
-# Second instance (mainnet-reth) - use different ports
-cd /data/xlayer-mainnet-reth
-./one-click-setup.sh --rpc_type=reth
-# Configure: mainnet, ports 8547, 8548, etc.
-```
-
-Each instance uses isolated container names and networks, so they won't conflict.
 
 ## 📊 Service Management
 
