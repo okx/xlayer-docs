@@ -2,7 +2,7 @@
 
 ## 📋 Overview
 
-Quickly deploy an X Layer self-hosted RPC node with support for both **geth** and **reth** execution clients.
+Quickly deploy an X Layer self-hosted RPC node with support for both **reth** and **geth** execution clients.
 
 ## 💻 System Requirements
 
@@ -21,34 +21,59 @@ curl -fsSL https://raw.githubusercontent.com/okx/xlayer-toolkit/main/rpc-setup/o
 chmod +x one-click-setup.sh
 ```
 
-### Choose RPC Client Type
+### Fully Automatic Setup (Recommended)
 
-You can specify the execution client type:
+Run the script and wait 5 seconds — a **mainnet reth node** with snapshot and default ports will be deployed automatically, no input required:
 
 ```bash
-# Use geth (default)
 ./one-click-setup.sh
-
-# Use reth
-./one-click-setup.sh --rpc_type=reth
 ```
 
-### Interactive Setup
+This is equivalent to: `mainnet` + `reth` + `snapshot` + all default ports.
 
-The script will prompt you for:
+### Custom Setup
+
+Press `n` during the 5-second countdown to enter interactive mode, where you can customize network, client, ports, and more.
+
+You can also specify the execution client type via command line:
+
+```bash
+# Use reth (default)
+./one-click-setup.sh
+
+# Use geth
+./one-click-setup.sh --rpc_type=geth
+```
+
+#### Interactive Prompts
+
+In custom mode, the script will prompt you for:
 
 1. **Network type**: `testnet` or `mainnet` (default: mainnet)
 2. **Sync mode**: `genesis` or `snapshot` (default: snapshot)
-- **Snapshot**: Fast sync using pre-built snapshots (recommended)
-- **Genesis**: Sync from genesis block
-3. **L1 RPC URL**: Ethereum L1 RPC endpoint
-4. **L1 Beacon URL**: Ethereum L1 Beacon chain endpoint
+   - **Snapshot**: Fast sync using pre-built snapshots (recommended)
+   - **Genesis**: Sync from genesis block
+3. **L1 RPC URL**: Ethereum L1 RPC endpoint (required)
+4. **L1 Beacon URL**: Ethereum L1 Beacon chain endpoint (required)
 5. **Ports** (optional, with defaults):
-- RPC port (default: 8545)
-- WebSocket port (default: 8546)
-- Engine API port (default: 8552)
-- Node RPC port (default: 9545)
-- P2P ports (default: 30303, 9223)
+   - RPC port (default: 8545)
+   - WebSocket port (default: 8546)
+   - Engine API port (default: 8552)
+   - Node RPC port (default: 9545)
+   - P2P ports (default: 30303, 9223)
+6. **Flashblocks**: Enable/disable MEV flashblocks service (default: disabled)
+   - If enabled, provide a Flashblocks WebSocket URL (default: `wss://xlayerws.okx.com/flashblocks`)
+
+#### Sync Mode Availability
+
+Not all sync modes are available for every client-network combination:
+
+| Client | Network | Genesis | Snapshot |
+| ------ | ------- | ------- | -------- |
+| reth   | mainnet | ✅      | ✅       |
+| geth   | mainnet | ✅      | ✅       |
+| reth   | testnet | ❌      | ✅       |
+| geth   | testnet | ❌      | ✅       |
 
 ## 🚀 Running Multiple Instances
 
@@ -56,12 +81,12 @@ You can run multiple RPC nodes on the same machine with different ports:
 
 ```bash
 # First instance (mainnet-geth)
-cd /data/xlayer-testnet-geth
+cd /data/xlayer-mainnet-geth
 ./one-click-setup.sh --rpc_type=geth
 # Configure: mainnet, ports 8545, 8546, etc.
 
 # Second instance (mainnet-reth) - use different ports
-cd /data/xlayer-testnet-reth
+cd /data/xlayer-mainnet-reth
 ./one-click-setup.sh --rpc_type=reth
 # Configure: mainnet, ports 8547, 8548, etc.
 ```
