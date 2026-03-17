@@ -1,16 +1,12 @@
-# Builder Codes for Wallet Developers
+# Builder Codes for Wallet Providers
 
-Implement the `dataSuffix` capability in your wallet to enable Builder Code attribution on X Layer.
-
-## Overview
-
-Wallet providers need to support the `dataSuffix` capability to enable attribution. This involves accepting the capability and appending the suffix to the calldata before signing.
+If you are building a wallet and want to support ERC-8021 attribution for apps running on X Layer, implement the following.
 
 ## Implementation
 
 ### 1. Support the dataSuffix Capability
 
-Your wallet should accept a `dataSuffix` object in the `capabilities` object of `wallet_sendCalls`.
+Your wallet should accept a `dataSuffix` object in the `capabilities` field of `wallet_sendCalls`.
 
 ```typescript
 type DataSuffixCapability = {
@@ -43,7 +39,7 @@ function applySuffixToEOA(tx, capabilities) {
 
 ### 3. Add Wallet Attribution (Optional)
 
-Wallets may also include their own attribution code (their own ERC-8021 suffix) by prepending the wallet's suffix before the app's.
+Wallets may include their own Builder Code by prepending the wallet's suffix before the app's suffix.
 
 - **No interaction required with apps:** The wallet handles this independently.
 - **Multi-code support:** ERC-8021 natively supports multiple attribution codes.
@@ -54,4 +50,4 @@ finalSuffix = walletSuffix + appSuffix
 
 This ensures both the app and the wallet receive onchain attribution on X Layer.
 
-> **Note:** Get your Builder Code by registering on the [OKX developer portal](https://www.okx.com/xlayer/developer). You can find your code under **Settings** → **Builder Code**.
+> **Get your Builder Code:** Register on the [OKX developer portal](https://www.okx.com/xlayer/developer) under **Settings** → **Builder Code**.

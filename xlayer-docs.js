@@ -79,8 +79,8 @@ module.exports = [
             title: 'Builder Codes',
             path: '/developer/builder-codes/overview',
             children: [
-              '/developer/builder-codes/app-developers',
-              '/developer/builder-codes/wallet-developers',
+              '/developer/builder-codes/integration',
+              '/developer/builder-codes/wallet-providers',
             ],
           },
           ]
