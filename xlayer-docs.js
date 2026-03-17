@@ -122,6 +122,7 @@ module.exports = [
               title:'Node providers',
               path:'/developer/tools/node-providers-overview',
               children: [
+                '/developer/tools/node-providers/alchemy',
                 '/developer/tools/node-providers/quicknode',
                 '/developer/tools/node-providers/blockdaemon',
                 '/developer/tools/node-providers/getblock',
