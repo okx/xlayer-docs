@@ -29,7 +29,7 @@ No. The attribution suffix is appended to the end of transaction calldata. Smart
 
 This means:
 
-- Any existing smart contract automatically supports ERC-8021
+- Any existing smart contract automatically supports ERC-8021, but **developers should verify that their calldata parsing logic is not affected by the additional suffix data**.
 - No upgrades or redeployments required
 - Zero impact on contract execution
 
@@ -60,10 +60,6 @@ Yes. ERC-8021 works with both EOAs and ERC-7702 smart wallets.
 **EOAs:** Transactions from EOA wallets and ERC-7702 smart wallets can include an ERC-8021 suffix when the app or client appends it.
 
 **4337 Smart Wallets:** Not supported yet, will be supported in the future.
-
-**Embedded Wallets:**
-
-- **Privy** - Embedded wallet solution with ERC-8021 capability
 
 ## Additional Resources
 

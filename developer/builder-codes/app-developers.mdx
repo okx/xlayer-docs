@@ -136,12 +136,6 @@ const hash = await walletClient.sendTransaction({
 });
 ```
 
-## Using Privy
-
-Privy provides a `dataSuffix` plugin that automatically appends your Builder Code to all EOA transactions (ERC-4337 smart wallet user operations will be supported in the future).
-
-See the [Privy Builder Codes integration guide](https://docs.privy.io/recipes/evm/base-builder-codes) for setup instructions. When configuring for X Layer, use chain ID `196` (mainnet) or `195` (testnet).
-
 ## Per-Transaction Approach
 
 If you need to append the suffix on a per-transaction basis rather than at the client level, you can pass `dataSuffix` directly to the transaction.
