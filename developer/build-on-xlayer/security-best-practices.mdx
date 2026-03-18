@@ -1,0 +1,406 @@
+# Smart Contract Security Best Practices
+
+This guide covers essential security patterns for building smart contracts on X Layer. Since X Layer is an OP Stack L2 with OKB as the native gas token, some patterns differ from Ethereum mainnet.
+
+## CEI Pattern (Checks-Effects-Interactions)
+
+All external calls must happen **after** state changes to prevent reentrancy attacks:
+
+```solidity
+// ✅ Correct: CEI pattern
+function withdraw(uint256 amount) external {
+    require(balances[msg.sender] >= amount, "Insufficient");  // Check
+    balances[msg.sender] -= amount;                            // Effect
+    (bool ok, ) = msg.sender.call{value: amount}("");          // Interaction
+    require(ok, "Transfer failed");
+}
+
+// ❌ Wrong: Interaction before Effect — reentrancy vulnerability
+function withdraw(uint256 amount) external {
+    require(balances[msg.sender] >= amount, "Insufficient");
+    (bool ok, ) = msg.sender.call{value: amount}("");  // External call BEFORE state update!
+    balances[msg.sender] -= amount;
+}
+```
+
+## Reentrancy Protection
+
+Use `nonReentrant` on any function that transfers value or makes external calls:
+
+```solidity
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+
+contract Bridge is ReentrancyGuard {
+    function bridgeToken(uint256 amount) external nonReentrant {
+        // ...
+    }
+}
+```
+
+### Transient Storage Reentrancy (EIP-1153)
+
+With EIP-1153, `TSTORE`/`TLOAD` cost only 100 gas — reentrancy is possible even within the 2300 gas stipend from `transfer()`/`send()`. For new contracts, use `ReentrancyGuardTransient` (OpenZeppelin v5.1+):
+
+```solidity
+import "@openzeppelin/contracts/utils/ReentrancyGuardTransient.sol";
+
+contract MyContract is ReentrancyGuardTransient {
+    function withdraw(uint256 amount) external nonReentrant {
+        // TSTORE-based lock — cheaper than SSTORE, auto-clears at tx end
+    }
+}
+```
+
+**Important:** Use `nonReentrant` on **all** public functions that read or write shared state, not just the ones with external calls. Cross-function reentrancy can bypass protection on a single function.
+
+## Authentication
+
+Never use `tx.origin` for authentication — always use `msg.sender`:
+
+```solidity
+// ❌ Dangerous: vulnerable to phishing attacks
+require(tx.origin == owner);
+
+// ✅ Correct
+require(msg.sender == owner);
+```
+
+### EIP-7702 Awareness
+
+EIP-7702 (Pectra upgrade) allows EOAs to delegate execution to a contract. `tx.origin == msg.sender` is no longer a reliable EOA check:
+
+```solidity
+// ❌ No longer safe as sole EOA check
+require(tx.origin == msg.sender, "Not EOA");
+
+// ✅ Additional validation for EIP-7702 awareness
+function _validateCaller() internal view {
+    require(msg.sender == tx.origin, "Not EOA");
+    require(msg.value == 0 || msg.value == expectedValue, "Unexpected value");
+}
+```
+
+## Access Control
+
+- **Simple ownership:** Use `Ownable2Step` (2-step transfer prevents accidental loss). Never use basic `Ownable`.
+- **Role-based:** Use `AccessControlEnumerable` for auditing who has which role.
+- **Critical functions:** Combine `onlyOwner` + `TimelockController`.
+
+```solidity
+import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
+
+contract Treasury is AccessControlEnumerable {
+    bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
+    bytes32 public constant GUARDIAN_ROLE = keccak256("GUARDIAN_ROLE");
+
+    function executeTransfer(address to, uint256 amount) external onlyRole(OPERATOR_ROLE) {
+        // ...
+    }
+
+    function emergencyPause() external onlyRole(GUARDIAN_ROLE) {
+        _pause();
+    }
+}
+```
+
+Best practices:
+- Use multi-sig (Safe) for `DEFAULT_ADMIN_ROLE` in production — never a single EOA
+- Timelock critical operations (upgrades, large transfers)
+- Revoke deployer admin after setup
+
+## Token Decimals
+
+Different tokens have different decimal precisions. Using the wrong value leads to catastrophic over/under-payments:
+
+| Token | Decimals |
+|-------|----------|
+| OKB, WETH, DAI | 18 |
+| WBTC | 8 |
+| USDT, USDC | 6 |
+
+```typescript
+// ✅ Correct
+const usdtAmount = ethers.parseUnits("100", 6);   // 100 USDT
+
+// ❌ Wrong — this creates 100 * 10^18 (trillions of USDT units)
+const usdtAmount = ethers.parseEther("100");
+```
+
+## Slippage and Deadline Protection
+
+Every swap or DEX function must accept `minAmountOut` and `deadline` parameters:
+
+```solidity
+function swap(
+    uint256 amountIn,
+    uint256 minAmountOut,  // Slippage protection
+    uint256 deadline       // Time protection
+) external {
+    require(block.timestamp <= deadline, "Expired");
+    uint256 amountOut = _calculateSwap(amountIn);
+    require(amountOut >= minAmountOut, "Slippage exceeded");
+    // ...
+}
+```
+
+## Safe ERC20 Approvals
+
+The `approve()` function is vulnerable to front-running. Use SafeERC20:
+
+```solidity
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+using SafeERC20 for IERC20;
+
+// ✅ Safe approval methods
+token.forceApprove(spender, amount);          // OZ v5+ (best)
+token.safeIncreaseAllowance(spender, amount); // OZ v4
+
+// ❌ Vulnerable: attacker can front-run and spend old + new allowance
+token.approve(spender, newAmount);
+```
+
+## No transfer() or send()
+
+`transfer()` and `send()` forward only 2300 gas — not enough for contracts with logic in `receive()`:
+
+```solidity
+// ❌ Dangerous: 2300 gas limit
+payable(recipient).transfer(amount);
+
+// ✅ Correct: forwards all available gas
+(bool success,) = payable(recipient).call{value: amount}("");
+require(success, "Transfer failed");
+
+// ✅ Better: OpenZeppelin Address library
+import "@openzeppelin/contracts/utils/Address.sol";
+Address.sendValue(payable(recipient), amount);
+```
+
+## receive() and fallback() Protection
+
+Unguarded `receive()` functions permanently lock OKB in the contract:
+
+```solidity
+// ❌ Dangerous: OKB sent here is locked forever
+receive() external payable {}
+
+// ✅ Option 1: emit event for tracking
+receive() external payable {
+    emit Received(msg.sender, msg.value);
+}
+
+// ✅ Option 2: reject unexpected OKB
+receive() external payable {
+    revert("Direct OKB transfers not accepted");
+}
+```
+
+## Forced OKB Sending
+
+`selfdestruct` (or `CREATE2` + `selfdestruct` in same tx post-EIP-6780) can force OKB into any contract, bypassing `receive()`. Never use `address(this).balance` for accounting:
+
+```solidity
+// ❌ Vulnerable: attacker can inflate balance via selfdestruct
+require(address(this).balance == totalDeposits);
+
+// ✅ Safe: track deposits explicitly
+uint256 public totalDeposited;
+function deposit() external payable {
+    totalDeposited += msg.value;
+}
+function availableBalance() public view returns (uint256) {
+    return totalDeposited; // Not address(this).balance
+}
+```
+
+## Signature Replay Protection
+
+Off-chain signatures (EIP-712, permit) must include replay protection. On X Layer, `block.chainid` returns **196** (mainnet) or **1952** (testnet):
+
+```solidity
+bytes32 public DOMAIN_SEPARATOR = keccak256(abi.encode(
+    keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"),
+    keccak256(bytes("MyContract")),
+    keccak256(bytes("1")),
+    block.chainid,     // 196 for X Layer mainnet
+    address(this)      // prevents cross-contract replay
+));
+
+// Per-user nonce prevents same-chain replay
+mapping(address => uint256) public nonces;
+
+function executeWithSignature(
+    bytes calldata sig,
+    uint256 deadline,
+    uint256 nonce
+) external {
+    require(block.timestamp <= deadline, "Signature expired");
+    require(nonce == nonces[msg.sender]++, "Invalid nonce");
+    // ... verify signature
+}
+```
+
+## Signature Malleability
+
+Raw `ecrecover` accepts both low-s and high-s values, allowing signature duplication. Always use OpenZeppelin ECDSA:
+
+```solidity
+// ❌ Vulnerable: accepts malleable signatures
+address signer = ecrecover(hash, v, r, s);
+
+// ✅ Safe: OpenZeppelin ECDSA rejects high-s values
+import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+address signer = ECDSA.recover(
+    MessageHashUtils.toEthSignedMessageHash(hash),
+    signature
+);
+```
+
+Also track used signatures in a mapping to prevent replay.
+
+## On-Chain Randomness
+
+On L2, the sequencer controls `block.timestamp`, `block.prevrandao`, and `blockhash`. These must NOT be used for randomness. **Chainlink VRF is not available on X Layer** — use the commit-reveal pattern:
+
+```solidity
+// ❌ Vulnerable: sequencer can predict/manipulate
+uint256 random = uint256(keccak256(abi.encodePacked(block.timestamp)));
+
+// ✅ Safe: commit-reveal pattern
+mapping(address => bytes32) public commitments;
+mapping(address => uint256) public commitBlock;
+
+function commit(bytes32 hash) external {
+    commitments[msg.sender] = hash;
+    commitBlock[msg.sender] = block.number;
+}
+
+function reveal(bytes32 secret) external {
+    require(commitments[msg.sender] == keccak256(abi.encodePacked(secret)), "Invalid");
+    require(block.number > commitBlock[msg.sender] + REVEAL_DELAY, "Too early");
+    require(block.number <= commitBlock[msg.sender] + REVEAL_DEADLINE, "Too late");
+
+    uint256 random = uint256(keccak256(abi.encodePacked(
+        secret,
+        blockhash(commitBlock[msg.sender] + REVEAL_DELAY)
+    )));
+    delete commitments[msg.sender];
+    // Use random ...
+}
+```
+
+## Private Variables Are Not Secret
+
+`private` variables are readable by anyone via `eth_getStorageAt`. Never store passwords, secret keys, or hidden game state in contract storage:
+
+```solidity
+// ❌ Vulnerable: "private" does not mean secret
+contract BadGame {
+    uint256 private secretNumber = 42; // Readable by anyone!
+}
+
+// Anyone can read it:
+// await provider.getStorage(contractAddr, 0) → secretNumber
+```
+
+Use commit-reveal or off-chain computation for sensitive data.
+
+## Oracle Integration
+
+When using Chainlink price feeds, always check for staleness:
+
+```solidity
+(uint80 roundId, int256 answer,, uint256 updatedAt, uint80 answeredInRound)
+    = priceFeed.latestRoundData();
+
+require(block.timestamp - updatedAt <= STALENESS_THRESHOLD, "Stale price");
+require(answeredInRound >= roundId, "Stale round");
+require(answer > 0, "Invalid price");
+```
+
+Chainlink on X Layer has limited availability — only major pairs (OKB/USD, ETH/USD, BTC/USD, USDT/USD). For other pairs, use DEX TWAP with multi-block averaging.
+
+## Unbounded Loops
+
+Never iterate arrays that can grow without limit — this causes DoS when the loop exceeds block gas limit:
+
+```solidity
+// ❌ Dangerous: unbounded loop
+function distributeRewards() external {
+    for (uint256 i = 0; i < recipients.length; i++) {
+        payable(recipients[i]).transfer(rewards[i]);
+    }
+}
+
+// ✅ Safe: pull pattern — each recipient claims individually
+mapping(address => uint256) public pendingRewards;
+
+function claimReward() external nonReentrant {
+    uint256 reward = pendingRewards[msg.sender];
+    require(reward > 0, "No reward");
+    pendingRewards[msg.sender] = 0;
+    (bool success,) = payable(msg.sender).call{value: reward}("");
+    require(success, "Transfer failed");
+}
+```
+
+## Input Validation
+
+Apply these checks at all public/external function boundaries:
+
+```solidity
+require(recipient != address(0), "Zero address");
+require(amount > 0, "Zero amount");
+require(amount <= MAX_TRANSFER, "Exceeds limit");
+require(recipients.length > 0 && recipients.length <= MAX_BATCH, "Invalid batch");
+require(recipients.length == amounts.length, "Length mismatch");
+```
+
+## Private Key Management
+
+1. Store `DEPLOYER_PRIVATE_KEY` only in `.env` files
+2. Verify `.env` is in `.gitignore`
+3. Validate environment variables in deploy scripts:
+
+```typescript
+if (!process.env.DEPLOYER_PRIVATE_KEY) {
+    throw new Error("DEPLOYER_PRIVATE_KEY env variable required");
+}
+```
+
+For production: use hardware wallets (Ledger) or multi-sig (Safe). Keep deployer and admin keys separate.
+
+## L2-Specific Considerations
+
+### Sequencer Centralization
+- X Layer sequencer is controlled by OKX
+- The sequencer can delay or reorder transactions
+- Consider L1 forced inclusion for critical operations
+
+### block.timestamp
+- The sequencer determines `block.timestamp` (with drift tolerance)
+- Time-sensitive operations (auctions, vesting) must account for this
+- For L1 block reference, use the `L1Block` predeploy at `0x4200000000000000000000000000000000000015`
+
+### Withdrawal Security
+- L2→L1 withdrawals have a ~7-day challenge period
+- Each withdrawal has a unique nonce for replay protection
+
+## Solidity Version
+
+Use Solidity **0.8.34 or later**. Versions 0.8.28–0.8.33 have the TSTORE Poison bug (IR pipeline corrupts transient storage cleanup).
+
+## Integer Downcast Safety
+
+Solidity 0.8+ checks arithmetic overflow, but **downcasting silently truncates** without reverting:
+
+```solidity
+// ❌ Vulnerable: silently truncates
+uint256 big = type(uint256).max;
+uint128 small = uint128(big); // No revert!
+
+// ✅ Safe: use OpenZeppelin SafeCast
+import "@openzeppelin/contracts/utils/math/SafeCast.sol";
+using SafeCast for uint256;
+uint128 safe = big.toUint128(); // Reverts on overflow
+```
