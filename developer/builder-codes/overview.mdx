@@ -1,0 +1,50 @@
+# Builder Codes
+
+Attribute onchain activity to your app or wallet with Builder Codes on X Layer.
+
+## What Are Builder Codes
+
+X Layer Builder Codes are an ERC-721 NFT collection where unique 16-character codes (e.g. `8k3m1v0q7z2c9a5x`) identify builders onchain. Each code has a "payout address" in its metadata — this is where potential rewards are sent.
+
+Builder Codes give you:
+
+- **Rewards:** Attribute transactions back to your app and unlock rewards as the program expands.
+- **Analytics:** Track onchain usage, user acquisition, and conversion metrics in the OKX developer portal.
+- **Visibility:** Apps with Builder Codes can appear in discovery surfaces like App Leaderboards and ecosystem spotlights.
+
+> **Get your Builder Code:** Register on the [OKX developer portal](https://www.okx.com/xlayer/developer), then go to **Settings** → **Builder Code**.
+
+## How It Works
+
+When a transaction is sent, an [ERC-8021](https://eip.tools/eip/8021) attribution suffix is appended to the end of the calldata. The suffix contains your Builder Code and is extracted by offchain indexers — it does not affect contract execution. No smart contract changes are required.
+
+The suffix adds negligible gas: 16 gas per non-zero byte.
+
+Wallets that support the `dataSuffix` capability append it to calldata before signing. EOAs and ERC-7702 smart wallets are supported. ERC-4337 user operations are not yet supported.
+
+> **Note:** Automatic Builder Code injection is not yet available in OKX Wallet. You need to configure `dataSuffix` in your app as described in the integration guide.
+
+## Get Started
+
+**App developers**
+
+1. Register on the [OKX developer portal](https://www.okx.com/xlayer/developer) and get your Builder Code under **Settings** → **Builder Code**.
+2. Follow the [Integration Guide](/developer/builder-codes/integration) to add attribution to your app.
+
+**Wallet providers**
+
+See the [Wallet Provider Guide](/developer/builder-codes/wallet-providers).
+
+## Verify Attribution
+
+**Option 1 — OKLink Explorer**
+
+1. Find your transaction on [OKLink](https://www.oklink.com/xlayer).
+2. Open the input data field.
+3. Verify the last 16 bytes are the `8021` repeating pattern, and check the decoded attribution data for your Builder Code.
+
+**Option 2 — Open Source Tool**
+
+1. Open the [Builder Code Validation](https://nextjs-boilerplate-silk-gamma-760zp49dit.vercel.app/) tool.
+2. Paste the transaction input data.
+3. Click **Check Attribution**.

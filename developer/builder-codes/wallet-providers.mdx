@@ -1,0 +1,53 @@
+# Builder Codes for Wallet Providers
+
+If you are building a wallet and want to support ERC-8021 attribution for apps running on X Layer, implement the following.
+
+## Implementation
+
+### 1. Support the dataSuffix Capability
+
+Your wallet should accept a `dataSuffix` object in the `capabilities` field of `wallet_sendCalls`.
+
+```typescript
+type DataSuffixCapability = {
+  value: `0x${string}`;  // hex-encoded bytes provided by the app
+  optional?: boolean;    // whether the capability is optional
+}
+```
+
+### 2. Append Suffix to Calldata
+
+When constructing the transaction, extract the `dataSuffix` and append it to the calldata.
+
+**EOA Transactions** — append to `tx.data`:
+
+```typescript
+// Minimal example for EOA
+function applySuffixToEOA(tx, capabilities) {
+  const suffix = capabilities.dataSuffix?.value
+  if (!suffix) return tx
+
+  return {
+    ...tx,
+    // Append suffix bytes (remove 0x prefix from suffix if tx.data has it)
+    data: tx.data + suffix.slice(2)
+  }
+}
+```
+
+**ERC-4337 User Operations** — not supported yet.
+
+### 3. Add Wallet Attribution (Optional)
+
+Wallets may include their own Builder Code by prepending the wallet's suffix before the app's suffix.
+
+- **No interaction required with apps:** The wallet handles this independently.
+- **Multi-code support:** ERC-8021 natively supports multiple attribution codes.
+
+```typescript
+finalSuffix = walletSuffix + appSuffix
+```
+
+This ensures both the app and the wallet receive onchain attribution on X Layer.
+
+> **Get your Builder Code:** Register on the [OKX developer portal](https://www.okx.com/xlayer/developer) under **Settings** → **Builder Code**.
