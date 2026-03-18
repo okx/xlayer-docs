@@ -128,6 +128,7 @@ module.exports = [
                 '/developer/tools/node-providers/getblock',
                 '/developer/tools/node-providers/blockpi',
                 '/developer/tools/node-providers/zan',
+                '/developer/tools/node-providers/tenderly',
               ]
             },
             {
