@@ -2,7 +2,7 @@
 
 ## 📋 Overview
 
-Quickly deploy an X Layer self-hosted RPC node with support for both **reth** and **geth** execution clients.
+Quickly deploy an X Layer self-hosted RPC node with the **reth** execution client.
 
 ## 💻 System Requirements
 
@@ -27,13 +27,6 @@ This is equivalent to: `mainnet` + `reth` + `snapshot` + all default ports.
 
 Press `n` during the 5-second countdown to enter interactive mode, where you can customize network, client, ports, and more.
 
-You can also specify the execution client type:
-
-```bash
-# Use geth
-curl -sSf https://raw.githubusercontent.com/okx/xlayer-toolkit/main/rpc-setup/one-click-setup.sh | bash -s -- --rpc_type=geth
-```
-
 #### Interactive Prompts
 
 In custom mode, the script will prompt you for:
@@ -55,14 +48,10 @@ In custom mode, the script will prompt you for:
 
 #### Sync Mode Availability
 
-Not all sync modes are available for every client-network combination:
-
-| Client | Network | Genesis | Snapshot |
-| ------ | ------- | ------- | -------- |
-| reth   | mainnet | ✅      | ✅       |
-| geth   | mainnet | ✅      | ✅       |
-| reth   | testnet | ❌      | ✅       |
-| geth   | testnet | ❌      | ✅       |
+| Network | Genesis | Snapshot |
+| ------- | ------- | -------- |
+| mainnet | ✅      | ✅       |
+| testnet | ❌      | ✅       |
 
 ## 📊 Service Management
 
@@ -72,10 +61,6 @@ make status
 
 # Stop services (preserves data)
 make stop
-
-# Stop specific instance
-make stop TARGET=mainnet-geth
-make stop TARGET=mainnet-reth
 
 # Restart services
 make run
