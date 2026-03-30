@@ -1,0 +1,214 @@
+# Gas Optimization
+
+This guide covers gas optimization strategies for X Layer, where **OKB** is the native gas token (not ETH).
+
+## OKB Gas Token
+
+- **Native gas token:** OKB (not ETH)
+- **OKB decimals:** 18 (as native token)
+- **Average transaction cost:** ~$0.0005 USD
+- Users must hold OKB to pay gas — ETH or stablecoins cannot be used
+- `msg.value` is denominated in OKB
+
+## Fee Structure
+
+X Layer transaction fee = **L2 execution fee** + **L1 data fee**
+
+| Component | Description | Variability |
+|-----------|-------------|-------------|
+| L2 execution fee | L2 computation cost | Low |
+| L1 data fee | Cost of posting calldata to Ethereum L1 | High (depends on L1 gas price) |
+
+L1 gas spikes directly increase L2 costs. Costs may vary between batches.
+
+## GasPriceOracle Predeploy
+
+The `GasPriceOracle` at `0x420000000000000000000000000000000000000F` provides L1 base fee and overhead information:
+
+```solidity
+interface IGasPriceOracle {
+    function l1BaseFee() external view returns (uint256);
+    function gasPrice() external view returns (uint256);
+    function baseFee() external view returns (uint256);
+}
+
+IGasPriceOracle oracle = IGasPriceOracle(0x420000000000000000000000000000000000000F);
+uint256 l1Fee = oracle.l1BaseFee();
+```
+
+## EIP-1559 Support
+
+X Layer supports EIP-1559 transactions. Prefer `type: 2` (EIP-1559) over `type: 0` (legacy):
+
+```typescript
+// ethers v6
+const feeData = await provider.getFeeData();
+const tx = await wallet.sendTransaction({
+    to: recipient,
+    value: ethers.parseEther("0.01"),
+    maxFeePerGas: feeData.maxFeePerGas,
+    maxPriorityFeePerGas: feeData.maxPriorityFeePerGas,
+});
+
+// viem
+const request = await walletClient.prepareTransactionRequest({
+    to: recipient,
+    value: parseEther("0.01"),
+    // viem automatically calculates EIP-1559 parameters
+});
+```
+
+- Base fee is burned (deflationary pressure on OKB)
+- Priority fee goes to the sequencer
+
+## Contract Size Limit (EIP-170)
+
+Maximum deployed bytecode: **24,576 bytes** (24 KB). Deploy reverts if exceeded.
+
+Check size:
+```bash
+# Hardhat
+npx hardhat compile  # check artifact size
+
+# Foundry
+forge build --sizes
+```
+
+Reduction techniques:
+1. **External libraries** — shared code via `DELEGATECALL`
+2. **Custom errors** — `error InsufficientBalance()` instead of `require(condition, "long string message")`
+3. **External functions** — internal functions are inlined, making them external reduces bytecode
+4. **Diamond pattern** (EIP-2535) as a last resort
+
+## Compiler Optimizer
+
+```json
+{
+  "solidity": {
+    "version": "0.8.34",
+    "settings": {
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      }
+    }
+  }
+}
+```
+
+| `runs` value | Deploy cost | Runtime cost | Best for |
+|-------------|-------------|--------------|----------|
+| 1 | Cheap | Expensive | Rarely called contracts |
+| 200 | Balanced | Balanced | General purpose |
+| 10000 | Expensive | Cheap | Frequently called contracts (DEX, bridges) |
+
+## Multicall3
+
+Address: `0xcA11bde05977b3631167028862bE2a173976CA11`
+
+Batch multiple read calls into a single RPC request:
+
+```typescript
+import { Contract } from "ethers";
+
+const multicall = new Contract(
+    "0xcA11bde05977b3631167028862bE2a173976CA11",
+    ["function aggregate3(tuple(address target, bool allowFailure, bytes callData)[] calls) view returns (tuple(bool success, bytes returnData)[])"],
+    provider
+);
+
+const calls = [
+    {
+        target: tokenAddr,
+        allowFailure: false,
+        callData: erc20.interface.encodeFunctionData("balanceOf", [user])
+    },
+    {
+        target: tokenAddr,
+        allowFailure: false,
+        callData: erc20.interface.encodeFunctionData("totalSupply")
+    },
+];
+const results = await multicall.aggregate3(calls);
+```
+
+## Storage Packing
+
+`SSTORE` (20,000 gas cold / 5,000 warm) is the most expensive EVM opcode. Pack variables into the same 32-byte storage slot:
+
+```solidity
+// ❌ 3 storage slots (96 bytes)
+uint256 a;  // slot 0
+uint256 b;  // slot 1
+uint256 c;  // slot 2
+
+// ✅ 1 storage slot (32 bytes) — packed
+uint128 a;  // slot 0 (first 16 bytes)
+uint64 b;   // slot 0 (next 8 bytes)
+uint64 c;   // slot 0 (last 8 bytes)
+```
+
+Variables in the same slot only need one `SSTORE` when written together. Mappings and dynamic arrays always use separate slots.
+
+## calldata vs memory
+
+Use `calldata` for read-only parameters (cheaper than `memory`):
+
+```solidity
+// ✅ Read-only parameters: calldata (cheap)
+function process(bytes calldata data) external { ... }
+
+// memory: only when modification is needed
+function modify(bytes memory data) internal { ... }
+```
+
+## Events vs Storage
+
+Use events for data that only needs to be read off-chain (via indexers):
+
+```solidity
+// ❌ Expensive: write to storage (~20,000+ gas)
+mapping(uint256 => string) public logs;
+function log(uint256 id, string memory msg) external {
+    logs[id] = msg;
+}
+
+// ✅ Cheap: emit event (~375 + 8*len gas)
+event LogEntry(uint256 indexed id, string message);
+function log(uint256 id, string memory msg) external {
+    emit LogEntry(id, msg);
+}
+```
+
+Events cannot be read on-chain — use them for audit trails and activity logs.
+
+## Custom Errors
+
+Custom errors save gas compared to `require` with string messages:
+
+```solidity
+// ❌ Expensive: stores the string in bytecode
+require(balance >= amount, "Insufficient balance for transfer");
+
+// ✅ Cheap: custom error uses only 4 bytes selector
+error InsufficientBalance(uint256 available, uint256 required);
+
+if (balance < amount) {
+    revert InsufficientBalance(balance, amount);
+}
+```
+
+## Loop Optimization
+
+```solidity
+// ✅ Gas-efficient loop: unchecked increment, cached length
+uint256 len = arr.length;
+for (uint256 i = 0; i < len;) {
+    // ... process arr[i]
+    unchecked { ++i; }  // Safe: i is bounded by len
+}
+```
+
+- Cache `arr.length` to avoid repeated `SLOAD`
+- Use `unchecked { ++i; }` — safe because `i` is bounded
+- Prefer `++i` over `i++` (saves ~5 gas per iteration)

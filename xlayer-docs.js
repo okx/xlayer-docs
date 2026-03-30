@@ -74,6 +74,9 @@ module.exports = [
               '/developer/flashblocks/faq',
             ],
           },
+
+            '/developer/build-on-xlayer/security-best-practices',
+            '/developer/build-on-xlayer/gas-optimization',
           ]
         },
 
