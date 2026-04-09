@@ -7,7 +7,7 @@ Add ERC-8021 attribution to your app on X Layer using Wagmi or Viem to attribute
 Requires viem `2.45.0` or higher. Define the X Layer chain(s) you need and reuse them across your config:
 
 ```ts
-// chain.ts
+// Mainnet
 import { defineChain } from "viem";
 
 export const xlayer = defineChain({
@@ -22,6 +22,7 @@ export const xlayer = defineChain({
   },
 });
 
+// Testnet
 export const xlayerTestnet = defineChain({
   id: 1952,
   name: "X Layer Testnet",
@@ -37,7 +38,7 @@ export const xlayerTestnet = defineChain({
 
 **Get your Builder Code**
 
-- **Mainnet:** Register on the [OKX developer portal](https://www.okx.com/xlayer/developer) under **Settings** → **Builder Code**.
+- **Mainnet:** Go to the [OKX developer portal](https://web3.okx.com/onchainos/dev-portal), verify your address, then create your Builder Code on the **Builder Code** page.
 - **Testnet:** Connect your wallet and call `registerAuto` on the [Builder Code registry contract](https://www.oklink.com/zh-hans/x-layer-testnet/address/0x00a3b805dbf39e5d54f9d09c130ff2132b4a0a21/contract#category=proxy-write). Need testnet OKB? Use the [faucet](https://www.okx.com/xlayer/faucet).
 
 ## Client-Level Setup
@@ -87,7 +88,7 @@ function SendButton() {
     <button
       onClick={() =>
         sendTransaction({
-          to: "0x70997970c51812dc3a010c7d01b50e0d17dc79c8",
+          to: "0x8d7c41aa990234b2d7e064df150a4228ed984648",
           value: parseEther("0.01"),
         })
       }
@@ -113,7 +114,7 @@ function SendCallsButton() {
         sendCalls({
           calls: [
             {
-              to: "0x70997970c51812dc3a010c7d01b50e0d17dc79c8",
+              to: "0x8d7c41aa990234b2d7e064df150a4228ed984648",
               value: parseEther("0.01"),
             },
           ],
@@ -168,7 +169,7 @@ import { parseEther } from "viem";
 import { walletClient } from "./client";
 
 const hash = await walletClient.sendTransaction({
-  to: "0x70997970c51812dc3a010c7d01b50e0d17dc79c8",
+  to: "0x8d7c41aa990234b2d7e064df150a4228ed984648",
   value: parseEther("0.01"),
 });
 ```
@@ -195,7 +196,7 @@ function App() {
     <button
       onClick={() =>
         sendTransaction({
-          to: "0x70997970c51812dc3a010c7d01b50e0d17dc79c8",
+          to: "0x8d7c41aa990234b2d7e064df150a4228ed984648",
           value: parseEther("0.01"),
           dataSuffix: DATA_SUFFIX,
         })
@@ -231,7 +232,7 @@ function App() {
         sendCalls({
           calls: [
             {
-              to: "0x70997970c51812dc3a010c7d01b50e0d17dc79c8",
+              to: "0x8d7c41aa990234b2d7e064df150a4228ed984648",
               value: parseEther("1"),
             },
           ],
@@ -253,3 +254,13 @@ function App() {
 ## Verify Attribution
 
 > See [Verify Attribution](/developer/builder-codes/overview#verify-attribution) for steps to confirm your transaction was properly attributed.
+
+## Builder Code Analytics
+
+Track your Builder Code performance in the [OKX Developer Portal](https://web3.okx.com/onchainos/dev-portal):
+
+- **Onchain activity** — monitor attributed transactions and call volume
+- **User acquisition** — measure new users driven by your app
+- **Conversion metrics** — analyze funnel performance from impression to onchain action
+
+Use these insights to optimize your integration and grow your audience on X Layer.
