@@ -1,15 +1,16 @@
 # Integrate Builder Codes
 
-Add ERC-8021 attribution to your app on X Layer using Wagmi or Viem to attribute onchain activity on X Layer.
+Add ERC-8021 attribution to your app on X Layer using Viem or Wagmi to attribute onchain activity on X Layer.
 
 ## Prerequisites
 
 Requires viem `2.45.0` or higher. Define the X Layer chain(s) you need and reuse them across your config:
 
 ```ts
-// Mainnet
+// chain.ts
 import { defineChain } from "viem";
 
+// Mainnet
 export const xlayer = defineChain({
   id: 196,
   name: "X Layer",
@@ -39,25 +40,25 @@ export const xlayerTestnet = defineChain({
 **Get your Builder Code**
 
 - **Mainnet:** Go to the [OKX developer portal](https://web3.okx.com/onchainos/dev-portal), verify your address, then create your Builder Code on the **Builder Code** page.
-- **Testnet:** Connect your wallet and call `registerAuto` on the [Builder Code registry contract](https://www.oklink.com/zh-hans/x-layer-testnet/address/0x00a3b805dbf39e5d54f9d09c130ff2132b4a0a21/contract#category=proxy-write). Need testnet OKB? Use the [faucet](https://www.okx.com/xlayer/faucet).
+- **Testnet:** Connect your wallet and call `registerAuto` on the [Builder Code registry contract](https://www.oklink.com/x-layer-testnet/address/0x00a3b805dbf39e5d54f9d09c130ff2132b4a0a21/contract#category=proxy-write). Need testnet OKB? Use the [faucet](https://www.okx.com/xlayer/faucet).
 
 ## Client-Level Setup
 
-Configure `dataSuffix` once at the client level. All transactions sent through this client automatically include your Builder Code.
+Configure `dataSuffix` once on the client that actually sends the transaction. For browser wallet integrations, Viem is the recommended default because the configured wallet client is also the client used to send the transaction.
 
-### Wagmi
+### Viem (Recommended)
 
 1. Install dependencies:
 
 ```bash
-npm i ox wagmi viem
+npm i ox viem
 ```
 
-2. Add `dataSuffix` to your Wagmi config:
+2. Create and reuse one wallet client with `dataSuffix`:
 
 ```ts
-// config.ts
-import { createConfig, http } from "wagmi";
+// client.ts
+import { createWalletClient, custom } from "viem";
 import { Attribution } from "ox/erc8021";
 import { xlayer } from "./chain";
 
@@ -65,21 +66,103 @@ const DATA_SUFFIX = Attribution.toDataSuffix({
   codes: ["YOUR-BUILDER-CODE"],
 });
 
-export const config = createConfig({
-  chains: [xlayer],
-  transports: {
-    [xlayer.id]: http(),
-  },
+if (!window.ethereum) {
+  throw new Error("No injected wallet found");
+}
+
+export const walletClient = createWalletClient({
+  chain: xlayer,
+  transport: custom(window.ethereum),
   dataSuffix: DATA_SUFFIX,
 });
 ```
 
-3. Transactions via `useSendTransaction` automatically include your Builder Code:
+3. Send transactions with the same client:
+
+```ts
+import { walletClient } from "./client";
+
+const [account] = await walletClient.requestAddresses();
+
+const hash = await walletClient.sendTransaction({
+  account,
+  to: "0x8d7c41aa990234b2d7e064df150a4228ed984648",
+});
+```
+
+Every transaction sent through `walletClient` includes your Builder Code automatically.
+
+### Wagmi
+
+For connector wallets, use a custom connector client so `dataSuffix` is applied to the wallet-backed client used by `useSendTransaction`.
+
+1. Install dependencies:
+
+```bash
+npm i ox wagmi viem
+```
+
+2. Add a custom injected connector that returns a client with `dataSuffix`:
+
+```ts
+// config.ts
+import { Attribution } from "ox/erc8021";
+import { createClient, custom } from "viem";
+import { createConfig, createConnector, http } from "wagmi";
+import { injected } from "wagmi/connectors";
+import { xlayer } from "./chain";
+
+const DATA_SUFFIX = Attribution.toDataSuffix({
+  codes: ["YOUR-BUILDER-CODE"],
+});
+
+function injectedWithDataSuffix() {
+  const baseInjected = injected();
+
+  return createConnector((config) => {
+    const connector = baseInjected(config);
+
+    return {
+      ...connector,
+      async getClient({ chainId } = {}) {
+        const id = chainId ?? (await connector.getChainId());
+        const chain = config.chains.find((item) => item.id === id);
+        const provider = await connector.getProvider({ chainId: id });
+        const [account] = await connector.getAccounts();
+
+        if (!chain) throw new Error(`Chain ${id} is not configured.`);
+        if (!provider) throw new Error("Injected provider not found.");
+        if (!account) throw new Error("No connected account found.");
+
+        return createClient({
+          account,
+          chain,
+          dataSuffix: DATA_SUFFIX,
+          transport: (options) =>
+            custom(provider)({
+              ...options,
+              retryCount: 0,
+            }),
+        });
+      },
+    };
+  });
+}
+
+export const config = createConfig({
+  chains: [xlayer],
+  connectors: [injectedWithDataSuffix()],
+  transports: {
+    [xlayer.id]: http(),
+  },
+});
+```
+
+3. Transactions via `useSendTransaction` inherit your Builder Code from the custom connector client:
 
 ```tsx
 // App.tsx
 import { useSendTransaction } from "wagmi";
-import { parseEther } from "viem";
 
 function SendButton() {
   const { sendTransaction } = useSendTransaction();
@@ -89,7 +172,6 @@ function SendButton() {
       onClick={() =>
         sendTransaction({
           to: "0x8d7c41aa990234b2d7e064df150a4228ed984648",
-          value: parseEther("0.01"),
         })
       }
     >
@@ -97,81 +179,6 @@ function SendButton() {
     </button>
   );
 }
-```
-
-For batch transactions, use `useSendCalls` and pass the suffix via `capabilities`:
-
-```tsx
-import { useSendCalls } from "wagmi";
-import { parseEther } from "viem";
-
-function SendCallsButton() {
-  const { sendCalls } = useSendCalls();
-
-  return (
-    <button
-      onClick={() =>
-        sendCalls({
-          calls: [
-            {
-              to: "0x8d7c41aa990234b2d7e064df150a4228ed984648",
-              value: parseEther("0.01"),
-            },
-          ],
-          capabilities: {
-            dataSuffix: {
-              value: DATA_SUFFIX,
-              optional: true,
-            },
-          },
-        })
-      }
-    >
-      Send calls
-    </button>
-  );
-}
-```
-
-> **Note:** `useSendCalls` requires the connected wallet to support the `dataSuffix` capability.
-
-### Viem
-
-1. Install dependencies:
-
-```bash
-npm i ox viem
-```
-
-2. Add `dataSuffix` when creating your wallet client:
-
-```ts
-// client.ts
-import { createWalletClient, http } from "viem";
-import { Attribution } from "ox/erc8021";
-import { xlayer } from "./chain";
-
-const DATA_SUFFIX = Attribution.toDataSuffix({
-  codes: ["YOUR-BUILDER-CODE"],
-});
-
-export const walletClient = createWalletClient({
-  chain: xlayer,
-  transport: http(),
-  dataSuffix: DATA_SUFFIX,
-});
-```
-
-3. All transactions sent through this client include your Builder Code:
-
-```ts
-import { parseEther } from "viem";
-import { walletClient } from "./client";
-
-const hash = await walletClient.sendTransaction({
-  to: "0x8d7c41aa990234b2d7e064df150a4228ed984648",
-  value: parseEther("0.01"),
-});
 ```
 
 ## Per-Transaction Configuration
@@ -182,7 +189,6 @@ If you need granular control, pass `dataSuffix` directly on individual transacti
 
 ```tsx
 import { useSendTransaction } from "wagmi";
-import { parseEther } from "viem";
 import { Attribution } from "ox/erc8021";
 
 const DATA_SUFFIX = Attribution.toDataSuffix({
@@ -197,7 +203,6 @@ function App() {
       onClick={() =>
         sendTransaction({
           to: "0x8d7c41aa990234b2d7e064df150a4228ed984648",
-          value: parseEther("0.01"),
           dataSuffix: DATA_SUFFIX,
         })
       }
@@ -208,52 +213,9 @@ function App() {
 }
 ```
 
-### useSendCalls
-
-Pass the suffix via the `capabilities` object.
-
-> **Note:** `useSendCalls` requires the connected wallet to support the `dataSuffix` capability.
-
-```tsx
-import { useSendCalls } from "wagmi";
-import { parseEther } from "viem";
-import { Attribution } from "ox/erc8021";
-
-const DATA_SUFFIX = Attribution.toDataSuffix({
-  codes: ["YOUR-BUILDER-CODE"],
-});
-
-function App() {
-  const { sendCalls } = useSendCalls();
-
-  return (
-    <button
-      onClick={() =>
-        sendCalls({
-          calls: [
-            {
-              to: "0x8d7c41aa990234b2d7e064df150a4228ed984648",
-              value: parseEther("1"),
-            },
-          ],
-          capabilities: {
-            dataSuffix: {
-              value: DATA_SUFFIX,
-              optional: true,
-            },
-          },
-        })
-      }
-    >
-      Send calls
-    </button>
-  );
-}
-```
-
 ## Verify Attribution
 
-> See [Verify Attribution](/developer/builder-codes/overview#verify-attribution) for steps to confirm your transaction was properly attributed.
+> See [Verify Attribution](/xlayer/docs/developer/builder-codes/overview#verify-attribution) for steps to confirm your transaction was properly attributed.
 
 ## Builder Code Analytics
 

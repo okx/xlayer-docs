@@ -8,7 +8,7 @@ X Layer Builder Codes are an ERC-721 NFT collection where unique 16-character co
 
 Builder Codes give you:
 
-- **Rewards:** Attribute transactions back to your app and unlock rewards as the program expands.
+- **Rewards:** Attribute transactions back to your app and unlock potential rewards as the program expands.
 - **Analytics:** Track onchain usage, user acquisition, and conversion metrics in the OKX developer portal.
 - **Visibility:** Apps with Builder Codes can appear in discovery surfaces like App Leaderboards and ecosystem spotlights.
 
@@ -20,28 +20,27 @@ When a transaction is sent, an [ERC-8021](https://eip.tools/eip/8021) attributio
 
 The suffix adds negligible gas: 16 gas per non-zero byte.
 
-Wallets that support the `dataSuffix` capability append it to calldata before signing. EOAs and ERC-7702 smart wallets are supported. ERC-4337 user operations are not yet supported.
+Apps typically add the suffix by configuring `dataSuffix` on the client that sends the transaction, or by passing it per transaction. Wallets may also append it before signing when they support Builder Code attribution directly. EOAs and ERC-7702 smart wallets are supported. ERC-4337 user operations are not yet supported.
 
-> **Note:** Automatic Builder Code injection is not yet available in OKX Wallet. You need to configure `dataSuffix` in your app as described in the integration guide.
+> **Note:** Automatic Builder Code injection is not yet available in OKX Wallet, so apps should configure `dataSuffix` as described in the integration guide.
 
 ## Get Started
 
 **App developers**
 
 1. Go to the [OKX developer portal](https://web3.okx.com/onchainos/dev-portal), verify your address, then create your Builder Code on the **Builder Code** page.
-2. Follow the [Integration Guide](/developer/builder-codes/integration) to add attribution to your app.
+2. Follow the [Integration Guide](/xlayer/docs/developer/builder-codes/integration) to add attribution to your app.
 
 **Wallet providers**
 
-See the [Wallet Provider Guide](/developer/builder-codes/wallet-providers).
+See the [Wallet Provider Guide](/xlayer/docs/developer/builder-codes/wallet-providers).
 
 ## Verify Attribution
 
 **Option 1 — OKLink Explorer**
 
-1. Find your transaction on [OKLink](https://www.oklink.com/xlayer).
-2. Open the input data field.
-3. Verify the last 16 bytes are the `8021` repeating pattern, and check the decoded attribution data for your Builder Code.
+1. Look up your transaction on [OKLink](https://www.oklink.com/xlayer).
+2. The attributed builder code is displayed next to the **Txn hash** field.
 
 **Option 2 — Open Source Tool**
 

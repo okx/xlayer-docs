@@ -19,18 +19,19 @@ type DataSuffixCapability = {
 
 When constructing the transaction, extract the `dataSuffix` and append it to the calldata.
 
-**EOA Transactions** — append to `tx.data`:
+**EOA Transactions** — append to `tx.data` and default to `0x` for native transfers:
 
 ```typescript
 // Minimal example for EOA
 function applySuffixToEOA(tx, capabilities) {
   const suffix = capabilities.dataSuffix?.value
   if (!suffix) return tx
+  const data = tx.data ?? "0x"
 
   return {
     ...tx,
-    // Append suffix bytes (remove 0x prefix from suffix if tx.data has it)
-    data: tx.data + suffix.slice(2)
+    // Works for both contract calls and native token transfers
+    data: data + suffix.slice(2)
   }
 }
 ```
